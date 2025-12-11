@@ -4,7 +4,7 @@ This repository contains all the material produced for the **Statistics** course
 
 🗂️ Contents
 - `Weekly Homework Code`, typically written in JavaScript and without the use of external libraries, as required by the course. A textual explanation for each assignment is available in the personal blog (link below).
-- `Term Paper` (Tesina)
+- `Term Paper` (Tesina) on the following topics: Statistical Methods in Cybersecurity: Foundations, Applications, and Future Perspectives
 - `Blog with Theory & Explanations`
 
 Every homework assignment is accompanied by a page on the personal blog, which includes:
