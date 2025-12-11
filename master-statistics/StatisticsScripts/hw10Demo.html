@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Riemann vs Lebesgue Integration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            color: #444;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        label {
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin: 10px 0 20px 0;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            text-align: center;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 4px;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-radius: 5px;
+            overflow: auto;
+        }
+        .output {
+            margin-top: 20px;
+            font-weight: bold;
+            color: #0066cc;
+        }
+    </style>
+</head>
+<body>
+    <h1>Riemann vs Lebesgue Integration</h1>
+    <div class="container">
+        <p>Compute the <strong>mean</strong> of a uniform distribution f(x) = 1 / (b - a) using Riemann and Lebesgue integrals.</p>
+
+        <form id="integration-form">
+            <label for="a">Start of Interval (a):</label>
+            <input type="number" id="a" value="0" step="0.01" required>
+
+            <label for="b">End of Interval (b):</label>
+            <input type="number" id="b" value="1" step="0.01" required>
+
+            <label for="nPoints">Number of Points (Riemann):</label>
+            <input type="number" id="nPoints" value="1000" min="1" required>
+
+            <label for="nLevels">Number of Levels (Lebesgue):</label>
+            <input type="number" id="nLevels" value="100" min="1" required>
+
+            <button type="button" onclick="runIntegration()">Compute</button>
+        </form>
+
+        <div class="output">
+            <pre id="output">Results will appear here...</pre>
+        </div>
+    </div>
+
+    <script>
+        // Riemann Integral: Left-point approximation
+        function computeRiemannIntegral(f, a, b, nPoints) {
+            const dx = (b - a) / nPoints;
+            let sum = 0;
+            for (let i = 0; i < nPoints; i++) {
+                const x = a + i * dx; // Left endpoint
+                sum += f(x) * dx;
+            }
+            return sum;
+        }
+
+        // Lebesgue Integral: Approximating by levels
+        function computeLebesgueIntegral(f, a, b, nLevels) {
+            const fMax = f(b); // Assuming the maximum occurs at b for uniform PDF
+            const dy = fMax / nLevels;
+            let sum = 0;
+
+            for (let i = 0; i < nLevels; i++) {
+                const level = i * dy;
+                const width = (b - a); // Lebesgue measure at each level
+                sum += level * width * dy; // Add contribution of each level
+            }
+            return sum;
+        }
+
+        // Uniform Probability Density Function
+        function uniformPDF(x, a, b) {
+            if (x < a || x > b) return 0; // Outside interval
+            return 1 / (b - a);
+        }
+
+        // Mean function: integrates x * PDF(x)
+        function computeMean(a, b, n, method) {
+            const f = (x) => x * uniformPDF(x, a, b); // Function to integrate
+            return method(f, a, b, n);
+        }
+
+        // Function to run integration and display results
+        function runIntegration() {
+            // Get user inputs
+            const a = parseFloat(document.getElementById('a').value);
+            const b = parseFloat(document.getElementById('b').value);
+            const nPoints = parseInt(document.getElementById('nPoints').value);
+            const nLevels = parseInt(document.getElementById('nLevels').value);
+
+            // Validate input
+            if (isNaN(a) || isNaN(b) || isNaN(nPoints) || isNaN(nLevels) || b <= a || nPoints <= 0 || nLevels <= 0) {
+                alert("Please enter valid inputs. Ensure b > a, and numbers of points/levels > 0.");
+                return;
+            }
+
+            // Compute mean using Riemann and Lebesgue methods
+            const riemannMean = computeMean(a, b, nPoints, computeRiemannIntegral);
+            const lebesgueMean = computeMean(a, b, nLevels, computeLebesgueIntegral);
+
+            // Display results
+            const output = `
+Results:
+==========
+Interval: [${a}, ${b}]
+Number of Points (Riemann): ${nPoints}
+Number of Levels (Lebesgue): ${nLevels}
+
+Mean using Riemann Integral: ${riemannMean.toFixed(6)}
+Mean using Lebesgue Integral: ${lebesgueMean.toFixed(6)}
+
+Difference: ${(Math.abs(riemannMean - lebesgueMean)).toFixed(6)}
+`;
+            document.getElementById('output').textContent = output;
+        }
+    </script>
+</body>
+</html>

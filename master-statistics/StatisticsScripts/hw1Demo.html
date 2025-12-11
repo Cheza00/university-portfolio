@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attack Simulation</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+
+        #controls {
+            margin-bottom: 20px;
+        }
+
+        #line_chart, #histogram {
+            width: 75%; 
+            height: 350pt; 
+            margin: 0 auto; /* Centers the graphs */
+            margin-bottom: 30px;
+        }
+
+        #statistics {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Attack Simulation</h1>
+
+    <div id="controls">
+        <label for="probability">Probability:</label>
+        <input type="range" id="probability" min="0" max="1" step="0.01" value="0.2" 
+            oninput="document.getElementById('probValue').innerHTML = this.value;">
+        <span id="probValue">0.2</span>
+
+        <label for="num_attackers">Attackers:</label>
+        <input type="number" id="num_attackers" min="1" value="5">
+
+        <label for="num_servers">Servers:</label>
+        <input type="number" id="num_servers" min="1" value="10">
+
+        <button onclick="runSimulation()">Submit</button>
+    </div>
+
+    <div id="simulation_results">
+        <div id="line_chart"></div>
+        <div id="histogram"></div>
+        <div id="statistics"></div> <!-- Div for mean, median, and mode -->
+    </div>
+
+    <script>
+        function runSimulation() {
+            var probability = parseFloat(document.getElementById("probability").value);
+            var num_attackers = parseInt(document.getElementById("num_attackers").value);
+            var num_servers = parseInt(document.getElementById("num_servers").value);
+
+            var data = [];
+            var violations = Array(num_attackers).fill(0);
+
+            for (var i = 0; i < num_attackers; i++) {
+                var attacker_penetrations = [0]; // Initialize starting point
+                var x_values = [0]; // Start with x = 0 (server 0)
+
+                for (var j = 1; j <= num_servers; j++) {
+                    x_values.push(j);
+
+                    // Check if penetration occurs
+                    if (Math.random() <= probability) {
+                        attacker_penetrations.push(attacker_penetrations[attacker_penetrations.length - 1] + 1);
+                        violations[i]++;
+                    } else {
+                        attacker_penetrations.push(attacker_penetrations[attacker_penetrations.length - 1]);
+                    }
+                }
+
+                data.push({
+                    x: x_values,
+                    y: attacker_penetrations,
+                    mode: 'lines+markers',
+                    name: 'Attacker ' + (i + 1),
+                    line: { shape: 'hv' } // 'hv' for step-like vertical line transitions
+                });
+            }
+
+            // Plot line chart for each attacker
+            Plotly.newPlot('line_chart', data, {
+                title: 'Penetrations per Server',
+                xaxis: { title: 'Servers', dtick: 1 }, // x-axis interval of 1
+                yaxis: { title: 'Penetrations', dtick: 1 } // y-axis interval of 1 for penetrations
+            });
+
+           // Prepare bar chart for penetration distribution
+            var penetration_counts = Array(num_servers + 1).fill(0); // Initialize penetration counts
+            violations.forEach(v => {
+                penetration_counts[v] += 1;
+            });
+
+            var hist_data = [{
+                x: penetration_counts,
+                y: penetration_counts.map((_, i) => i), // y corresponds to penetration counts (0 to max)
+                type: 'bar',
+                orientation: 'h' // Horizontal bars
+            }];
+
+            // Plot bar chart
+            Plotly.newPlot('histogram', hist_data, {
+                title: 'Penetration Distribution',
+                xaxis: { title: 'Frequency', dtick: 1 },
+                yaxis: { title: 'Penetrations', dtick: 1 } // y-axis has 1 interval ticks for penetrations
+            });
+
+            // Calculate mean, median, and mode
+            var mean = calculateMean(violations);
+            var median = calculateMedian(violations);
+            var mode = calculateMode(violations);
+
+            // Display statistics below the histogram
+            document.getElementById("statistics").innerHTML = `
+                <p>Mean: ${mean.toFixed(2)}</p>
+                <p>Median: ${median}</p>
+                <p>Mode: ${mode}</p>
+            `;
+        }
+
+        // Helper functions to calculate mean, median, and mode
+        function calculateMean(arr) {
+            var sum = arr.reduce((a, b) => a + b, 0);
+            return sum / arr.length;
+        }
+
+        function calculateMedian(arr) {
+            arr.sort((a, b) => a - b);
+            var mid = Math.floor(arr.length / 2);
+
+            return arr.length % 2 !== 0 ? arr[mid] : (arr[mid - 1] + arr[mid]) / 2;
+        }
+
+        function calculateMode(arr) {
+            var frequency = {};
+            var maxFreq = 0;
+            var mode = [];
+
+            arr.forEach(value => {
+                frequency[value] = (frequency[value] || 0) + 1;
+
+                if (frequency[value] > maxFreq) {
+                    maxFreq = frequency[value];
+                    mode = [value];
+                } else if (frequency[value] === maxFreq) {
+                    mode.push(value);
+                }
+            });
+
+            return mode.length === arr.length ? 'None' : mode.join(', ');
+        }
+    </script>
+
+</body>
+</html>

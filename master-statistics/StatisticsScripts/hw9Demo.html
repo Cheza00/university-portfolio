@@ -1,0 +1,246 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sampling Variances Simulation</title>
+    <style>
+        /* Basic styling for the page */
+        body {
+            background-color: #ffffff;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        canvas {
+            border: 1px solid #333;
+            margin-top: 20px;
+        }
+        #controls {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+        #controls button {
+            margin: 5px;
+            padding: 6px 12px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            background-color: #f0f0f0;
+        }
+        #controls button:hover {
+            background-color: #e0e0e0;
+        }
+        .input-group {
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .input-group label {
+            margin-right: 10px;
+        }
+        .input-group input {
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Sampling Variances Simulation</h1>
+
+    <!-- User Input Controls -->
+    <div id="controls">
+        <!-- Input: Values -->
+        <div class="input-group">
+            <label for="valuesInput">Values (comma-separated):</label>
+            <input type="text" id="valuesInput" value="1,2,3,4,5">
+        </div>
+        <!-- Input: Probabilities -->
+        <div class="input-group">
+            <label for="probabilitiesInput">Probabilities (comma-separated):</label>
+            <input type="text" id="probabilitiesInput" value="0.1,0.2,0.3,0.2,0.2">
+        </div>
+        <!-- Input: Sample Size -->
+        <div class="input-group">
+            <label for="sampleSizeN">Sample Size (n):</label>
+            <input type="number" id="sampleSizeN" value="30" min="1">
+        </div>
+        <!-- Input: Number of Samples -->
+        <div class="input-group">
+            <label for="numSamplesM">Number of Samples (m):</label>
+            <input type="number" id="numSamplesM" value="1000" min="1">
+        </div>
+        <!-- Run Simulation Button -->
+        <button onclick="computeSamplingVariances()">Run Simulation</button>
+    </div>
+
+    <!-- Graphs Section -->
+    <h2>Variance Distribution</h2>
+    <canvas id="uncorrectedVarianceCanvas" width="600" height="300"></canvas>
+
+    <!-- Results Display -->
+    <p>
+        <strong>Theoretical Variance of Parent Distribution:</strong> <span id="theoreticalVariance">0</span>
+    </p>
+    <p>
+        <strong>Mean of Uncorrected Sampling Variances:</strong> <span id="uncorrectedVarianceMean">0</span>
+    </p>
+    <p>
+        <strong>Mean of Corrected Sampling Variances:</strong> <span id="correctedVarianceMean">0</span>
+    </p>
+    <p>
+        <strong>Variance of Uncorrected Sampling Variances:</strong> <span id="uncorrectedVarianceVar">0</span>
+    </p>
+    <p>
+        <strong>Variance of Corrected Sampling Variances:</strong> <span id="correctedVarianceVar">0</span>
+    </p>
+
+    <script>
+        /**
+         * Global variables to store user inputs
+         */
+        let values = [];
+        let probabilities = [];
+
+        /**
+         * Parses user inputs for values and probabilities
+         * Ensures probabilities sum up to 1
+         */
+        function parseInputs() {
+            values = document.getElementById("valuesInput").value.split(",").map(Number);
+            probabilities = document.getElementById("probabilitiesInput").value.split(",").map(Number);
+
+            // Check if probabilities sum to 1
+            const probSum = probabilities.reduce((sum, p) => sum + p, 0);
+            if (Math.abs(probSum - 1) > 0.01) {
+                alert("Probabilities must sum to 1.");
+                return false;
+            }
+
+            calculateTheoreticalStats();
+            return true;
+        }
+
+        /**
+         * Calculates the theoretical mean and variance of the parent distribution
+         */
+        function calculateTheoreticalStats() {
+            let mean = 0, sumOfSquares = 0;
+
+            // Compute mean and variance using values and probabilities
+            for (let i = 0; i < values.length; i++) {
+                mean += values[i] * probabilities[i];
+                sumOfSquares += probabilities[i] * Math.pow(values[i], 2);
+            }
+
+            const variance = sumOfSquares - Math.pow(mean, 2);
+            document.getElementById("theoreticalVariance").textContent = variance.toFixed(2);
+        }
+
+        /**
+         * Generates a random value based on the input probabilities
+         */
+        function generateSample() {
+            const random = Math.random();
+            let cumulativeProbability = 0;
+
+            for (let i = 0; i < probabilities.length; i++) {
+                cumulativeProbability += probabilities[i];
+                if (random < cumulativeProbability) return values[i];
+            }
+            return values[values.length - 1];
+        }
+
+        /**
+         * Main function to compute sampling variances and display results
+         */
+        function computeSamplingVariances() {
+            const n = parseInt(document.getElementById("sampleSizeN").value, 10);
+            const m = parseInt(document.getElementById("numSamplesM").value, 10);
+
+            // Validate inputs
+            if (!parseInputs() || n <= 0 || m <= 0) {
+                alert("Please ensure all inputs are valid.");
+                return;
+            }
+
+            const uncorrectedVariances = [];
+            const correctedVariances = [];
+
+            // Generate m samples and calculate their variances
+            for (let i = 0; i < m; i++) {
+                const sample = Array.from({ length: n }, generateSample);
+                const sampleMean = sample.reduce((sum, x) => sum + x, 0) / n;
+
+                const sumSquaredDifferences = sample.reduce((sum, x) => sum + Math.pow(x - sampleMean, 2), 0);
+                uncorrectedVariances.push(sumSquaredDifferences / n);
+                correctedVariances.push(sumSquaredDifferences / (n - 1));
+            }
+
+            // Calculate means and variances of the sampling variances
+            const meanUncorrected = uncorrectedVariances.reduce((sum, v) => sum + v, 0) / m;
+            const meanCorrected = correctedVariances.reduce((sum, v) => sum + v, 0) / m;
+
+            const varUncorrected = calculateVariance(uncorrectedVariances);
+            const varCorrected = calculateVariance(correctedVariances);
+
+            // Display results
+            document.getElementById("uncorrectedVarianceMean").textContent = meanUncorrected.toFixed(2);
+            document.getElementById("correctedVarianceMean").textContent = meanCorrected.toFixed(2);
+            document.getElementById("uncorrectedVarianceVar").textContent = varUncorrected.toFixed(2);
+            document.getElementById("correctedVarianceVar").textContent = varCorrected.toFixed(2);
+
+            // Draw histogram for uncorrected variances
+            drawHistogram(uncorrectedVariances, 'uncorrectedVarianceCanvas', '#4CAF50');
+        }
+
+        /**
+         * Calculates the variance of an array of numbers
+         */
+        function calculateVariance(data) {
+            const mean = data.reduce((sum, x) => sum + x, 0) / data.length;
+            return data.reduce((sum, x) => sum + Math.pow(x - mean, 2), 0) / data.length;
+        }
+
+        /**
+         * Draws a histogram with bar counts annotated
+         */
+        function drawHistogram(data, canvasId, color) {
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const paddingTop = 20;
+            const binCount = 20;
+            const minValue = Math.min(...data);
+            const maxValue = Math.max(...data);
+            const binWidth = (maxValue - minValue) / binCount;
+            const bins = Array(binCount).fill(0);
+
+            // Fill bins
+            data.forEach(value => {
+                const binIndex = Math.min(Math.floor((value - minValue) / binWidth), binCount - 1);
+                bins[binIndex]++;
+            });
+
+            // Draw bars
+            const barWidth = canvas.width / binCount;
+            const maxHeight = Math.max(...bins);
+            bins.forEach((count, i) => {
+                const barHeight = (count / maxHeight) * (canvas.height - paddingTop);
+                ctx.fillStyle = color;
+                ctx.fillRect(i * barWidth, canvas.height - barHeight, barWidth, barHeight);
+
+                // Annotate bar count
+                ctx.fillStyle = '#000';
+                ctx.font = '10px Arial';
+                ctx.fillText(count, i * barWidth + barWidth / 4, canvas.height - barHeight - 5);
+            });
+        }
+    </script>
+</body>
+</html>

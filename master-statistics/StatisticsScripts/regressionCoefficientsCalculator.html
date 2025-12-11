@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linear Regression Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        input, button {
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Linear Regression Calculator</h1>
+
+    <p>Enter your data points (x, y) and click "Calculate".</p>
+
+    <div>
+        <label for="xValues">Enter X values (comma separated): </label>
+        <input type="text" id="xValues" placeholder="e.g., 1,2,3,4,5">
+    </div>
+    <div>
+        <label for="yValues">Enter Y values (comma separated): </label>
+        <input type="text" id="yValues" placeholder="e.g., 2,3,5,7,8">
+    </div>
+    <button onclick="performRegression()">Calculate</button>
+
+    <h2>Results:</h2>
+    <p><strong>Slope (b):</strong> <span id="slope"></span></p>
+    <p><strong>Intercept (a):</strong> <span id="intercept"></span></p>
+    <p><strong>R² (R-squared):</strong> <span id="rSquared"></span></p>
+
+    <script>
+        function linearRegression(x, y) {
+            const n = x.length;
+
+            let sumX = 0, sumY = 0, sumXY = 0, sumX2 = 0;
+
+            for (let i = 0; i < n; i++) {
+                sumX += x[i];
+                sumY += y[i];
+                sumXY += x[i] * y[i];
+                sumX2 += x[i] * x[i];
+            }
+
+            const b = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
+            const a = (sumY - b * sumX) / n;
+
+            // Calculate R^2 (coefficient of determination)
+            let predictedY = [];
+            for (let i = 0; i < n; i++) {
+                predictedY.push(a + b * x[i]);
+            }
+
+            let meanY = sumY / n;
+            let totalVariance = 0, explainedVariance = 0;
+
+            for (let i = 0; i < n; i++) {
+                totalVariance += (y[i] - meanY) ** 2;
+                explainedVariance += (y[i] - predictedY[i]) ** 2;
+            }
+
+            const rSquared = 1 - (explainedVariance / totalVariance);
+
+            return { a, b, rSquared };
+        }
+
+        function performRegression() {
+            // Get input values
+            const xInput = document.getElementById("xValues").value;
+            const yInput = document.getElementById("yValues").value;
+
+            // Convert input strings into arrays of numbers
+            const xValues = xInput.split(",").map(val => parseFloat(val.trim()));
+            const yValues = yInput.split(",").map(val => parseFloat(val.trim()));
+
+            // Check if the lengths of x and y match
+            if (xValues.length !== yValues.length) {
+                alert("Please ensure the X and Y arrays have the same number of elements.");
+                return;
+            }
+
+            // Perform the regression
+            const result = linearRegression(xValues, yValues);
+
+            // Display the results
+            document.getElementById("slope").textContent = result.b.toFixed(4);
+            document.getElementById("intercept").textContent = result.a.toFixed(4);
+            document.getElementById("rSquared").textContent = result.rSquared.toFixed(4);
+        }
+    </script>
+</body>
+</html>

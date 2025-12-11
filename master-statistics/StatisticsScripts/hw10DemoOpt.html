@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificate Analyzer</title>
+    <!-- Import libraries for certificate parsing and chart rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/jsrsasign"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Styling for the canvas elements and chart containers */
+        canvas {
+            width: 300px !important;
+            height: 300px !important;
+            margin: 20px;
+        }
+        .chart-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Certificate Analyzer</h1>
+    <h2>Upload Certificates</h2>
+    <!-- Input to upload multiple certificate files -->
+    <input type="file" id="fileInput" multiple>
+    <button id="analyzeButton">Analyze Uploaded Certificates</button>
+    <h2>Analysis Results</h2>
+    <!-- Area to display analysis results as text -->
+    <pre id="output"></pre>
+    <div class="chart-container">
+        <!-- Canvas for Issuer Distribution chart -->
+        <div>
+            <canvas id="issuerChart" style="display: none;"></canvas>
+            <p>Issuer Distribution</p>
+        </div>
+        <!-- Canvas for Mean and Median Validity chart -->
+        <div>
+            <canvas id="validityChart" style="display: none;"></canvas>
+            <p>Mean and Median Validity</p>
+        </div>
+        <!-- Canvas for Key Length Distribution chart -->
+        <div>
+            <canvas id="keyLengthChart" style="display: none;"></canvas>
+            <p>Key Length Distribution</p>
+        </div>
+    </div>
+
+    <script>
+        // Event listener for the Analyze button
+        document.getElementById("analyzeButton").addEventListener("click", handleFileUpload);
+
+        // Variables to store chart instances to avoid chart reuse errors
+        let issuerChartInstance = null;
+        let validityChartInstance = null;
+        let keyLengthChartInstance = null;
+
+        function handleFileUpload() {
+            const fileInput = document.getElementById("fileInput");
+            const outputElement = document.getElementById("output");
+            outputElement.innerText = ""; // Clear previous results
+
+            // Ensure at least one file is uploaded
+            if (fileInput.files.length === 0) {
+                outputElement.innerText = "Please upload one or more certificate files.";
+                return;
+            }
+
+            const certificates = []; // Array to store parsed certificate data
+
+            // Process each uploaded file
+            Array.from(fileInput.files).forEach(file => {
+                const reader = new FileReader();
+
+                reader.onload = function(event) {
+                    try {
+                        // Parse the certificate content
+                        const certData = parseCertificate(event.target.result);
+                        certificates.push(certData);
+
+                        // Perform analysis when all files are processed
+                        if (certificates.length === fileInput.files.length) {
+                            const analysis = performAnalysis(certificates);
+                            displayResults(analysis); // Display text-based results
+                            drawIssuerChart(analysis.issuerDistribution); // Render Issuer Distribution chart
+                            drawValidityChart(analysis.validityStats); // Render Validity Stats chart
+                            drawKeyLengthChart(analysis.keyLengthDistribution); // Render Key Length Distribution chart
+                        }
+                    } catch (error) {
+                        outputElement.innerText += `Error processing ${file.name}: ${error.message}\n`;
+                    }
+                };
+
+                reader.readAsText(file); // Read the file as text
+            });
+        }
+
+        // Parse a certificate file and extract relevant information
+        function parseCertificate(certContent) {
+            const base64Cert = certContent
+                .split("-----BEGIN CERTIFICATE-----")[1]
+                ?.split("-----END CERTIFICATE-----")[0]
+                ?.replace(/\s+/g, "");
+
+            if (!base64Cert) {
+                throw new Error("Invalid PEM format or missing certificate data");
+            }
+
+            try {
+                // Decode base64 certificate and convert to hex
+                const hexCert = Array.from(atob(base64Cert))
+                    .map(c => c.charCodeAt(0).toString(16).padStart(2, '0'))
+                    .join('');
+                const x509 = new X509();
+                x509.readCertHex(hexCert);
+
+                return {
+                    issuer: x509.getIssuerString(), // Extract issuer
+                    notBefore: parseASN1Date(x509.getNotBefore()), // Extract "notBefore" date
+                    notAfter: parseASN1Date(x509.getNotAfter()), // Extract "notAfter" date
+                    pubKeySize: getKeyLength(x509.getPublicKeyHex()) // Estimate public key size
+                };
+            } catch (error) {
+                throw new Error("Failed to parse certificate: " + error.message);
+            }
+        }
+
+        // Convert ASN.1 date format to JavaScript Date
+        function parseASN1Date(asn1Date) {
+            const formatted = `20${asn1Date.slice(0, 2)}-${asn1Date.slice(2, 4)}-${asn1Date.slice(4, 6)}T${asn1Date.slice(6, 8)}:${asn1Date.slice(8, 10)}:${asn1Date.slice(10, 12)}Z`;
+            return new Date(formatted);
+        }
+
+        // Estimate key length from public key hex representation
+        function getKeyLength(publicKeyHex) {
+            return publicKeyHex.length * 4; // Approximate length in bits
+        }
+
+        // Perform analysis on the parsed certificates
+        function performAnalysis(certificates) {
+            if (!certificates.length) {
+                return {
+                    issuerDistribution: {},
+                    validityStats: { mean: 0, median: 0 },
+                    keyLengthDistribution: {}
+                };
+            }
+
+            const analysis = {
+                issuerDistribution: {}, // Track count of certificates by issuer
+                validityStats: {}, // Store validity statistics
+                keyLengthDistribution: {} // Track count of certificates by key length
+            };
+
+            let totalValidityDays = 0;
+            const validityDurations = [];
+
+            certificates.forEach(cert => {
+                // Increment issuer count
+                if (!analysis.issuerDistribution[cert.issuer]) {
+                    analysis.issuerDistribution[cert.issuer] = 0;
+                }
+                analysis.issuerDistribution[cert.issuer]++;
+
+                // Calculate validity duration in days
+                const validityDays = (new Date(cert.notAfter) - new Date(cert.notBefore)) / (1000 * 60 * 60 * 24);
+                totalValidityDays += validityDays;
+                validityDurations.push(validityDays);
+
+                // Increment key length count
+                if (!analysis.keyLengthDistribution[cert.pubKeySize]) {
+                    analysis.keyLengthDistribution[cert.pubKeySize] = 0;
+                }
+                analysis.keyLengthDistribution[cert.pubKeySize]++;
+            });
+
+            // Calculate median validity duration
+            validityDurations.sort((a, b) => a - b);
+            const median = validityDurations.length % 2 === 0
+                ? (validityDurations[validityDurations.length / 2 - 1] + validityDurations[validityDurations.length / 2]) / 2
+                : validityDurations[Math.floor(validityDurations.length / 2)];
+
+            analysis.validityStats = {
+                mean: totalValidityDays / certificates.length, // Calculate mean validity
+                median: median // Store median validity
+            };
+
+            return analysis;
+        }
+
+        // Display text-based analysis results
+        function displayResults(analysis) {
+            const outputElement = document.getElementById("output");
+            const result = [];
+
+            result.push("Certificate Analysis Results");
+            result.push("---------------------------------");
+
+            result.push("Certificate Issuer Distribution:");
+            for (const [issuer, count] of Object.entries(analysis.issuerDistribution)) {
+                result.push(`${issuer}: ${count} certificates`);
+            }
+
+            result.push(`Mean Certificate Validity: ${analysis.validityStats.mean.toFixed(2)} days`);
+            result.push(`Median Certificate Validity: ${analysis.validityStats.median.toFixed(2)} days`);
+
+            result.push("Key Length Distribution:");
+            for (const [keyLength, count] of Object.entries(analysis.keyLengthDistribution)) {
+                result.push(`${keyLength} bits: ${count} certificates`);
+            }
+
+            result.push("");
+            outputElement.innerText += result.join("\n") + "\n";
+        }
+
+        // Draw the Issuer Distribution chart
+        function drawIssuerChart(issuerDistribution) {
+            const ctx = document.getElementById("issuerChart").getContext("2d");
+            document.getElementById("issuerChart").style.display = "block";
+
+            // Destroy the existing chart instance if it exists
+            if (issuerChartInstance) {
+                issuerChartInstance.destroy();
+            }
+
+            const labels = Object.keys(issuerDistribution);
+            const data = Object.values(issuerDistribution);
+
+            issuerChartInstance = new Chart(ctx, {
+                type: "pie",
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: [
+                            "#FF6384",
+                            "#36A2EB",
+                            "#FFCE56",
+                            "#4BC0C0",
+                            "#9966FF",
+                            "#FF9F40"
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: "top"
+                        }
+                    }
+                }
+            });
+        }
+
+        // Draw the Validity Stats chart
+        function drawValidityChart(validityStats) {
+            const ctx = document.getElementById("validityChart").getContext("2d");
+            document.getElementById("validityChart").style.display = "block";
+
+            // Destroy the existing chart instance if it exists
+            if (validityChartInstance) {
+                validityChartInstance.destroy();
+            }
+
+            validityChartInstance = new Chart(ctx, {
+                type: "bar",
+                data: {
+                    labels: ["Mean", "Median"],
+                    datasets: [{
+                        label: "Validity Duration (days)",
+                        data: [validityStats.mean, validityStats.median],
+                        backgroundColor: ["#36A2EB", "#FFCE56"]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        // Draw the Key Length Distribution chart
+        function drawKeyLengthChart(keyLengthDistribution) {
+            const ctx = document.getElementById("keyLengthChart").getContext("2d");
+            document.getElementById("keyLengthChart").style.display = "block";
+
+            // Destroy the existing chart instance if it exists
+            if (keyLengthChartInstance) {
+                keyLengthChartInstance.destroy();
+            }
+
+            const labels = Object.keys(keyLengthDistribution);
+            const data = Object.values(keyLengthDistribution);
+
+            keyLengthChartInstance = new Chart(ctx, {
+                type: "bar",
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: "Number of Certificates",
+                        data: data,
+                        backgroundColor: "#4BC0C0"
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>

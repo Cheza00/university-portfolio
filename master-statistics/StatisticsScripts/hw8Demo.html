@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caesar Cipher Visualization</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+        }
+        h1, p {
+            text-align: center; /* Center-align title and disclaimer */
+        }
+        textarea, button, pre, input {
+            width: 100%;
+            font-size: 16px;
+        }
+        textarea, pre, input {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-top: 10px;
+            resize: none;
+            overflow-y: scroll;
+            height: 150px;
+            background-color: #f9f9f9;
+        }
+        input {
+            height: 10px;
+            width: 350px; /* Adjust width for the input field */
+        }
+        button {
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 4px;
+            text-align: center;
+        }
+        .chart-container {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            width: 100%;
+            height: 300px;
+            border: 1px solid #ddd;
+            margin-top: 30px;
+            padding-top: 40px; /* Room for bar values */
+        }
+        .bar {
+            position: relative;
+            width: 3%; /* Equal bar width for all letters */
+            margin: 0 0.5%;
+            background-color: rgba(75, 192, 192, 0.6);
+            border: 1px solid rgba(75, 192, 192, 1);
+            text-align: center;
+        }
+        .bar span {
+            position: absolute;
+            bottom: -20px; /* Letter label below bar */
+            font-size: 10px;
+        }
+        .bar-value {
+            position: absolute;
+            top: -25px; /* Frequency value above bar */
+            font-size: 12px;
+            color: #333;
+            left: 50%; /* Center align number above bar */
+            transform: translateX(-50%);
+        }
+    </style>
+</head>
+<body>
+    <h1>Caesar Cipher Visualization</h1>
+    <p><strong>Disclaimer:</strong> This tool works only with (big enough) English text. Frequencies for other languages may differ.</p>
+
+    <!-- User input for the text -->
+    <h2>Enter Text (Optional)</h2>
+    <textarea id="user-text" placeholder="Enter your text here..."></textarea>
+
+    <!-- User input for the shift key -->
+    <h2>Enter Shift Key (Optional)</h2>
+    <input type="number" id="shift-key" placeholder="Enter a number between 0 and 25 (optional)" />
+
+    <button onclick="processText()">Submit Text</button>
+
+    <!-- Sections to display the original, encrypted, and decrypted text, along with frequency tables and histograms -->
+    <h2>Original Text</h2>
+    <pre id="original-text"></pre>
+    <h2>Letter Frequency (Original Text)</h2>
+    <table id="original-frequency"></table>
+    <div class="chart-container" id="original-histogram"></div>
+
+    <h2>Encrypted Text</h2>
+    <pre id="encrypted-text"></pre>
+    <h2>Letter Frequency (Encrypted Text)</h2>
+    <table id="encrypted-frequency"></table>
+    <div class="chart-container" id="encrypted-histogram"></div>
+
+    <h2>Decrypted Text</h2>
+    <pre id="decrypted-text"></pre>
+
+    <script>
+        // Default text used if the user doesn't provide any input
+        const defaultText = `
+            In the heart of the city, under the bright lights, people rush past one another, each lost in their own world. 
+            The streets are alive with the sounds of conversation, car engines, and distant music playing from an open window. 
+            A cool breeze moves through the trees lining the sidewalks, and the smell of fresh coffee and baked goods drifts out from the corner cafe. 
+            The world spins on, never pausing, always moving, as time continues its relentless march forward.
+        `;
+        // Function to calculate letter frequencies
+        function getLetterFrequency(text) {
+            const frequencies = {};
+            const alphabet = "abcdefghijklmnopqrstuvwxyz";
+
+            for (let char of text.toLowerCase()) {
+                if (alphabet.includes(char)) {
+                    frequencies[char] = (frequencies[char] || 0) + 1;
+                }
+            }
+
+            const totalLetters = Object.values(frequencies).reduce((sum, count) => sum + count, 0);
+
+            // Ensure every letter is represented in the frequency table
+            for (let letter of alphabet) {
+                frequencies[letter] = frequencies[letter] || 0;
+            }
+
+            // Add relative frequency percentages
+            for (let letter in frequencies) {
+                frequencies[letter] = {
+                    count: frequencies[letter],
+                    percentage: ((frequencies[letter] / totalLetters) * 100).toFixed(2)
+                };
+            }
+
+            return frequencies;
+        }
+
+        // Function to render the frequency table
+        function renderFrequencyTable(frequencies, tableId) {
+            const table = document.getElementById(tableId);
+            const usedFrequencies = Object.entries(frequencies).filter(([_, data]) => data.count > 0);
+
+            // Sort frequencies from highest to lowest
+            usedFrequencies.sort((a, b) => b[1].count - a[1].count);
+
+            table.innerHTML = `
+                <tr>
+                    <th>Letter</th>
+                    <th>Absolute Frequency</th>
+                    <th>Relative Frequency (%)</th>
+                </tr>
+            `;
+            for (let [letter, data] of usedFrequencies) {
+                table.innerHTML += `
+                    <tr>
+                        <td>${letter}</td>
+                        <td>${data.count}</td>
+                        <td>${data.percentage}%</td>
+                    </tr>
+                `;
+            }
+        }
+
+        // Function to render the histogram chart for letter frequencies
+        function renderHistogram(frequencies, containerId) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = "";
+
+            const maxFrequency = Math.max(...Object.values(frequencies).map(f => f.count)) || 1;
+            const alphabet = "abcdefghijklmnopqrstuvwxyz".split(""); // Order histogram by alphabet
+
+            for (let char of alphabet) {
+                const data = frequencies[char] || { count: 0 };
+                const barHeight = (data.count / maxFrequency) * 100;
+
+                const bar = document.createElement("div");
+                bar.className = "bar";
+                bar.style.height = `${barHeight}%`;
+
+                const barValue = document.createElement("div");
+                barValue.className = "bar-value";
+                barValue.textContent = data.count;
+                bar.appendChild(barValue);
+
+                const charLabel = document.createElement("span");
+                charLabel.textContent = char;
+                bar.appendChild(charLabel);
+
+                container.appendChild(bar);
+            }
+        }
+
+        // Function to apply Caesar cipher encryption with a given shift
+        function caesarCipherEncrypt(text, shift) {
+            const alphabet = "abcdefghijklmnopqrstuvwxyz";
+            return text.split("").map(char => {
+                const isUpperCase = char === char.toUpperCase();
+                char = char.toLowerCase();
+                if (alphabet.includes(char)) {
+                    const newIndex = (alphabet.indexOf(char) + shift) % alphabet.length;
+                    return isUpperCase ? alphabet[newIndex].toUpperCase() : alphabet[newIndex];
+                }
+                return char;
+            }).join("");
+        }
+
+        // Function to decrypt the Caesar cipher (using a simple frequency-based method)
+        function caesarCipherDecrypt(encryptedText) {
+            const encryptedFrequencies = getLetterFrequency(encryptedText);
+            const mostFrequentLetter = Object.entries(encryptedFrequencies)
+                .reduce((a, b) => (b[1].count > a[1].count ? b : a))[0];
+            const assumedShift = (mostFrequentLetter.charCodeAt(0) - 'e'.charCodeAt(0) + 26) % 26;
+
+            return {
+                shift: assumedShift,
+                text: caesarCipherEncrypt(encryptedText, 26 - assumedShift)
+            };
+        }
+
+        // Main function to process the text: handle user input, encryption, and decryption
+        function processText() {
+            const userInput = document.getElementById("user-text").value.trim();
+            const text = userInput || defaultText;
+
+            // Retrieve the shift key from input, or generate a random one if not provided
+            const customShift = parseInt(document.getElementById("shift-key").value, 10);
+            const shift = isNaN(customShift) ? Math.floor(Math.random() * 25) + 1 : customShift % 26;
+
+            // Display original text and its frequency table and histogram
+            document.getElementById("original-text").textContent = text;
+            const frequencies = getLetterFrequency(text);
+            renderFrequencyTable(frequencies, "original-frequency");
+            renderHistogram(frequencies, "original-histogram");
+
+            // Encrypt the text and display the encrypted result along with its frequency table and histogram
+            const encryptedText = caesarCipherEncrypt(text, shift);
+            document.getElementById("encrypted-text").textContent = `Shift Value: ${shift}\n${encryptedText}`;
+            const encryptedFrequencies = getLetterFrequency(encryptedText);
+            renderFrequencyTable(encryptedFrequencies, "encrypted-frequency");
+            renderHistogram(encryptedFrequencies, "encrypted-histogram");
+
+            // Attempt decryption using frequency analysis and display the decrypted text
+            const decryptionResult = caesarCipherDecrypt(encryptedText);
+            document.getElementById("decrypted-text").textContent = `Assumed Shift: ${decryptionResult.shift}\n${decryptionResult.text}`;
+        }
+
+        // Automatically process the default text when the page loads
+        processText();
+    </script>
+</body>
+</html>

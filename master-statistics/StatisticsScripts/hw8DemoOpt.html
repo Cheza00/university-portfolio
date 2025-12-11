@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modular Exponentiation Encryption</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
+        }
+        input, textarea, button {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        pre {
+            background: #e8e8e8;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        canvas {
+            margin: 20px 0;
+            border: 1px solid #ddd;
+            background: #fff;
+        }
+    </style>
+</head>
+<body>
+    <h1>Modular Exponentiation Encryption</h1>
+    
+    <label for="message">Enter Message (A-Z only):</label>
+    <textarea id="message" rows="4" placeholder="HELLO"></textarea>
+
+    <label for="exponent">Enter Exponent (e):</label>
+    <input type="number" id="exponent" min="1" placeholder="3">
+
+    <label for="modulus">Enter Modulus (P):</label>
+    <input type="number" id="modulus" min="1" placeholder="37">
+
+    <button onclick="encryptMessage()">Encrypt Message</button>
+
+    <h2>Results:</h2>
+    <p><strong>Numeric Representation of Letters:</strong></p>
+    <pre id="numericOutput"></pre>
+    <p><strong>Shannon Entropy (Numeric Representation):</strong> <span id="entropyNumeric"></span></p>
+    
+    <p><strong>Encrypted Values (Modular Exponentiation):</strong></p>
+    <pre id="encryptedOutput"></pre>
+    <p><strong>Shannon Entropy (Encrypted Values):</strong> <span id="entropyEncrypted"></span></p>
+
+    <h2>Distributions</h2>
+    <canvas id="numericChart" width="600" height="300"></canvas>
+    <canvas id="encryptedChart" width="600" height="300"></canvas>
+
+    <h2>Frequency Distributions</h2>
+    <canvas id="numericFrequencyChart" width="600" height="300"></canvas>
+    <canvas id="encryptedFrequencyChart" width="600" height="300"></canvas>
+
+    <script>
+        // Convert a letter to its numeric representation (A=0, B=1, ..., Z=25)
+        function letterToNumber(letter) {
+            return letter.charCodeAt(0) - 'A'.charCodeAt(0);
+        }
+
+        // Perform modular exponentiation: (base^exp) % mod
+        function modularExponentiation(base, exp, mod) {
+            let result = 1;
+            base = base % mod;
+            while (exp > 0) {
+                if (exp % 2 === 1) {
+                    result = (result * base) % mod;
+                }
+                exp = Math.floor(exp / 2);
+                base = (base * base) % mod;
+            }
+            return result;
+        }
+
+        // Calculate Shannon Entropy for an array of values
+        function calculateEntropy(values) {
+            const frequency = {};
+            const total = values.length;
+            values.forEach(val => frequency[val] = (frequency[val] || 0) + 1);
+            let entropy = 0;
+            for (const val in frequency) {
+                const p = frequency[val] / total;
+                entropy -= p * Math.log2(p);
+            }
+            return entropy.toFixed(4);
+        }
+
+        // Calculate frequency of each value in an array
+        function calculateFrequency(values, range) {
+            const frequency = Array(range).fill(0);
+            values.forEach(val => frequency[val]++);
+            return frequency;
+        }
+
+        // Draw a bar chart for given data
+        function drawBarChart(canvasId, data, title, labels = null, showAllLabels = false) {
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext("2d");
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const maxValue = Math.max(...data);
+            const barWidth = canvas.width / (data.length + 2);
+            const margin = 30;
+
+            // Title
+            ctx.font = "12px Arial";
+            ctx.textAlign = "center";
+            ctx.fillText(title, canvas.width / 2, 20);
+
+            // Y-axis
+            ctx.beginPath();
+            ctx.moveTo(margin, margin);
+            ctx.lineTo(margin, canvas.height - margin);
+            ctx.stroke();
+
+            // Y-axis labels
+            ctx.textAlign = "right";
+            ctx.textBaseline = "middle";
+            for (let i = 0; i <= 5; i++) {
+                const yPosition = canvas.height - margin - (i * (canvas.height - 2 * margin) / 5);
+                const value = Math.ceil(maxValue * i / 5);
+                ctx.strokeStyle = "#ddd";
+                ctx.beginPath();
+                ctx.moveTo(margin, yPosition);
+                ctx.lineTo(canvas.width, yPosition);
+                ctx.stroke();
+                ctx.fillStyle = "#000";
+                ctx.fillText(value, margin - 5, yPosition);
+            }
+
+            // X-axis labels and bars
+            ctx.textAlign = "center";
+            data.forEach((value, index) => {
+                const barHeight = (value / maxValue) * (canvas.height - 2 * margin);
+                const x = margin + (index + 1) * barWidth;
+                const y = canvas.height - margin - barHeight;
+                ctx.fillStyle = "#4CAF50";
+                ctx.fillRect(x - barWidth / 3, y, barWidth / 2, barHeight);
+
+                // X-axis labels
+                if (showAllLabels || (index % Math.ceil(data.length / 10) === 0) || index === data.length - 1) {
+                    ctx.fillStyle = "#000";
+                    ctx.fillText(labels ? labels[index] : index, x, canvas.height - margin + 10);
+                }
+            });
+        }
+
+        // Encrypt message, calculate and display results
+        function encryptMessage() {
+            const message = document.getElementById("message").value.toUpperCase().replace(/[^A-Z]/g, "");
+            const exponent = parseInt(document.getElementById("exponent").value);
+            const modulus = parseInt(document.getElementById("modulus").value);
+
+            if (!message || isNaN(exponent) || isNaN(modulus)) {
+                alert("Please enter valid inputs for message, exponent, and modulus.");
+                return;
+            }
+
+            const numericRepresentation = [];
+            const encryptedValues = [];
+
+            let outputNumeric = "";
+            let outputEncrypted = "";
+
+            for (let i = 0; i < message.length; i++) {
+                const letter = message[i];
+                const numericValue = letterToNumber(letter);
+                const encryptedValue = modularExponentiation(numericValue, exponent, modulus);
+
+                numericRepresentation.push(numericValue);
+                encryptedValues.push(encryptedValue);
+
+                outputNumeric += `${letter} = ${numericValue}, `;
+                outputEncrypted += `E(${letter}) = ${encryptedValue}, `;
+            }
+
+            const entropyNumeric = calculateEntropy(numericRepresentation);
+            const entropyEncrypted = calculateEntropy(encryptedValues);
+
+            document.getElementById("numericOutput").innerText = outputNumeric.trim().slice(0, -1);
+            document.getElementById("entropyNumeric").innerText = entropyNumeric;
+            document.getElementById("encryptedOutput").innerText = outputEncrypted.trim().slice(0, -1);
+            document.getElementById("entropyEncrypted").innerText = entropyEncrypted;
+
+            // Draw main charts
+            drawBarChart("numericChart", numericRepresentation, "Numeric Representation of Letters");
+            drawBarChart("encryptedChart", encryptedValues, "Encrypted Values (Modular Exponentiation)");
+
+            // Frequency Distributions
+            const numericFrequency = calculateFrequency(numericRepresentation, 26);
+            const encryptedFrequency = calculateFrequency(encryptedValues, modulus);
+
+            drawBarChart("numericFrequencyChart", numericFrequency, "Frequency Distribution: Numeric Representation", Array.from({ length: 26 }, (_, i) => i), true);
+            drawBarChart("encryptedFrequencyChart", encryptedFrequency, "Frequency Distribution: Encrypted Values", Array.from({ length: modulus }, (_, i) => i), true);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toy Encryption</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        input {
+            padding: 10px;
+            margin-bottom: 10px;
+            font-size: 16px;
+            width: 300px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        pre {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 80%;
+            max-width: 600px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>AES-Inspired Toy Encryption</h1>
+    <p>Enter a message to encrypt:</p>
+    <input type="text" id="userMessage" placeholder="Enter your message here" />
+    <button onclick="runAnalysis()">Encrypt</button>
+    <pre id="output"></pre>
+
+    <script>
+        // Generates a random substitution key mapping each letter uniquely.
+        function generateSubstitutionKey() {
+            const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+            const shuffled = [...alphabet].sort(() => Math.random() - 0.5);
+            const key = {};
+            alphabet.forEach((letter, index) => {
+                key[letter] = shuffled[index];
+            });
+            return key;
+        }
+
+        // Applies the substitution cipher using the provided key.
+        // Leaves non-alphabetic characters unchanged.
+        function encryptSubstitution(message, key) {
+            return message
+                .toUpperCase()
+                .split("")
+                .map(char => key[char] || char)
+                .join("");
+        }
+
+        // Reverses the order of characters in a given string.
+        // This step simulates a permutation phase in encryption.
+        // It is used to obscure letter positions further, adding another layer of complexity.
+        function reverseString(str) {
+            return str.split("").reverse().join("");
+        }
+
+        // Calculates the frequency of letters in the text, ignoring non-alphabetic characters.
+        function calculateFrequency(text) {
+            const freq = {};
+            text.toUpperCase().split(" ").join("").split("").forEach(char => {
+                if (/[A-Z]/.test(char)) {
+                    freq[char] = (freq[char] || 0) + 1;
+                }
+            });
+            return freq;
+        }
+
+        // Calculates Shannon entropy for the given text.
+        // Entropy measures the unpredictability or randomness of the text.
+        function calculateEntropy(text) {
+            const freq = calculateFrequency(text);
+            const total = text.toUpperCase().split(" ").join("").length;
+            let entropy = 0;
+            for (const count of Object.values(freq)) {
+                const p = count / total;
+                entropy -= p * Math.log2(p);
+            }
+            return entropy;
+        }
+
+        // Analyzes the encryption process, including substitution and permutation.
+        function analyzeEncryption(message, key) {
+            // Encrypt the message using the substitution cipher.
+            const encrypted = encryptSubstitution(message, key);
+
+            // Apply a permutation step by reversing the encrypted string.
+            const permuted = reverseString(encrypted);
+
+            // Calculate the frequency of letters in the original, encrypted, and permuted messages.
+            const originalFreq = calculateFrequency(message);
+            const encryptedFreq = calculateFrequency(encrypted);
+            const permutedFreq = calculateFrequency(permuted);
+
+            // Compute the entropy of the original, encrypted, and permuted messages.
+            const originalEntropy = calculateEntropy(message);
+            const encryptedEntropy = calculateEntropy(encrypted);
+            const permutedEntropy = calculateEntropy(permuted);
+
+            // Return a comprehensive analysis object containing all results.
+            return {
+                message,
+                key,
+                encrypted,
+                permuted,
+                originalFreq,
+                encryptedFreq,
+                permutedFreq,
+                originalEntropy,
+                encryptedEntropy,
+                permutedEntropy
+            };
+        }
+
+        // Formats and displays the results of the encryption analysis.
+        // Each section highlights specific aspects such as substitution keys, frequency distribution, and entropy.
+        function displayAnalysis(analysis) {
+            const output = document.getElementById("output");
+            output.textContent = `Original Message: ${analysis.message}\n\n` +
+                `Substitution Key:\n${JSON.stringify(analysis.key, null, 2)}\n\n` +
+                `Encrypted Message (Substitution): ${analysis.encrypted}\n` +
+                `Final Encrypted Message (Permuted): ${analysis.permuted}\n\n` +
+                `Frequency Analysis:\n` +
+                `Original: ${JSON.stringify(analysis.originalFreq, null, 2)}\n` +
+                `Encrypted: ${JSON.stringify(analysis.encryptedFreq, null, 2)}\n` +
+                `Permuted: ${JSON.stringify(analysis.permutedFreq, null, 2)}\n\n` +
+                `Entropy:\n` +
+                `Original: ${analysis.originalEntropy.toFixed(4)}\n` +
+                `Encrypted: ${analysis.encryptedEntropy.toFixed(4)}\n` +
+                `Permuted: ${analysis.permutedEntropy.toFixed(4)}\n`;
+        }
+
+        // Main function triggered by the user. Collects input, performs encryption and analysis, and displays results.
+        function runAnalysis() {
+            const userMessage = document.getElementById("userMessage").value;
+            if (!userMessage) {
+                alert("Please enter a message to encrypt.");
+                return;
+            }
+            const key = generateSubstitutionKey();
+            const analysis = analyzeEncryption(userMessage, key);
+            displayAnalysis(analysis);
+        }
+    </script>
+</body>
+</html>

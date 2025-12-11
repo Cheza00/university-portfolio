@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Penetration Simulation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+
+        .chart-container {
+            display: inline-block;
+            width: 500px;
+            height: 300px;
+            border: 1px solid #ddd;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        #statistics {
+            margin-top: 20px;
+        }
+
+        .controls {
+            margin-bottom: 20px;
+        }
+
+        label {
+            margin-right: 10px;
+        }
+
+        .axis-label {
+            font-size: 12px;
+            font-weight: bold;
+            position: absolute;
+        }
+
+        .y-axis-label {
+            top: 50%;
+            left: 10px;
+            transform: translate(-50%, -50%) rotate(-90deg);
+        }
+
+        .x-axis-label {
+            bottom: 10px;
+            left: 50%;
+            transform: translate(-50%);
+        }
+    </style>
+</head>
+<body>
+    <h1>Penetration Simulation</h1>
+
+    <div class="controls">
+        <label for="probability">Probability:</label>
+        <input type="range" id="probability" min="0" max="1" step="0.01" value="0.2" oninput="document.getElementById('probValue').innerHTML = this.value;">
+        <span id="probValue">0.2</span>
+
+        <label for="num_attackers">Attackers:</label>
+        <input type="number" id="num_attackers" min="1" value="5">
+
+        <label for="num_servers">Servers:</label>
+        <input type="number" id="num_servers" min="1" value="10">
+
+        <button onclick="runSimulation()">Submit</button>
+    </div>
+
+    <div class="chart-container">
+        <canvas id="line_chart"></canvas>
+        <div class="axis-label y-axis-label">Penetrations</div>
+        <div class="axis-label x-axis-label">Servers</div>
+    </div>
+
+    <div class="chart-container">
+        <canvas id="histogram"></canvas>
+        <div class="axis-label y-axis-label">Penetrations</div>
+        <div class="axis-label x-axis-label">Frequency</div>
+    </div>
+
+    <div id="statistics"></div>
+
+    <script>
+        function runSimulation() {
+            var probability = parseFloat(document.getElementById("probability").value);
+            var num_attackers = parseInt(document.getElementById("num_attackers").value);
+            var num_servers = parseInt(document.getElementById("num_servers").value);
+
+            var violations = Array(num_attackers).fill(0);
+
+            // Canvas setup
+            var lineCanvas = document.getElementById("line_chart");
+            var histCanvas = document.getElementById("histogram");
+            var lineCtx = lineCanvas.getContext("2d");
+            var histCtx = histCanvas.getContext("2d");
+
+            lineCtx.clearRect(0, 0, lineCanvas.width, lineCanvas.height);
+            histCtx.clearRect(0, 0, histCanvas.width, histCanvas.height);
+
+            // Draw the line chart
+            var attacker_penetrations = [];
+
+            for (var i = 0; i < num_attackers; i++) {
+                var x_values = [0];
+                var y_values = [0];
+
+                for (var j = 1; j <= num_servers; j++) {
+                    x_values.push(j);
+                    if (Math.random() <= probability) {
+                        y_values.push(y_values[y_values.length - 1] + 1);
+                        violations[i]++;
+                    } else {
+                        y_values.push(y_values[y_values.length - 1]);
+                    }
+                }
+
+                attacker_penetrations.push({ x: x_values, y: y_values });
+
+                // Draw step-like vertical lines
+                drawStepLine(lineCtx, x_values, y_values, i, num_servers, Math.max(...y_values));
+            }
+
+            // Draw histogram
+            var penetration_counts = Array(num_servers + 1).fill(0);
+            violations.forEach(v => {
+                penetration_counts[v]++;
+            });
+
+            drawHistogram(histCtx, penetration_counts, num_servers);
+
+            // Calculate and display mean, median, and mode
+            var mean = calculateMean(violations);
+            var median = calculateMedian(violations);
+            var mode = calculateMode(violations);
+
+            document.getElementById("statistics").innerHTML = `
+                <p>Mean: ${mean.toFixed(2)}</p>
+                <p>Median: ${median}</p>
+                <p>Mode: ${mode}</p>
+            `;
+        }
+
+        // Draw step-like lines for the penetration chart
+        function drawStepLine(ctx, x_values, y_values, index, maxX, maxY) {
+            var width = ctx.canvas.width;
+            var height = ctx.canvas.height;
+
+            ctx.beginPath();
+            ctx.strokeStyle = `hsl(${index * 60}, 100%, 50%)`;
+            ctx.lineWidth = 2;
+
+            for (var i = 0; i < x_values.length - 1; i++) {
+                var x1 = (x_values[i] / maxX) * width;
+                var y1 = height - (y_values[i] / maxY) * height;
+                var x2 = (x_values[i + 1] / maxX) * width;
+                var y2 = height - (y_values[i + 1] / maxY) * height;
+
+                // Horizontal line
+                ctx.moveTo(x1, y1);
+                ctx.lineTo(x2, y1);
+
+                // Vertical step line
+                if (y1 !== y2) {
+                    ctx.lineTo(x2, y2);
+                }
+            }
+            ctx.stroke();
+
+            drawAxis(ctx, maxX, maxY);
+        }
+
+        // Draw histogram for penetration counts
+        function drawHistogram(ctx, penetration_counts, num_servers) {
+            var width = ctx.canvas.width;
+            var height = ctx.canvas.height;
+            var maxCount = Math.max(...penetration_counts);
+
+            var barWidth = width / (num_servers + 1);
+
+            for (var i = 0; i <= num_servers; i++) {
+                var barHeight = (penetration_counts[i] / maxCount) * height;
+                ctx.fillStyle = "blue";
+                ctx.fillRect(i * barWidth, height - barHeight, barWidth - 2, barHeight);
+            }
+
+            drawAxis(ctx, num_servers, maxCount);
+        }
+
+        // Helper to draw axis, labels, and ticks
+        function drawAxis(ctx, maxX, maxY) {
+            var width = ctx.canvas.width;
+            var height = ctx.canvas.height;
+
+            ctx.strokeStyle = "#000";
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+
+            // X axis (horizontal)
+            ctx.moveTo(0, height);
+            ctx.lineTo(width, height);
+            // Y axis (vertical)
+            ctx.moveTo(0, 0);
+            ctx.lineTo(0, height);
+
+            ctx.stroke();
+
+            // Draw ticks and labels on x-axis
+            for (var i = 0; i <= maxX; i++) {
+                var x = (i / maxX) * width;
+                ctx.moveTo(x, height);
+                ctx.lineTo(x, height - 5); // Tick mark
+                ctx.stroke();
+                ctx.fillText(i, x, height + 10); // Labels
+            }
+
+            // Draw ticks and labels on y-axis
+            for (var i = 0; i <= maxY; i++) {
+                var y = height - (i / maxY) * height;
+                ctx.moveTo(0, y);
+                ctx.lineTo(5, y); // Tick mark
+                ctx.stroke();
+                ctx.fillText(i, -15, y + 5); // Labels
+            }
+        }
+
+        // Helper functions for statistics
+        function calculateMean(arr) {
+            var sum = arr.reduce((a, b) => a + b, 0);
+            return sum / arr.length;
+        }
+
+        function calculateMedian(arr) {
+            arr.sort((a, b) => a - b);
+            var mid = Math.floor(arr.length / 2);
+
+            return arr.length % 2 !== 0 ? arr[mid] : (arr[mid - 1] + arr[mid]) / 2;
+        }
+
+        function calculateMode(arr) {
+            var frequency = {};
+            var maxFreq = 0;
+            var mode = [];
+
+            arr.forEach(value => {
+                frequency[value] = (frequency[value] || 0) + 1;
+
+                if (frequency[value] > maxFreq) {
+                    maxFreq = frequency[value];
+                    mode = [value];
+                } else if (frequency[value] === maxFreq) {
+                    mode.push(value);
+                }
+            });
+
+            return mode.length === arr.length ? 'None' : mode.join(', ');
+        }
+    </script>
+</body>
+</html>

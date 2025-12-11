@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sampling Averages Simulation</title>
+    <style>
+        body {
+            background-color: #ffffff;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        canvas {
+            border: 1px solid #333;
+            margin-top: 20px;
+        }
+        #controls {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+        #controls button {
+            margin: 5px;
+            padding: 6px 12px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            background-color: #f0f0f0;
+        }
+        #controls button:hover {
+            background-color: #e0e0e0;
+        }
+        .input-group {
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .input-group label {
+            margin-right: 10px;
+        }
+        .input-group input {
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Sampling Averages Simulation</h1>
+
+    <div id="controls">
+        <div class="input-group">
+            <label for="valuesInput">Values (comma-separated):</label>
+            <input type="text" id="valuesInput" value="1,2,3,4,5">
+            
+            <label for="probabilitiesInput">Probabilities (comma-separated):</label>
+            <input type="text" id="probabilitiesInput" value="0.1,0.2,0.3,0.2,0.2">
+        </div>
+
+        <div class="input-group">
+            <label for="sampleSizeN">Sample Size (n):</label>
+            <input type="number" id="sampleSizeN" value="30" min="1" max="1000">
+            <label for="numSamplesM">Number of Samples (m):</label>
+            <input type="number" id="numSamplesM" value="1000" min="1" max="10000">
+        </div>
+        <button onclick="computeSamplingAverages()">Compute Sampling Averages</button>
+    </div>
+
+    <!-- Graph Titles -->
+    <div>
+        <h2>Distribution of Sampling Averages</h2>
+        <canvas id="distributionCanvas" width="500" height="300"></canvas>
+    </div>
+
+    <p>Theoretical Mean: <span id="theoreticalMean"></span>, Theoretical Variance: <span id="theoreticalVariance"></span></p>
+    <p>Observed Mean of Sampling Averages: <span id="observedMean">0</span>, Observed Variance of Sampling Averages: <span id="observedVariance">0</span></p>
+
+    <script>
+        // Initialize global variables
+        let values = [];
+        let probabilities = [];
+
+        // Function to parse user input values and probabilities
+        function parseInputs() {
+            values = document.getElementById("valuesInput").value.split(",").map(Number);
+            probabilities = document.getElementById("probabilitiesInput").value.split(",").map(Number);
+
+            // Ensure probabilities sum to 1, with tolerance
+            const probSum = probabilities.reduce((acc, p) => acc + p, 0);
+            if (Math.abs(probSum - 1) > 0.01) {
+                alert("Probabilities must sum to 1.");
+                return false;
+            }
+            calculateTheoreticalStats();
+            return true;
+        }
+
+        // Calculate the theoretical mean and variance
+        function calculateTheoreticalStats() {
+            let theoreticalMean = 0;
+            let sumOfSquares = 0;
+
+            for (let i = 0; i < values.length; i++) {
+                theoreticalMean += values[i] * probabilities[i];
+                sumOfSquares += probabilities[i] * Math.pow(values[i], 2);
+            }
+            const theoreticalVariance = sumOfSquares - Math.pow(theoreticalMean, 2);
+
+            document.getElementById("theoreticalMean").textContent = theoreticalMean.toFixed(2);
+            document.getElementById("theoreticalVariance").textContent = theoreticalVariance.toFixed(2);
+        }
+
+        // Initialize canvas elements
+        const distributionCanvas = document.getElementById('distributionCanvas');
+        const distributionCtx = distributionCanvas.getContext('2d');
+
+        // Generate a sample based on cumulative probability
+        function generateSample() {
+            const random = Math.random();
+            let cumulativeProbability = 0;
+            for (let i = 0; i < probabilities.length; i++) {
+                cumulativeProbability += probabilities[i];
+                if (random < cumulativeProbability) return values[i];
+            }
+            return values[values.length - 1]; // fallback due to precision
+        }
+
+        // Function to compute sampling averages
+        function computeSamplingAverages() {
+            const n = parseInt(document.getElementById("sampleSizeN").value, 10);
+            const m = parseInt(document.getElementById("numSamplesM").value, 10);
+
+            // Validate inputs
+            if (!parseInputs() || n <= 0 || m <= 0) {
+                alert("Please ensure inputs are valid.");
+                return;
+            }
+
+            const samplingAverages = [];
+            let totalMean = 0;
+
+            for (let i = 0; i < m; i++) {
+                let sample = [];
+                let sampleSum = 0;
+
+                // Collect sample and calculate sum
+                for (let j = 0; j < n; j++) {
+                    const sampleValue = generateSample();
+                    sample.push(sampleValue);
+                    sampleSum += sampleValue;
+                }
+
+                // Calculate sample mean
+                const sampleMean = sampleSum / n;
+                samplingAverages.push(sampleMean);
+                totalMean += sampleMean;
+            }
+
+            // Compute mean of the sample means (Observed Mean)
+            const meanOfSampleMeans = totalMean / m;
+
+            // Compute variance of the sampling averages (Observed Variance of Sampling Averages)
+            const meanSquaredDifferences = samplingAverages.reduce((acc, sampleMean) => acc + Math.pow(sampleMean - meanOfSampleMeans, 2), 0);
+            const varianceOfSamplingAverages = meanSquaredDifferences / m;
+
+            // Update the results
+            document.getElementById("observedMean").textContent = meanOfSampleMeans.toFixed(2);
+            document.getElementById("observedVariance").textContent = varianceOfSamplingAverages.toFixed(2);
+
+            // Plot the distribution of sampling averages
+            drawSamplingAveragesDistribution(samplingAverages, meanOfSampleMeans);
+        }
+
+        // Function to plot the distribution of sampling averages
+        function drawSamplingAveragesDistribution(samplingAverages, meanOfSampleMeans) {
+            distributionCtx.clearRect(0, 0, distributionCanvas.width, distributionCanvas.height);
+
+            // Create a histogram of sampling averages
+            const binCount = 20;
+            const minValue = Math.min(...samplingAverages);
+            const maxValue = Math.max(...samplingAverages);
+            const binWidth = (maxValue - minValue) / binCount;
+            const bins = Array(binCount).fill(0);
+
+            samplingAverages.forEach(avg => {
+                const binIndex = Math.min(Math.floor((avg - minValue) / binWidth), binCount - 1);
+                bins[binIndex]++;
+            });
+
+            // Plot the histogram
+            distributionCtx.fillStyle = 'green';
+            const barWidth = distributionCanvas.width / binCount;
+            bins.forEach((binHeight, i) => {
+                const height = (binHeight / samplingAverages.length) * distributionCanvas.height;
+                distributionCtx.fillRect(i * barWidth, distributionCanvas.height - height, barWidth, height);
+
+                // Annotate the bar
+                distributionCtx.fillStyle = 'black';
+                distributionCtx.fillText((minValue + i * binWidth).toFixed(2), i * barWidth, distributionCanvas.height - 5);
+                distributionCtx.fillText(binHeight, i * barWidth + barWidth / 2 - 5, distributionCanvas.height - height - 12);
+                distributionCtx.fillStyle = 'green';
+            });
+
+            // Draw mean line
+            const meanX = ((meanOfSampleMeans - minValue) / (maxValue - minValue)) * distributionCanvas.width;
+            distributionCtx.strokeStyle = 'red';
+            distributionCtx.beginPath();
+            distributionCtx.moveTo(meanX, 0);
+            distributionCtx.lineTo(meanX, distributionCanvas.height);
+            distributionCtx.stroke();
+
+            // Annotate mean line
+            distributionCtx.fillStyle = 'red';
+            distributionCtx.fillText(`Mean: ${meanOfSampleMeans.toFixed(2)}`, meanX + 5, 10);
+        }
+    </script>
+</body>
+</html>

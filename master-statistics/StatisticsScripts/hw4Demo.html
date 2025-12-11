@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Server Attack Simulation</title>
+    <style>
+        body { text-align: center; }
+        canvas { border: 1px solid black; margin-top: 20px; }
+        #controls { margin-bottom: 20px; }
+        #graphs { display: flex; justify-content: space-around; flex-wrap: wrap; }
+    </style>
+</head>
+<body>
+    <h1>Server Attack Simulation</h1>
+    
+    <div id="controls">
+        <label for="numServers">Number of Servers (n):</label>
+        <input id="numServers" type="number" value="30">
+        <br>
+        <label for="numAttackers">Number of Attackers (m):</label>
+        <input id="numAttackers" type="number" value="20">
+        <br>
+        <label for="probability">Probability of Penetration (p):</label>
+        <input id="probability" type="range" min="0" max="1" step="0.01" value="0.5" oninput="updateProbabilityDisplay()">
+        <span id="probabilityValue">0.5</span>
+        <br>
+        <label for="timeStep">Intermediate Distribution at Time Step (t*):</label>
+        <input id="timeStep" type="number" value="15">
+        <br>
+        <button onclick="runSimulation()">Run Simulation</button>
+    </div>
+
+    <!-- Main trajectory graph -->
+    <canvas id="simulationCanvas" width="800" height="400"></canvas>
+
+    <!-- Distribution graphs -->
+    <div id="graphs">
+        <div>
+            <h3>Intermediate Distribution (t*)</h3>
+            <canvas id="intermediateDistributionCanvas" width="600" height="800"></canvas>
+        </div>
+        <div>
+            <h3>Final Distribution</h3>
+            <canvas id="finalDistributionCanvas" width="600" height="800"></canvas>
+        </div>
+    </div>
+
+    <!-- Mean and Variance -->
+    <div>
+        <h3>Statistics</h3>
+        <p id="statistics"></p>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('simulationCanvas');
+        const ctx = canvas.getContext('2d');
+
+        const finalCanvas = document.getElementById('finalDistributionCanvas');
+        const finalCtx = finalCanvas.getContext('2d');
+
+        const intermediateCanvas = document.getElementById('intermediateDistributionCanvas');
+        const intermediateCtx = intermediateCanvas.getContext('2d');
+
+        function updateProbabilityDisplay() {
+            document.getElementById('probabilityValue').innerText = document.getElementById('probability').value;
+        }
+
+        function runSimulation() {
+        const numServers = parseInt(document.getElementById('numServers').value);
+        const numAttackers = parseInt(document.getElementById('numAttackers').value);
+        const probability = parseFloat(document.getElementById('probability').value);
+        const timeStep = parseInt(document.getElementById('timeStep').value);
+        
+        const n = 1000; // Increased for finer time discretization, simulating continuous time
+        const dt = 1 / n; // Small interval for time
+        const steps = numServers;  // Total time steps
+
+        let trajectories = [];
+        
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        finalCtx.clearRect(0, 0, finalCanvas.width, finalCanvas.height);
+        intermediateCtx.clearRect(0, 0, intermediateCanvas.width, intermediateCanvas.height);
+
+        // Track min and max penetration levels
+        let minY = 0, maxY = 0;
+
+        // Simulate continuous-time trajectories
+        for (let attacker = 0; attacker < numAttackers; attacker++) {
+            let y = 0;
+            let trajectory = [y];
+
+            for (let step = 1; step <= steps; step++) {
+                for (let subStep = 0; subStep < n; subStep++) {
+                    // Continuous time with scaling limit approximation
+                    const increment = (Math.random() < probability ? -1 : 1) * Math.sqrt(dt);
+                    y += increment;
+                }
+
+                trajectory.push(y);
+
+                if (y > maxY) maxY = y;
+                if (y < minY) minY = y;
+            }
+            trajectories.push(trajectory);
+        }
+
+        // Prepare distributions at intermediate and final steps
+        let finalDistribution = Array(Math.ceil(maxY - minY) + 1).fill(0);
+        let intermediateDistribution = Array(Math.ceil(maxY - minY) + 1).fill(0);
+
+        // Offset index for accessing the distribution array
+        const offset = -Math.floor(minY);
+        
+        // Update final distribution
+        for (let attacker = 0; attacker < numAttackers; attacker++) {
+            let finalValue = Math.round(trajectories[attacker][steps]) + offset; // Adjust by offset
+            finalDistribution[finalValue]++;  
+        }
+        
+        // Calculate intermediate distribution at selected step
+        let selectedStep = Math.min(timeStep, steps);
+        // Update intermediate distribution at selected step
+        for (let attacker = 0; attacker < numAttackers; attacker++) {
+            let intermediateValue = Math.round(trajectories[attacker][selectedStep]) + offset;  // Adjust by offset
+            intermediateDistribution[intermediateValue]++; 
+        }
+
+
+        // Draw axes and trajectories
+        drawAxes(ctx, canvas, steps, Math.round(minY), Math.round(maxY));
+
+        for (let attacker = 0; attacker < numAttackers; attacker++) {
+            drawTrajectory(trajectories[attacker], steps, minY, maxY);
+        }
+
+        drawHistogram(intermediateCtx, intermediateCanvas, intermediateDistribution, offset, "red", selectedStep, minY, maxY);
+        drawHistogram(finalCtx, finalCanvas, finalDistribution, offset, "blue", steps, minY, maxY);
+
+        const intermediateStats = computeMeanAndVariance(intermediateDistribution, offset);
+        const finalStats = computeMeanAndVariance(finalDistribution, offset);
+
+        const statsElement = document.getElementById('statistics');
+        statsElement.innerHTML = `
+            <strong>Intermediate Step (t* = ${selectedStep}):</strong><br>
+            Mean = ${intermediateStats.mean.toFixed(2)}, Variance = ${intermediateStats.variance.toFixed(2)}<br><br>
+            <strong>Final Step:</strong><br>
+            Mean = ${finalStats.mean.toFixed(2)}, Variance = ${finalStats.variance.toFixed(2)}
+        `;
+    }
+
+        // Function to compute mean and variance from distribution
+        function computeMeanAndVariance(distribution, offset) {
+            let total = 0;
+            let mean = 0;
+            let variance = 0;
+
+            for (let i = 0; i < distribution.length; i++) {
+                const penetrationLevel = i - offset;  // Convert index back to penetration level
+                const frequency = distribution[i];
+
+                total += frequency;
+                mean += penetrationLevel * frequency;
+            }
+
+            mean /= total;
+
+            for (let i = 0; i < distribution.length; i++) {
+                const penetrationLevel = i - offset;
+                const frequency = distribution[i];
+
+                variance += frequency * Math.pow(penetrationLevel - mean, 2);
+            }
+
+            variance /= total;
+
+            return { mean, variance };
+        }
+
+        function drawTrajectory(trajectory, steps, minY, maxY) {
+        const margin = 50;
+        const stepSizeX = (canvas.width - margin * 2) / steps;
+        const stepSizeY = (canvas.height - margin * 2) / (maxY - minY);
+
+        let x = margin;
+        let y = canvas.height / 2;
+
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+
+        for (let step = 0; step <= steps; step++) {
+            y = canvas.height / 2 - (trajectory[step] * stepSizeY);
+            ctx.lineTo(x, y);
+            ctx.stroke();
+            x += stepSizeX;
+            ctx.lineTo(x, y);
+            ctx.stroke();
+        }
+
+        ctx.strokeStyle = getRandomColor();
+        ctx.stroke();
+    }
+
+        function drawAxes(ctx, canvas, steps, minY, maxY) {
+            const margin = 50;
+            const axisColor = "#000000";
+            const axisWidth = 2;
+            const numTicksX = steps;
+            const numTicksY = 10;
+
+            ctx.strokeStyle = axisColor;
+            ctx.lineWidth = axisWidth;
+
+            // Draw Y-axis
+            ctx.beginPath();
+            ctx.moveTo(margin, 0);
+            ctx.lineTo(margin, canvas.height);
+            ctx.stroke();
+
+            // Draw X-axis
+            ctx.beginPath();
+            ctx.moveTo(margin, canvas.height / 2);  // X-axis at the center again
+            ctx.lineTo(canvas.width, canvas.height / 2);
+            ctx.stroke();
+
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = "#000000"; // Ensure the tick marks and labels are black
+
+            // Draw X-axis ticks and labels (Time Steps)
+            const stepSizeX = (canvas.width - margin * 2) / steps;
+            for (let i = 0; i <= steps; i++) {
+                let x = margin + i * stepSizeX;
+                ctx.beginPath();
+                ctx.moveTo(x, canvas.height / 2 - 5);
+                ctx.lineTo(x, canvas.height / 2 + 5);
+                ctx.stroke();
+                ctx.fillStyle = "black";  // Set label color to black
+                ctx.fillText(i, x - 5, canvas.height / 2 + 30);
+            }
+
+            // Draw Y-axis ticks and labels (Penetrations)
+            const stepSizeY = (canvas.height - margin * 2) / (maxY - minY);
+            for (let i = minY; i <= maxY; i++) {
+                if (i % 3 === 0) {  // Only draw ticks and labels for multiples of 3 to avoid crowding
+                    let y = canvas.height / 2 - (i * stepSizeY);
+                    ctx.beginPath();
+                    ctx.moveTo(margin - 5, y);
+                    ctx.lineTo(margin + 5, y);
+                    ctx.stroke();
+                    ctx.fillStyle = "black";  // Set label color to black
+                    ctx.fillText(i, margin - 25, y + 3);
+                }
+            }
+
+            // Add labels for axes
+            ctx.font = "14px Arial";
+            ctx.fillText("Time Steps", canvas.width / 2 - 30, canvas.height - 10);
+            ctx.save();
+            ctx.translate(10, canvas.height / 2 - 30);
+            ctx.rotate(-Math.PI / 2);
+            ctx.fillText("Penetration Level", 0, 0);
+            ctx.restore();
+        }
+
+        function drawHistogram(ctx, canvas, distribution, offset, color) {
+            const margin = 50;
+
+            // Filter out non-zero penetration levels and scale down to fit the canvas
+            const nonZeroData = distribution
+                .map((freq, index) => ({ freq, index }))
+                .filter(item => item.freq > 0);  // Only keep non-zero frequencies
+
+            const totalNonZeroLevels = nonZeroData.length;
+
+            // Get maximum frequency to scale the bars correctly
+            const maxFrequency = Math.max(...nonZeroData.map(item => item.freq));
+            
+            // Set bar height and width
+            const barHeight = (canvas.height - margin * 2) / totalNonZeroLevels;
+            const barLengthUnit = (canvas.width - margin * 2) / maxFrequency;
+
+            // Clear the canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw bars
+            for (let i = 0; i < totalNonZeroLevels; i++) {
+                const { freq, index } = nonZeroData[i];  // Extract data for each bar
+
+                let barLength = freq * barLengthUnit;
+                let x = margin;
+                let y = margin + i * barHeight;
+
+                // Draw each bar
+                ctx.fillStyle = color;
+                ctx.fillRect(x, y, barLength, barHeight - 2);  // Slight padding between bars
+
+                // Draw labels for the penetration level
+                ctx.fillStyle = "black";
+                ctx.fillText(index - offset, margin - 35, y + barHeight / 2 + 5);  // Label on the left
+            }
+
+            // Add X-axis labels for frequencies
+            ctx.fillStyle = "black";
+            for (let i = 0; i <= maxFrequency; i += Math.ceil(maxFrequency / 5)) {
+                let x = margin + i * barLengthUnit;
+                ctx.fillText(i, x - 10, canvas.height - 10);  // Display frequency value
+            }
+
+            // X-axis label
+            ctx.fillText("Frequency", canvas.width / 2 - 30, canvas.height - 25);
+
+            // Y-axis label (Penetration Levels)
+            ctx.save();
+            ctx.translate(10, canvas.height / 2 - 30);
+            ctx.rotate(-Math.PI / 2);
+            ctx.fillText("Penetration Level", 0, 0);
+            ctx.restore();
+        }
+
+
+        function getRandomColor() {
+            const letters = "0123456789ABCDEF";
+            let color = "#";
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+
+    </script>
+</body>
+</html>

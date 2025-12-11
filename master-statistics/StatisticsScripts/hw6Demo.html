@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discrete Distribution Simulation</title>
+    <style>
+        body {
+            background-color: #ffffff;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        canvas {
+            border: 1px solid #333;
+            margin-top: 20px;
+        }
+        #controls {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+        #controls button {
+            margin: 5px;
+            padding: 6px 12px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            background-color: #f0f0f0;
+        }
+        #controls button:hover {
+            background-color: #e0e0e0;
+        }
+        .input-group {
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .input-group label {
+            margin-right: 10px;
+        }
+        .input-group input {
+            margin-left: 10px;
+        }
+        /* Style for the legend */
+        #legend {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 10px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-right: 10px;
+        }
+        .legend-color-box {
+            width: 15px;
+            height: 15px;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Discrete Distribution Simulation with Interaction</h1>
+
+    <div id="controls">
+        <div class="input-group">
+            <label for="valuesInput">Values (comma-separated):</label>
+            <input type="text" id="valuesInput" value="1,2,3,4,5">
+            
+            <label for="probabilitiesInput">Probabilities (comma-separated):</label>
+            <input type="text" id="probabilitiesInput" value="0.1,0.2,0.3,0.2,0.2">
+        </div>
+
+        <div class="input-group">
+            <label for="sampleSize">Samples per Cycle:</label>
+            <input type="number" id="sampleSize" value="100" min="1" max="1000">
+            <label for="updateInterval">Update Interval (ms):</label>
+            <input type="number" id="updateInterval" value="200" min="10" max="1000">
+            <button onclick="startSimulation()">Start Simulation</button>
+            <button onclick="pauseSimulation()">Pause</button>
+            <button onclick="resetSimulation()">Reset</button>
+        </div>
+    </div>
+
+    <!-- Graph Titles -->
+    <div>
+        <h2>Empirical vs Theoretical Distribution</h2>
+        <canvas id="distributionCanvas" width="500" height="300"></canvas>
+    </div>
+
+    <div>
+        <h2>Convergence of Mean and Variance</h2>
+        <canvas id="convergenceCanvas" width="500" height="300"></canvas>
+    </div>
+
+    <!-- Legend for Convergence Graph -->
+    <div id="legend">
+        <div class="legend-item">
+            <div class="legend-color-box" style="background-color: blue;"></div>
+            <span>Theoretical Mean</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color-box" style="background-color: green;"></div>
+            <span>Theoretical Variance</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color-box" style="background-color: red;"></div>
+            <span>Converging Values</span>
+        </div>
+    </div>
+
+    <p>Theoretical Mean: <span id="theoreticalMean"></span>, Theoretical Variance: <span id="theoreticalVariance"></span></p>
+    <p>Observed Mean: <span id="observedMean">0</span>, Observed Variance: <span id="observedVariance">0</span></p>
+
+    <script>
+        // Global variables
+        let values = [];
+        let probabilities = [];
+
+        // Function to parse user input values and probabilities
+        function parseInputs() {
+            values = document.getElementById("valuesInput").value.split(",").map(Number);
+            probabilities = document.getElementById("probabilitiesInput").value.split(",").map(Number);
+
+            // Ensure probabilities sum to 1
+            const probSum = probabilities.reduce((acc, p) => acc + p, 0);
+            if (Math.abs(probSum - 1) > 0.01) {
+                alert("Probabilities must sum to 1.");
+                return false;
+            }
+            calculateTheoreticalStats();
+            return true;
+        }
+
+        // Calculate the theoretical mean and variance
+        function calculateTheoreticalStats() {
+            let theoreticalMean = 0;
+            let theoreticalVariance = 0;
+            for (let i = 0; i < values.length; i++) {
+                theoreticalMean += values[i] * probabilities[i];
+            }
+            for (let i = 0; i < values.length; i++) {
+                theoreticalVariance += probabilities[i] * Math.pow(values[i] - theoreticalMean, 2);
+            }
+            document.getElementById("theoreticalMean").textContent = theoreticalMean.toFixed(2);
+            document.getElementById("theoreticalVariance").textContent = theoreticalVariance.toFixed(2);
+        }
+
+        // Canvas elements
+        const distributionCanvas = document.getElementById('distributionCanvas');
+        const convergenceCanvas = document.getElementById('convergenceCanvas');
+        const distributionCtx = distributionCanvas.getContext('2d');
+        const convergenceCtx = convergenceCanvas.getContext('2d');
+
+        // Variables for observed data
+        let sampleCount = 0;
+        let observedFrequency = [];
+        let observedMean = 0;
+        let observedVariance = 0;
+        let M2 = 0;
+
+        // Convergence data points
+        const dataPoints = [];
+
+        // Generate a sample
+        function generateSample() {
+            const random = Math.random();
+            let cumulativeProbability = 0;
+            for (let i = 0; i < probabilities.length; i++) {
+                cumulativeProbability += probabilities[i];
+                if (random < cumulativeProbability) return values[i];
+            }
+            return values[values.length - 1]; // fallback due to precision
+        }
+
+        // Update mean and variance using Welford's method
+        function updateStatistics(newSample) {
+            sampleCount++;
+            const delta = newSample - observedMean;
+            observedMean += delta / sampleCount;
+            M2 += delta * (newSample - observedMean);
+            observedVariance = M2 / sampleCount;
+
+            // Store data point for convergence graph
+            dataPoints.push({
+                count: sampleCount,
+                mean: observedMean,
+                variance: observedVariance
+            });
+        }
+
+        // Track frequency of each value
+        function updateObservedDistribution(sample) {
+            const index = values.indexOf(sample);
+            if (index !== -1) observedFrequency[index]++;
+        }
+
+        // Draw the empirical and theoretical distributions
+        function drawDistribution() {
+            distributionCtx.clearRect(0, 0, distributionCanvas.width, distributionCanvas.height);
+
+            // Draw theoretical distribution in blue
+            distributionCtx.fillStyle = 'blue';
+            const barWidth = distributionCanvas.width / (2 * values.length);
+            for (let i = 0; i < values.length; i++) {
+                const height = probabilities[i] * distributionCanvas.height;
+                distributionCtx.fillRect(i * 2 * barWidth, distributionCanvas.height - height, barWidth, height);
+            }
+
+            // Draw observed distribution in red
+            distributionCtx.fillStyle = 'red';
+            const totalSamples = sampleCount;
+            for (let i = 0; i < values.length; i++) {
+                const height = (observedFrequency[i] / totalSamples) * distributionCanvas.height;
+                distributionCtx.fillRect(i * 2 * barWidth + barWidth, distributionCanvas.height - height, barWidth, height);
+            }
+        }
+
+        // Draw convergence of mean and variance
+        function drawConvergence() {
+            convergenceCtx.clearRect(0, 0, convergenceCanvas.width, convergenceCanvas.height);
+
+            // Dynamic scaling based on max observed values
+            const maxMean = Math.max(...dataPoints.map(p => p.mean), parseFloat(document.getElementById("theoreticalMean").textContent));
+            const maxVariance = Math.max(...dataPoints.map(p => p.variance), parseFloat(document.getElementById("theoreticalVariance").textContent));
+
+            // Theoretical lines
+            const theoreticalMeanY = convergenceCanvas.height - (parseFloat(document.getElementById("theoreticalMean").textContent) / maxMean) * convergenceCanvas.height;
+            const theoreticalVarianceY = convergenceCanvas.height - (parseFloat(document.getElementById("theoreticalVariance").textContent) / maxVariance) * convergenceCanvas.height;
+
+            convergenceCtx.strokeStyle = 'blue';
+            convergenceCtx.beginPath();
+            convergenceCtx.moveTo(0, theoreticalMeanY);
+            convergenceCtx.lineTo(convergenceCanvas.width, theoreticalMeanY);
+            convergenceCtx.stroke();
+
+            convergenceCtx.strokeStyle = 'green';
+            convergenceCtx.beginPath();
+            convergenceCtx.moveTo(0, theoreticalVarianceY);
+            convergenceCtx.lineTo(convergenceCanvas.width, theoreticalVarianceY);
+            convergenceCtx.stroke();
+
+            // Red dots for convergence
+            convergenceCtx.fillStyle = 'red';
+            for (let i = 0; i < dataPoints.length; i++) {
+                const x = (dataPoints[i].count / sampleCount) * convergenceCanvas.width;
+                const meanY = convergenceCanvas.height - (dataPoints[i].mean / maxMean) * convergenceCanvas.height;
+                const varianceY = convergenceCanvas.height - (dataPoints[i].variance / maxVariance) * convergenceCanvas.height;
+
+                convergenceCtx.beginPath();
+                convergenceCtx.arc(x, meanY, 1, 0, 2 * Math.PI);
+                convergenceCtx.fill();
+
+                convergenceCtx.beginPath();
+                convergenceCtx.arc(x, varianceY, 1, 0, 2 * Math.PI);
+                convergenceCtx.fill();
+            }
+        }
+
+        // Simulation
+        function simulateStep() {
+            const samplesPerCycle = parseInt(document.getElementById("sampleSize").value, 10);
+            for (let i = 0; i < samplesPerCycle; i++) {
+                const sample = generateSample();
+                updateObservedDistribution(sample);
+                updateStatistics(sample);
+            }
+            drawDistribution();
+            drawConvergence();
+            document.getElementById("observedMean").textContent = observedMean.toFixed(2);
+            document.getElementById("observedVariance").textContent = observedVariance.toFixed(2);
+        }
+
+        let interval;
+        function startSimulation() {
+            if (!parseInputs()) return;
+            if (interval) clearInterval(interval);
+            observedFrequency = Array(values.length).fill(0); // Ensure frequency matches parsed values
+            interval = setInterval(simulateStep, parseInt(document.getElementById("updateInterval").value, 10));
+        }
+
+        function pauseSimulation() {
+            clearInterval(interval);
+        }
+
+        function resetSimulation() {
+            clearInterval(interval);
+            sampleCount = 0;
+            observedFrequency = Array(values.length).fill(0);
+            observedMean = 0;
+            observedVariance = 0;
+            M2 = 0;
+            dataPoints.length = 0;
+            distributionCtx.clearRect(0, 0, distributionCanvas.width, distributionCanvas.height);
+            convergenceCtx.clearRect(0, 0, convergenceCanvas.width, convergenceCanvas.height);
+            document.getElementById("observedMean").textContent = "0";
+            document.getElementById("observedVariance").textContent = "0";
+        }
+    </script>
+</body>
+</html>

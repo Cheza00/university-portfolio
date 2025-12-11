@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modulo Distributions of Y = g^U mod n</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            text-align: center;
+        }
+        h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        h2 {
+            margin-top: 20px;
+        }
+        canvas {
+            border: 1px solid #ddd;
+            margin: 10px auto;
+        }
+        .results-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .result-box {
+            margin: 10px;
+            text-align: center;
+        }
+        .entropy-box {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px auto;
+            width: 200px;
+            font-weight: bold;
+        }
+        input, button {
+            margin: 5px;
+            padding: 8px;
+            font-size: 14px;
+        }
+        .legend {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin: 0 10px;
+        }
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            margin-right: 5px;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <h1>Distributions of Y = g<sup>U</sup> mod n</h1>
+    <label>Set Maximum U: <input type="number" id="maxU" value="1000" min="10"></label>
+    <button onclick="updateResults()">Update</button>
+
+    <div id="results"></div>
+
+    <script>
+        function generateDistribution(g, n, maxU) {
+            const frequency = Array(n).fill(0);
+            for (let u = 1; u <= maxU; u++) {
+                const y = Math.pow(g, u) % n;
+                frequency[y]++;
+            }
+            return frequency;
+        }
+
+        function calculateEntropy(frequency, totalSamples) {
+            let entropy = 0;
+            for (const count of frequency) {
+                if (count > 0) {
+                    const probability = count / totalSamples;
+                    entropy -= probability * Math.log2(probability);
+                }
+            }
+            return entropy;
+        }
+
+        function displayDistribution(ctx, frequency, g, n, maxU) {
+            const width = ctx.canvas.width;
+            const height = ctx.canvas.height;
+            const barWidth = width / frequency.length;
+            const maxFrequency = Math.max(...frequency);
+
+            ctx.clearRect(0, 0, width, height);
+            ctx.fillStyle = "#5DADE2"; // Light blue color
+
+            frequency.forEach((count, i) => {
+                const barHeight = (count / maxFrequency) * (height - 40);
+                ctx.fillRect(i * barWidth, height - barHeight, barWidth - 2, barHeight);
+                
+                // Display frequency value
+                ctx.fillStyle = "black";
+                ctx.font = "12px Arial";
+                ctx.fillText(count, i * barWidth + barWidth / 4, height - barHeight - 5);
+                ctx.fillStyle = "#5DADE2";
+            });
+
+            ctx.fillStyle = "black";
+            ctx.font = "14px Arial";
+            ctx.fillText(`g = ${g}, n = ${n}, maxU = ${maxU}`, 10, 20);
+        }
+
+        function displayCombinedDistribution(ctx, allFrequencies, n, generators) {
+            const width = ctx.canvas.width;
+            const height = ctx.canvas.height;
+            const barGroupWidth = width / n;
+            const barWidth = barGroupWidth / (generators.length + 1);
+            const colors = ["#5DADE2", "#76D7C4", "#F7DC6F", "#A569BD"];
+
+            ctx.clearRect(0, 0, width, height);
+            const maxFrequency = Math.max(...allFrequencies.flat());
+
+            allFrequencies.forEach((frequency, genIndex) => {
+                ctx.fillStyle = colors[genIndex % colors.length];
+                frequency.forEach((count, i) => {
+                    const x = i * barGroupWidth + genIndex * barWidth;
+                    const barHeight = (count / maxFrequency) * (height - 60);
+                    ctx.fillRect(x, height - barHeight - 20, barWidth - 2, barHeight);
+
+                    // Display frequency value
+                    ctx.fillStyle = "black";
+                    ctx.font = "10px Arial";
+                    ctx.fillText(count, x + 2, height - barHeight - 25);
+                    ctx.fillStyle = colors[genIndex % colors.length];
+                });
+            });
+
+            // Draw residue numbers
+            ctx.fillStyle = "black";
+            ctx.font = "12px Arial";
+            for (let i = 0; i < n; i++) {
+                const x = i * barGroupWidth + (barGroupWidth / 2) - 5;
+                ctx.fillText(i, x, height - 5);
+            }
+
+            ctx.fillStyle = "black";
+            ctx.font = "14px Arial";
+            ctx.fillText(`Combined Distribution for n = ${n}`, 10, 20);
+        }
+
+        function addLegend(container, generators) {
+            const legend = document.createElement("div");
+            legend.className = "legend";
+            const colors = ["#5DADE2", "#76D7C4", "#F7DC6F", "#A569BD"];
+
+            generators.forEach((g, index) => {
+                const legendItem = document.createElement("div");
+                legendItem.className = "legend-item";
+
+                const colorBox = document.createElement("div");
+                colorBox.className = "legend-color";
+                colorBox.style.backgroundColor = colors[index % colors.length];
+
+                const label = document.createElement("span");
+                label.textContent = `g = ${g}`;
+
+                legendItem.appendChild(colorBox);
+                legendItem.appendChild(label);
+                legend.appendChild(legendItem);
+            });
+
+            container.appendChild(legend);
+        }
+
+        function displayLineChart(ctx, entropies, generators) {
+            const width = ctx.canvas.width;
+            const height = ctx.canvas.height;
+            const stepX = width / (generators.length + 1);
+            const maxY = Math.max(...entropies);
+
+            ctx.clearRect(0, 0, width, height);
+
+            // Axes
+            ctx.beginPath();
+            ctx.moveTo(50, 20);
+            ctx.lineTo(50, height - 50);
+            ctx.lineTo(width - 20, height - 50);
+            ctx.stroke();
+
+            // Plot data points
+            ctx.strokeStyle = "#5DADE2";
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            entropies.forEach((entropy, i) => {
+                const x = 50 + (i + 1) * stepX;
+                const y = height - 50 - (entropy / maxY) * (height - 70);
+                ctx.lineTo(x, y);
+            });
+            ctx.stroke();
+
+            // Draw points and labels
+            ctx.fillStyle = "red";
+            entropies.forEach((entropy, i) => {
+                const x = 50 + (i + 1) * stepX;
+                const y = height - 50 - (entropy / maxY) * (height - 70);
+                ctx.beginPath();
+                ctx.arc(x, y, 5, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Display value
+                ctx.font = "12px Arial";
+                ctx.fillText(entropy.toFixed(4), x - 10, y - 10);
+            });
+
+            // Labels
+            ctx.fillStyle = "black";
+            ctx.font = "14px Arial";
+            ctx.fillText("Entropy", 10, 20);
+            ctx.fillText("Generators", width / 2 - 50, height - 20);
+            generators.forEach((g, i) => {
+                const x = 50 + (i + 1) * stepX;
+                ctx.fillText(`g = ${g}`, x - 15, height - 35);
+            });
+        }
+
+        function updateResults() {
+            const maxU = parseInt(document.getElementById("maxU").value);
+            const resultsContainer = document.getElementById("results");
+            resultsContainer.innerHTML = ""; // Clear previous results
+
+            const cases = [
+                { title: "Case A (n = 19)", n: 19, generators: [2, 3, 10, 17] },
+                { title: "Case B (n = 15)", n: 15, generators: [3, 6, 9, 12] }
+            ];
+
+            cases.forEach(({ title, n, generators }) => {
+                const caseTitle = document.createElement("h2");
+                caseTitle.textContent = title;
+                resultsContainer.appendChild(caseTitle);
+
+                const caseContainer = document.createElement("div");
+                caseContainer.className = "results-container";
+
+                const allFrequencies = [];
+                const entropies = [];
+
+                generators.forEach(g => {
+                    const frequency = generateDistribution(g, n, maxU);
+                    const entropy = calculateEntropy(frequency, maxU);
+                    allFrequencies.push(frequency);
+                    entropies.push(entropy); // Collect entropy values
+
+                    const box = document.createElement("div");
+                    box.className = "result-box";
+
+                    const canvas = document.createElement("canvas");
+                    canvas.width = 400;
+                    canvas.height = 250;
+                    const ctx = canvas.getContext("2d");
+                    displayDistribution(ctx, frequency, g, n, maxU);
+
+                    box.appendChild(canvas);
+
+                    const entropyBox = document.createElement("div");
+                    entropyBox.className = "entropy-box";
+                    entropyBox.textContent = `g = ${g}\nEntropy: ${entropy.toFixed(4)}`;
+                    box.appendChild(entropyBox);
+
+                    caseContainer.appendChild(box);
+                });
+
+                // Add combined graph and legend
+                const combinedCanvas = document.createElement("canvas");
+                combinedCanvas.width = 600;
+                combinedCanvas.height = 300;
+                const combinedCtx = combinedCanvas.getContext("2d");
+                displayCombinedDistribution(combinedCtx, allFrequencies, n, generators);
+
+                // Line chart for entropy
+                const lineChartCanvas = document.createElement("canvas");
+                lineChartCanvas.width = 600;
+                lineChartCanvas.height = 300;
+                const lineCtx = lineChartCanvas.getContext("2d");
+
+                resultsContainer.appendChild(caseContainer);
+                resultsContainer.appendChild(combinedCanvas);
+                addLegend(resultsContainer, generators);
+                resultsContainer.appendChild(lineChartCanvas);
+                displayLineChart(lineCtx, entropies, generators);
+                
+            });
+        }
+
+        // Initial Load
+        updateResults();
+    </script>
+</body>
+</html>
