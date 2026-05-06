@@ -1,0 +1,15 @@
+testMaxGas: 8000030
+testLimit: 500000
+seqLen: 2000
+shrinkLimit: 5000
+sender: ["0x10000", "0x20000", "0x30000"]
+allContracts: true
+balanceAddr: 0xffffffff
+codeSize: 0x6000
+maxValue: 100000000000000000000  # 100 ETH
+dictFreq: 0.40
+maxTimeDelay: 604800
+maxBlockDelay: 60480
+filterFunctions: []
+coverageFormats: ["txt","html","lcov"]
+workers: 8
