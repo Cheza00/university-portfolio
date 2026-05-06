@@ -1,0 +1,3753 @@
+<?xml version="1.0"?>
+<opnsense>
+  <theme>opnsense</theme>
+  <sysctl>
+    <item>
+      <descr>Disable the pf ftp proxy handler.</descr>
+      <tunable>debug.pfftpproxy</tunable>
+      <value>default</value>
+    </item>
+    <item>
+      <descr>Increase UFS read-ahead speeds to match the state of hard drives and NCQ.</descr>
+      <tunable>vfs.read_max</tunable>
+      <value>default</value>
+    </item>
+    <item>
+      <descr>Set the ephemeral port range to be lower.</descr>
+      <tunable>net.inet.ip.portrange.first</tunable>
+      <value>default</value>
+    </item>
+    <item>
+      <descr>Drop packets to closed TCP ports without returning a RST</descr>
+      <tunable>net.inet.tcp.blackhole</tunable>
+      <value>default</value>
+    </item>
+    <item>
+      <descr>Do not send ICMP port unreachable messages for closed UDP ports</descr>
+      <tunable>net.inet.udp.blackhole</tunable>
+      <value>default</value>
+    </item>
+    <item>
+      <descr>Randomize the ID field in IP packets</descr>
+      <tunable>net.inet.ip.random_id</tunable>
+      <value>default</value>
+    </item>
+    <item>
+      <descr>
+        Source routing is another way for an attacker to try to reach non-routable addresses behind your box.
+        It can also be used to probe for information about your internal networks. These functions come enabled
+        as part of the standard FreeBSD core system.
+      </descr>
+      <tunable>net.inet.ip.sourceroute</tunable>
+      <value>default</value>
+    </item>
+    <item>
+      <descr>
+        Source routing is another way for an attacker to try to reach non-routable addresses behind your box.
+        It can also be used to probe for information about your internal networks. These functions come enabled
+        as part of the standard FreeBSD core system.
+      </descr>
+      <tunable>net.inet.ip.accept_sourceroute</tunable>
+      <value>default</value>
+    </item>
+    <item>
+      <descr>
+        This option turns off the logging of redirect packets because there is no limit and this could fill
+        up your logs consuming your whole hard drive.
+      </descr>
+      <tunable>net.inet.icmp.log_redirect</tunable>
+      <value>default</value>
+    </item>
+    <item>
+      <descr>Drop SYN-FIN packets (breaks RFC1379, but nobody uses it anyway)</descr>
+      <tunable>net.inet.tcp.drop_synfin</tunable>
+      <value>default</value>
+    </item>
+    <item>
+      <descr>Enable sending IPv6 redirects</descr>
+      <tunable>net.inet6.ip6.redirect</tunable>
+      <value>default</value>
+    </item>
+    <item>
+      <descr>Enable privacy settings for IPv6 (RFC 4941)</descr>
+      <tunable>net.inet6.ip6.use_tempaddr</tunable>
+      <value>default</value>
+    </item>
+    <item>
+      <descr>Prefer privacy addresses and use them over the normal addresses</descr>
+      <tunable>net.inet6.ip6.prefer_tempaddr</tunable>
+      <value>default</value>
+    </item>
+    <item>
+      <descr>Generate SYN cookies for outbound SYN-ACK packets</descr>
+      <tunable>net.inet.tcp.syncookies</tunable>
+      <value>default</value>
+    </item>
+    <item>
+      <descr>Maximum incoming/outgoing TCP datagram size (receive)</descr>
+      <tunable>net.inet.tcp.recvspace</tunable>
+      <value>default</value>
+    </item>
+    <item>
+      <descr>Maximum incoming/outgoing TCP datagram size (send)</descr>
+      <tunable>net.inet.tcp.sendspace</tunable>
+      <value>default</value>
+    </item>
+    <item>
+      <descr>Do not delay ACK to try and piggyback it onto a data packet</descr>
+      <tunable>net.inet.tcp.delayed_ack</tunable>
+      <value>default</value>
+    </item>
+    <item>
+      <descr>Maximum outgoing UDP datagram size</descr>
+      <tunable>net.inet.udp.maxdgram</tunable>
+      <value>default</value>
+    </item>
+    <item>
+      <descr>Handling of non-IP packets which are not passed to pfil (see if_bridge(4))</descr>
+      <tunable>net.link.bridge.pfil_onlyip</tunable>
+      <value>default</value>
+    </item>
+    <item>
+      <descr>Set to 1 to additionally filter on the physical interface for locally destined packets</descr>
+      <tunable>net.link.bridge.pfil_local_phys</tunable>
+      <value>default</value>
+    </item>
+    <item>
+      <descr>Set to 0 to disable filtering on the incoming and outgoing member interfaces.</descr>
+      <tunable>net.link.bridge.pfil_member</tunable>
+      <value>default</value>
+    </item>
+    <item>
+      <descr>Set to 1 to enable filtering on the bridge interface</descr>
+      <tunable>net.link.bridge.pfil_bridge</tunable>
+      <value>default</value>
+    </item>
+    <item>
+      <descr>Allow unprivileged access to tap(4) device nodes</descr>
+      <tunable>net.link.tap.user_open</tunable>
+      <value>default</value>
+    </item>
+    <item>
+      <descr>Randomize PID's (see src/sys/kern/kern_fork.c: sysctl_kern_randompid())</descr>
+      <tunable>kern.randompid</tunable>
+      <value>default</value>
+    </item>
+    <item>
+      <descr>Maximum size of the IP input queue</descr>
+      <tunable>net.inet.ip.intr_queue_maxlen</tunable>
+      <value>default</value>
+    </item>
+    <item>
+      <descr>Disable CTRL+ALT+Delete reboot from keyboard.</descr>
+      <tunable>hw.syscons.kbd_reboot</tunable>
+      <value>default</value>
+    </item>
+    <item>
+      <descr>Enable TCP extended debugging</descr>
+      <tunable>net.inet.tcp.log_debug</tunable>
+      <value>default</value>
+    </item>
+    <item>
+      <descr>Set ICMP Limits</descr>
+      <tunable>net.inet.icmp.icmplim</tunable>
+      <value>default</value>
+    </item>
+    <item>
+      <descr>TCP Offload Engine</descr>
+      <tunable>net.inet.tcp.tso</tunable>
+      <value>default</value>
+    </item>
+    <item>
+      <descr>UDP Checksums</descr>
+      <tunable>net.inet.udp.checksum</tunable>
+      <value>default</value>
+    </item>
+    <item>
+      <descr>Maximum socket buffer size</descr>
+      <tunable>kern.ipc.maxsockbuf</tunable>
+      <value>default</value>
+    </item>
+    <item>
+      <descr>Page Table Isolation (Meltdown mitigation, requires reboot.)</descr>
+      <tunable>vm.pmap.pti</tunable>
+      <value>default</value>
+    </item>
+    <item>
+      <descr>Disable Indirect Branch Restricted Speculation (Spectre V2 mitigation)</descr>
+      <tunable>hw.ibrs_disable</tunable>
+      <value>default</value>
+    </item>
+    <item>
+      <descr>Hide processes running as other groups</descr>
+      <tunable>security.bsd.see_other_gids</tunable>
+      <value>default</value>
+    </item>
+    <item>
+      <descr>Hide processes running as other users</descr>
+      <tunable>security.bsd.see_other_uids</tunable>
+      <value>default</value>
+    </item>
+    <item>
+      <descr>Enable/disable sending of ICMP redirects in response to IP packets for which a better,
+        and for the sender directly reachable, route and next hop is known.
+      </descr>
+      <tunable>net.inet.ip.redirect</tunable>
+      <value>0</value>
+    </item>
+    <item>
+      <descr>
+        Redirect attacks are the purposeful mass-issuing of ICMP type 5 packets. In a normal network, redirects
+        to the end stations should not be required. This option enables the NIC to drop all inbound ICMP redirect
+        packets without returning a response.
+      </descr>
+      <tunable>net.inet.icmp.drop_redirect</tunable>
+      <value>1</value>
+    </item>
+    <item>
+      <descr>Maximum outgoing UDP datagram size</descr>
+      <tunable>net.local.dgram.maxdgram</tunable>
+      <value>default</value>
+    </item>
+    <item>
+      <tunable>net.inet.ipsec.filtertunnel</tunable>
+      <value>1</value>
+      <descr>Enables the filtering of IPsec tunnel traffic</descr>
+    </item>
+  </sysctl>
+  <system>
+    <optimization>normal</optimization>
+    <hostname>internal-firewall</hostname>
+    <domain>localdomain</domain>
+    <group>
+      <name>admins</name>
+      <description>System Administrators</description>
+      <scope>system</scope>
+      <gid>1999</gid>
+      <member>0</member>
+      <priv>page-all</priv>
+    </group>
+    <user>
+      <name>root</name>
+      <descr>System Administrator</descr>
+      <scope>system</scope>
+      <groupname>admins</groupname>
+      <password>$2y$10$e9cFdoqb12pHst3Y8vo2xuPWjBTU7.pnMyvkx19B6hHHRxbRJ5NSq</password>
+      <uid>0</uid>
+      <expires/>
+      <authorizedkeys>c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSU5oalUwaTQvRGVNeWNJUFFlODZCRDNkdytRcUk1OFNBc1RXTVJpYnlqUzkgcG5kLW1hbmFnZW1lbnQtZG8tbm90LXJlbW92ZQ==</authorizedkeys>
+      <otp_seed/>
+    </user>
+    <nextuid>2000</nextuid>
+    <nextgid>2000</nextgid>
+    <timezone>Etc/UTC</timezone>
+    <timeservers>0.opnsense.pool.ntp.org 1.opnsense.pool.ntp.org 2.opnsense.pool.ntp.org 3.opnsense.pool.ntp.org</timeservers>
+    <webgui>
+      <protocol>http</protocol>
+      <ssl-certref>5e419b7cd7253</ssl-certref>
+      <port/>
+      <ssl-ciphers/>
+      <interfaces/>
+      <compression/>
+    </webgui>
+    <disablenatreflection>yes</disablenatreflection>
+    <usevirtualterminal>1</usevirtualterminal>
+    <disableconsolemenu>1</disableconsolemenu>
+    <disablevlanhwfilter>2</disablevlanhwfilter>
+    <disablechecksumoffloading>1</disablechecksumoffloading>
+    <disablesegmentationoffloading>1</disablesegmentationoffloading>
+    <disablelargereceiveoffloading>1</disablelargereceiveoffloading>
+    <ipv6allow>1</ipv6allow>
+    <powerd_ac_mode>hadp</powerd_ac_mode>
+    <powerd_battery_mode>hadp</powerd_battery_mode>
+    <powerd_normal_mode>hadp</powerd_normal_mode>
+    <bogons>
+      <interval>monthly</interval>
+    </bogons>
+    <kill_states/>
+    <backupcount>60</backupcount>
+    <crypto_hardware>aesni</crypto_hardware>
+    <pf_share_forward>1</pf_share_forward>
+    <lb_use_sticky>1</lb_use_sticky>
+    <ssh>
+      <group>admins</group>
+      <noauto>1</noauto>
+      <interfaces/>
+      <kex/>
+      <ciphers/>
+      <macs/>
+      <keys/>
+      <keysig/>
+      <enabled>enabled</enabled>
+      <permitrootlogin>1</permitrootlogin>
+      <passwordauth>1</passwordauth>
+    </ssh>
+    <backup>
+      <nextcloud version="1.0.0">
+        <enabled>0</enabled>
+        <url/>
+        <user/>
+        <password/>
+        <password_encryption/>
+        <backupdir>OPNsense-Backup</backupdir>
+      </nextcloud>
+    </backup>
+    <dnsserver>100.100.1.2</dnsserver>
+    <dnsserver>2001:470:b5b8:1b81:b4d4:f59e:63a3:5295</dnsserver>
+    <dnsserver>151.100.4.13</dnsserver>
+    <dnsserver>151.100.4.2</dnsserver>
+    <language>en_US</language>
+    <dns1gw>none</dns1gw>
+    <dns2gw>none</dns2gw>
+    <dns3gw>none</dns3gw>
+    <dns4gw>none</dns4gw>
+    <dns5gw>none</dns5gw>
+    <dns6gw>none</dns6gw>
+    <dns7gw>none</dns7gw>
+    <dns8gw>none</dns8gw>
+    <firmware version="1.0.1">
+      <mirror/>
+      <flavour/>
+      <plugins>os-qemu-guest-agent</plugins>
+      <type/>
+      <subscription/>
+    </firmware>
+    <serialspeed>115200</serialspeed>
+    <primaryconsole>video</primaryconsole>
+    <dnslocalhost>1</dnslocalhost>
+    <maximumstates/>
+    <maximumfrags/>
+    <aliasesresolveinterval/>
+    <maximumtableentries/>
+    <pfdebug>urgent</pfdebug>
+  </system>
+  <interfaces>
+    <wan>
+      <if>em0</if>
+      <descr>EXTERNAL</descr>
+      <enable>1</enable>
+      <spoofmac/>
+      <mtu>1400</mtu>
+      <ipaddr>100.100.254.2</ipaddr>
+      <subnet>30</subnet>
+      <gateway>GW_WAN</gateway>
+      <ipaddrv6>dhcp6</ipaddrv6>
+      <dhcp6-ia-pd-len>4</dhcp6-ia-pd-len>
+      <adv_dhcp6_interface_statement_send_options/>
+      <adv_dhcp6_interface_statement_request_options/>
+      <adv_dhcp6_interface_statement_information_only_enable/>
+      <adv_dhcp6_interface_statement_script/>
+      <adv_dhcp6_id_assoc_statement_address_enable/>
+      <adv_dhcp6_id_assoc_statement_address/>
+      <adv_dhcp6_id_assoc_statement_address_id/>
+      <adv_dhcp6_id_assoc_statement_address_pltime/>
+      <adv_dhcp6_id_assoc_statement_address_vltime/>
+      <adv_dhcp6_id_assoc_statement_prefix_enable/>
+      <adv_dhcp6_id_assoc_statement_prefix/>
+      <adv_dhcp6_id_assoc_statement_prefix_id/>
+      <adv_dhcp6_id_assoc_statement_prefix_pltime/>
+      <adv_dhcp6_id_assoc_statement_prefix_vltime/>
+      <adv_dhcp6_prefix_interface_statement_sla_len/>
+      <adv_dhcp6_authentication_statement_authname/>
+      <adv_dhcp6_authentication_statement_protocol/>
+      <adv_dhcp6_authentication_statement_algorithm/>
+      <adv_dhcp6_authentication_statement_rdm/>
+      <adv_dhcp6_key_info_statement_keyname/>
+      <adv_dhcp6_key_info_statement_realm/>
+      <adv_dhcp6_key_info_statement_keyid/>
+      <adv_dhcp6_key_info_statement_secret/>
+      <adv_dhcp6_key_info_statement_expire/>
+      <adv_dhcp6_config_advanced/>
+      <adv_dhcp6_config_file_override/>
+      <adv_dhcp6_config_file_override_path/>
+    </wan>
+    <lan>
+      <if>em2</if>
+      <descr>CLIENTS</descr>
+      <enable>1</enable>
+      <spoofmac/>
+      <mtu>1400</mtu>
+      <ipaddr>100.100.2.1</ipaddr>
+      <subnet>24</subnet>
+      <ipaddrv6>track6</ipaddrv6>
+      <track6-interface>wan</track6-interface>
+      <track6-prefix-id>2</track6-prefix-id>
+    </lan>
+    <opt1>
+      <if>em1</if>
+      <descr>SERVERS</descr>
+      <enable>1</enable>
+      <spoofmac/>
+      <mtu>1400</mtu>
+      <ipaddr>100.100.1.1</ipaddr>
+      <subnet>24</subnet>
+      <ipaddrv6>track6</ipaddrv6>
+      <track6-interface>wan</track6-interface>
+      <track6-prefix-id>1</track6-prefix-id>
+    </opt1>
+    <lo0>
+      <internal_dynamic>1</internal_dynamic>
+      <descr>Loopback</descr>
+      <enable>1</enable>
+      <if>lo0</if>
+      <ipaddr>127.0.0.1</ipaddr>
+      <ipaddrv6>::1</ipaddrv6>
+      <subnet>8</subnet>
+      <subnetv6>128</subnetv6>
+      <type>none</type>
+      <virtual>1</virtual>
+    </lo0>
+    <enc0>
+      <internal_dynamic>1</internal_dynamic>
+      <enable>1</enable>
+      <if>enc0</if>
+      <descr>IPsec</descr>
+      <type>none</type>
+      <virtual>1</virtual>
+    </enc0>
+  </interfaces>
+  <dhcpd>
+    <lan>
+      <enable>1</enable>
+      <ddnsdomainalgorithm>hmac-md5</ddnsdomainalgorithm>
+      <numberoptions>
+        <item/>
+      </numberoptions>
+      <range>
+        <from>100.100.2.100</from>
+        <to>100.100.2.200</to>
+      </range>
+      <winsserver/>
+      <dnsserver>151.100.4.13</dnsserver>
+      <dnsserver>151.100.4.2</dnsserver>
+      <ntpserver/>
+    </lan>
+  </dhcpd>
+  <snmpd>
+    <syslocation/>
+    <syscontact/>
+    <rocommunity>public</rocommunity>
+  </snmpd>
+  <syslog>
+    <reverse/>
+  </syslog>
+  <nat>
+    <outbound>
+      <mode>disabled</mode>
+      <rule/>
+    </outbound>
+  </nat>
+  <filter>
+    <rule uuid="41281208-485d-436a-8018-cf39cef4110a">
+      <type>pass</type>
+      <ipprotocol>inet46</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>Debug</descr>
+      <direction>any</direction>
+      <floating>yes</floating>
+      <log>1</log>
+      <quick>1</quick>
+      <source>
+        <any>1</any>
+      </source>
+      <destination>
+        <any>1</any>
+      </destination>
+      <updated>
+        <username>root@100.101.0.4</username>
+        <time>1729539599.7058</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.2</username>
+        <time>1729448696.0601</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+      <disabled>1</disabled>
+    </rule>
+    <rule uuid="3c3f14f4-232d-470c-9e83-a6be8537cdb2">
+      <type>block</type>
+      <interface>lan,wan,enc0,opt1</interface>
+      <ipprotocol>inet</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>Block ICMP Redirect ipv4</descr>
+      <direction>any</direction>
+      <floating>yes</floating>
+      <log>1</log>
+      <quick>1</quick>
+      <protocol>icmp</protocol>
+      <icmptype>redir</icmptype>
+      <source>
+        <any>1</any>
+      </source>
+      <destination>
+        <any>1</any>
+      </destination>
+      <updated>
+        <username>root@100.101.0.2</username>
+        <time>1729422294.946</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.3</username>
+        <time>1725755339.4429</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="d4be4161-be19-4659-ac5f-8f78f0c86532">
+      <type>block</type>
+      <interface>lan,wan,enc0,opt1</interface>
+      <ipprotocol>inet6</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>Block ICMP Redirect ipv6</descr>
+      <direction>any</direction>
+      <floating>yes</floating>
+      <log>1</log>
+      <quick>1</quick>
+      <protocol>ipv6-icmp</protocol>
+      <icmp6-type>redir</icmp6-type>
+      <source>
+        <any>1</any>
+      </source>
+      <destination>
+        <any>1</any>
+      </destination>
+      <updated>
+        <username>root@100.101.0.2</username>
+        <time>1729422307.2356</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.3</username>
+        <time>1725755356.3038</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="ce0bb34f-acb0-4566-88cb-1ce6d4c44360">
+      <type>pass</type>
+      <interface>lan,wan,enc0,opt1</interface>
+      <ipprotocol>inet</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>Graylog ipv4</descr>
+      <direction>any</direction>
+      <floating>yes</floating>
+      <quick>1</quick>
+      <protocol>tcp/udp</protocol>
+      <source>
+        <network>wan</network>
+      </source>
+      <destination>
+        <address>graylog_ipv4</address>
+        <port>514</port>
+      </destination>
+      <updated>
+        <username>root@100.101.0.2</username>
+        <time>1729422317.1893</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.3</username>
+        <time>1725710897.0457</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="a2a4b719-8b86-47a2-a71a-785eaf49138d">
+      <type>pass</type>
+      <interface>lan,wan,enc0,opt1</interface>
+      <ipprotocol>inet</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>Logserver ipv4</descr>
+      <direction>any</direction>
+      <floating>yes</floating>
+      <quick>1</quick>
+      <protocol>tcp/udp</protocol>
+      <source>
+        <network>wan</network>
+      </source>
+      <destination>
+        <address>logserver_ipv4</address>
+        <port>514</port>
+      </destination>
+      <updated>
+        <username>root@100.101.0.2</username>
+        <time>1729422328.8094</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.2</username>
+        <time>1728930685.7381</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="ba55a1cb-f2cc-4535-89f3-2364acc2d0e2">
+      <type>pass</type>
+      <interface>lan,wan,enc0,opt1</interface>
+      <ipprotocol>inet6</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>Graylog ipv6</descr>
+      <direction>any</direction>
+      <floating>yes</floating>
+      <quick>1</quick>
+      <protocol>tcp/udp</protocol>
+      <source>
+        <address>external_clients_subnet_ipv6</address>
+      </source>
+      <destination>
+        <address>graylog_ipv6</address>
+        <port>514</port>
+      </destination>
+      <updated>
+        <username>root@100.101.0.2</username>
+        <time>1729422339.5037</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.3</username>
+        <time>1728862148.6706</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="d9881d86-30dd-4055-ab5f-534a4b788446">
+      <type>pass</type>
+      <interface>lan,wan,enc0,opt1</interface>
+      <ipprotocol>inet6</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>Logserver ipv6</descr>
+      <direction>any</direction>
+      <floating>yes</floating>
+      <quick>1</quick>
+      <protocol>tcp/udp</protocol>
+      <source>
+        <address>external_clients_subnet_ipv6</address>
+      </source>
+      <destination>
+        <address>logserver_ipv6</address>
+        <port>514</port>
+      </destination>
+      <updated>
+        <username>root@100.101.0.2</username>
+        <time>1729422361.3639</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.2</username>
+        <time>1728930750.6205</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="e1ca0ee8-bbee-4f64-8c68-6fd555e5b95d">
+      <type>pass</type>
+      <interface>wan</interface>
+      <ipprotocol>inet46</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>Allow ipsec tunneling</descr>
+      <direction>in</direction>
+      <quick>1</quick>
+      <protocol>esp</protocol>
+      <source>
+        <any>1</any>
+      </source>
+      <destination>
+        <any>1</any>
+      </destination>
+      <updated>
+        <username>root@100.101.0.5</username>
+        <time>1729288714.6169</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.5</username>
+        <time>1729279478.8291</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="991cac35-7dfa-483c-98c6-2e230ed97cd8">
+      <type>pass</type>
+      <interface>wan</interface>
+      <ipprotocol>inet46</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>Allow ipsec tunneling</descr>
+      <direction>in</direction>
+      <quick>1</quick>
+      <protocol>tcp/udp</protocol>
+      <source>
+        <any>1</any>
+        <port>500</port>
+      </source>
+      <destination>
+        <any>1</any>
+      </destination>
+      <updated>
+        <username>root@100.101.0.2</username>
+        <time>1729428876.5998</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.5</username>
+        <time>1729279742.2112</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="559dcaff-2af0-4dcc-9ea8-bd12230ca615">
+      <type>pass</type>
+      <interface>wan</interface>
+      <ipprotocol>inet46</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>Allow ipsec tunneling</descr>
+      <direction>in</direction>
+      <quick>1</quick>
+      <protocol>tcp/udp</protocol>
+      <source>
+        <any>1</any>
+        <port>4500</port>
+      </source>
+      <destination>
+        <any>1</any>
+      </destination>
+      <updated>
+        <username>root@100.101.0.2</username>
+        <time>1729428893.7214</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.5</username>
+        <time>1729279800.6947</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="3fbd923c-8076-4048-92ca-d69ab9766b94">
+      <type>pass</type>
+      <interface>lan</interface>
+      <ipprotocol>inet</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>ipv4 icmp clients -&gt; any</descr>
+      <direction>in</direction>
+      <quick>1</quick>
+      <protocol>icmp</protocol>
+      <source>
+        <network>lan</network>
+      </source>
+      <destination>
+        <any>1</any>
+      </destination>
+      <updated>
+        <username>root@100.101.0.3</username>
+        <time>1728862621.8381</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.3</username>
+        <time>1728861321.3671</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="d675d93b-83a3-43f0-9329-5a1cecd5b5fa">
+      <type>pass</type>
+      <interface>lan</interface>
+      <ipprotocol>inet6</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>ipv6 icmp clients -&gt; any</descr>
+      <direction>in</direction>
+      <quick>1</quick>
+      <protocol>icmp</protocol>
+      <source>
+        <address>internal_clients_subnet_ipv6</address>
+      </source>
+      <destination>
+        <any>1</any>
+      </destination>
+      <updated>
+        <username>root@100.101.0.3</username>
+        <time>1728862564.3052</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.3</username>
+        <time>1728861346.3422</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="d9277e1b-d42b-413d-b7f4-82965872534e">
+      <type>pass</type>
+      <interface>lan</interface>
+      <ipprotocol>inet</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>allow ssh ipv4</descr>
+      <direction>in</direction>
+      <quick>1</quick>
+      <protocol>tcp/udp</protocol>
+      <source>
+        <network>lan</network>
+      </source>
+      <destination>
+        <any>1</any>
+        <port>22</port>
+      </destination>
+      <updated>
+        <username>root@100.101.0.3</username>
+        <time>1728862596.2643</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.3</username>
+        <time>1728861509.0548</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="8b01b411-3bdb-4acb-a3b5-000666e98cb6">
+      <type>pass</type>
+      <interface>lan</interface>
+      <ipprotocol>inet6</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>allow ssh ipv6</descr>
+      <direction>in</direction>
+      <quick>1</quick>
+      <protocol>tcp/udp</protocol>
+      <source>
+        <address>internal_clients_subnet_ipv6</address>
+      </source>
+      <destination>
+        <any>1</any>
+        <port>22</port>
+      </destination>
+      <updated>
+        <username>root@100.101.0.3</username>
+        <time>1728863501.6704</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.3</username>
+        <time>1728862031.5607</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="80265923-e864-4d6d-97be-4c154594d2bd">
+      <type>pass</type>
+      <interface>lan</interface>
+      <ipprotocol>inet</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>ipv4 clients -&gt; internet 80</descr>
+      <direction>in</direction>
+      <quick>1</quick>
+      <protocol>tcp</protocol>
+      <source>
+        <network>lan</network>
+      </source>
+      <destination>
+        <any>1</any>
+        <port>80</port>
+      </destination>
+      <updated>
+        <username>root@100.101.0.3</username>
+        <time>1728862783.0746</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.3</username>
+        <time>1728860791.2492</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="8c07da94-cce3-46d3-9960-279306c127c5">
+      <type>pass</type>
+      <interface>lan</interface>
+      <ipprotocol>inet6</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>ipv6 clients -&gt; internet 80</descr>
+      <direction>in</direction>
+      <quick>1</quick>
+      <protocol>tcp</protocol>
+      <source>
+        <address>internal_clients_subnet_ipv6</address>
+      </source>
+      <destination>
+        <any>1</any>
+        <port>80</port>
+      </destination>
+      <updated>
+        <username>root@100.101.0.3</username>
+        <time>1728862807.871</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.3</username>
+        <time>1728860822.1915</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="2808b46d-67d3-49d2-be73-0a94e1e38ad3">
+      <type>pass</type>
+      <interface>lan</interface>
+      <ipprotocol>inet</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>ipv4 clients -&gt; internet 443</descr>
+      <direction>in</direction>
+      <quick>1</quick>
+      <protocol>tcp</protocol>
+      <source>
+        <network>lan</network>
+      </source>
+      <destination>
+        <any>1</any>
+        <port>443</port>
+      </destination>
+      <updated>
+        <username>root@100.101.0.3</username>
+        <time>1728862823.2062</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.3</username>
+        <time>1728860847.0127</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+      <log>1</log>
+    </rule>
+    <rule uuid="c10df29b-4592-4c22-922e-99b7b80cc17a">
+      <type>pass</type>
+      <interface>lan</interface>
+      <ipprotocol>inet6</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>ipv6 clients -&gt; internet 443</descr>
+      <direction>in</direction>
+      <quick>1</quick>
+      <protocol>tcp</protocol>
+      <source>
+        <address>internal_clients_subnet_ipv6</address>
+      </source>
+      <destination>
+        <any>1</any>
+        <port>443</port>
+      </destination>
+      <updated>
+        <username>root@100.101.0.3</username>
+        <time>1728862839.5279</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.3</username>
+        <time>1728862307.4008</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+      <log>1</log>
+    </rule>
+    <rule uuid="fb9a6ebc-73da-438b-bb95-91212f2c215d">
+      <type>pass</type>
+      <interface>lan</interface>
+      <ipprotocol>inet</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>ipv4 clients -&gt; dns 53</descr>
+      <direction>in</direction>
+      <quick>1</quick>
+      <protocol>tcp/udp</protocol>
+      <source>
+        <network>lan</network>
+      </source>
+      <destination>
+        <any>1</any>
+        <port>53</port>
+      </destination>
+      <updated>
+        <username>root@100.101.0.3</username>
+        <time>1728862857.3237</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.3</username>
+        <time>1728861829.2666</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="ae675621-b69d-4eba-b710-18cbb63796b4">
+      <type>pass</type>
+      <interface>lan</interface>
+      <ipprotocol>inet6</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>ipv6 clients -&gt; dns 53</descr>
+      <direction>in</direction>
+      <quick>1</quick>
+      <protocol>tcp/udp</protocol>
+      <source>
+        <address>internal_clients_subnet_ipv6</address>
+      </source>
+      <destination>
+        <any>1</any>
+        <port>53</port>
+      </destination>
+      <updated>
+        <username>root@100.101.0.3</username>
+        <time>1728862876.964</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.3</username>
+        <time>1728860864.0894</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="5f651c06-4f91-4ba0-ae93-9eec919d3721">
+      <type>pass</type>
+      <interface>lan</interface>
+      <ipprotocol>inet</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>ipv4 clients -&gt; servers</descr>
+      <direction>in</direction>
+      <quick>1</quick>
+      <protocol>tcp/udp</protocol>
+      <source>
+        <network>lan</network>
+      </source>
+      <destination>
+        <network>opt1</network>
+      </destination>
+      <updated>
+        <username>root@100.101.0.3</username>
+        <time>1728862907.0221</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.3</username>
+        <time>1728861101.8412</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="667a6cce-0c8c-4ad8-a64a-9296b504dc42">
+      <type>pass</type>
+      <interface>lan</interface>
+      <ipprotocol>inet6</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>ipv6 clients -&gt; servers</descr>
+      <direction>in</direction>
+      <quick>1</quick>
+      <protocol>tcp/udp</protocol>
+      <source>
+        <address>internal_clients_subnet_ipv6</address>
+      </source>
+      <destination>
+        <address>internal_servers_subnet_ipv6</address>
+      </destination>
+      <updated>
+        <username>root@100.101.0.3</username>
+        <time>1728862921.9781</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.3</username>
+        <time>1728861131.8651</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="1893db69-a21f-4ba2-b9f7-9453d41fe6a8">
+      <type>pass</type>
+      <interface>lan</interface>
+      <ipprotocol>inet</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>ipv4 clients -&gt; any ntp</descr>
+      <direction>in</direction>
+      <quick>1</quick>
+      <protocol>tcp/udp</protocol>
+      <source>
+        <network>lan</network>
+      </source>
+      <destination>
+        <any>1</any>
+        <port>123</port>
+      </destination>
+      <updated>
+        <username>root@100.101.0.4</username>
+        <time>1728863908.0003</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.4</username>
+        <time>1728862286.9798</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="01377295-5fb4-4bac-85c4-16bdb80da582">
+      <type>pass</type>
+      <interface>lan</interface>
+      <ipprotocol>inet6</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>ipv6 clients -&gt; any ntp</descr>
+      <direction>in</direction>
+      <quick>1</quick>
+      <protocol>tcp/udp</protocol>
+      <source>
+        <address>internal_clients_subnet_ipv6</address>
+      </source>
+      <destination>
+        <any>1</any>
+        <port>123</port>
+      </destination>
+      <updated>
+        <username>root@100.101.0.4</username>
+        <time>1728863940.1489</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.4</username>
+        <time>1728862314.8085</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="b354f814-6353-4e39-bfd0-d5b9328eb343">
+      <type>pass</type>
+      <interface>lan</interface>
+      <ipprotocol>inet</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>ipv4 employees -&gt; clients</descr>
+      <direction>out</direction>
+      <quick>1</quick>
+      <source>
+        <address>Employees_ipv4</address>
+      </source>
+      <destination>
+        <any>1</any>
+      </destination>
+      <updated>
+        <username>root@100.101.0.3</username>
+        <time>1728944028.1499</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.3</username>
+        <time>1728944028.1499</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="b0f26064-ff8f-49e7-804c-6b2d507baed7">
+      <type>pass</type>
+      <interface>lan</interface>
+      <ipprotocol>inet6</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>ipv6 employees -&gt; clients</descr>
+      <direction>out</direction>
+      <quick>1</quick>
+      <source>
+        <address>Employees_ipv6</address>
+      </source>
+      <destination>
+        <any>1</any>
+      </destination>
+      <updated>
+        <username>root@100.101.0.3</username>
+        <time>1728944196.6937</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.3</username>
+        <time>1728944196.6937</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="f3d4583c-dfeb-4af6-aee7-f4c7273280e5">
+      <type>pass</type>
+      <interface>lan</interface>
+      <ipprotocol>inet</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>ipv4 operators -&gt; clients</descr>
+      <direction>out</direction>
+      <quick>1</quick>
+      <source>
+        <address>Operators_ipv4</address>
+      </source>
+      <destination>
+        <any>1</any>
+      </destination>
+      <updated>
+        <username>root@100.101.0.3</username>
+        <time>1728944067.5592</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.3</username>
+        <time>1728944067.5592</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="b5045241-a5f4-4556-8283-1b214691c6ff">
+      <type>pass</type>
+      <interface>lan</interface>
+      <ipprotocol>inet6</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>ipv6 operators -&gt; clients</descr>
+      <direction>out</direction>
+      <quick>1</quick>
+      <source>
+        <address>Operators_ipv6</address>
+      </source>
+      <destination>
+        <any>1</any>
+      </destination>
+      <updated>
+        <username>root@100.101.0.3</username>
+        <time>1728944221.5669</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.3</username>
+        <time>1728944221.5669</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="4c9e6873-984e-4351-b70b-d198e9c6a609">
+      <type>pass</type>
+      <interface>lan</interface>
+      <ipprotocol>inet</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>ipv4 icmp any -&gt; clients</descr>
+      <direction>out</direction>
+      <quick>1</quick>
+      <protocol>icmp</protocol>
+      <source>
+        <any>1</any>
+      </source>
+      <destination>
+        <network>lan</network>
+      </destination>
+      <updated>
+        <username>root@100.101.0.3</username>
+        <time>1728862657.0763</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.3</username>
+        <time>1728862657.0763</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="91fb8c23-3d16-4985-803d-3ca5733ef177">
+      <type>pass</type>
+      <interface>lan</interface>
+      <ipprotocol>inet6</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>ipv6 icmp any -&gt; clients</descr>
+      <direction>out</direction>
+      <quick>1</quick>
+      <protocol>ipv6-icmp</protocol>
+      <source>
+        <any>1</any>
+      </source>
+      <destination>
+        <address>internal_clients_subnet_ipv6</address>
+      </destination>
+      <updated>
+        <username>root@100.101.0.3</username>
+        <time>1728863020.7522</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.3</username>
+        <time>1728862675.645</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="92e45326-07d8-4d8f-adba-81589915e6a9">
+      <type>pass</type>
+      <interface>lan</interface>
+      <ipprotocol>inet</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>ipv4 greenbone -&gt; Clients</descr>
+      <direction>out</direction>
+      <quick>1</quick>
+      <source>
+        <address>greenbone_ipv4</address>
+      </source>
+      <destination>
+        <network>lan</network>
+      </destination>
+      <updated>
+        <username>root@100.101.0.3</username>
+        <time>1728862968.5758</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.2</username>
+        <time>1725652048.9551</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="f06dc4d9-4a3a-46af-bbca-0060bc0d3ec0">
+      <type>pass</type>
+      <interface>lan</interface>
+      <ipprotocol>inet6</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>ipv6 greenbone -&gt; Clients</descr>
+      <direction>out</direction>
+      <quick>1</quick>
+      <source>
+        <address>greenbone_ipv6</address>
+      </source>
+      <destination>
+        <address>internal_clients_subnet_ipv6</address>
+      </destination>
+      <updated>
+        <username>root@100.101.0.3</username>
+        <time>1728863058.6466</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.2</username>
+        <time>1725652018.4844</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="0f21cc9e-4c46-4322-bfdd-b98626c9761c">
+      <type>pass</type>
+      <interface>lan</interface>
+      <ipprotocol>inet</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>allow us ssh</descr>
+      <direction>out</direction>
+      <quick>1</quick>
+      <protocol>tcp/udp</protocol>
+      <source>
+        <address>100.101.0.0/24</address>
+      </source>
+      <destination>
+        <any>1</any>
+        <port>22</port>
+      </destination>
+      <updated>
+        <username>root@100.101.0.3</username>
+        <time>1728863191.3201</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.4</username>
+        <time>1727786694.893</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="9c07c60f-f431-4baa-8580-abc7951bb82f">
+      <type>reject</type>
+      <interface>lan</interface>
+      <ipprotocol>inet46</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>reject anything</descr>
+      <direction>out</direction>
+      <quick>0</quick>
+      <source>
+        <any>1</any>
+      </source>
+      <destination>
+        <any>1</any>
+      </destination>
+      <updated>
+        <username>root@100.101.0.3</username>
+        <time>1728863278.609</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.4</username>
+        <time>1727786657.2872</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+      <log>1</log>
+    </rule>
+    <rule uuid="b3653b02-73e5-4c43-a3f8-32718174320e">
+      <type>pass</type>
+      <interface>enc0</interface>
+      <ipprotocol>inet</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>allow icmp traffic</descr>
+      <direction>in</direction>
+      <quick>1</quick>
+      <protocol>icmp</protocol>
+      <source>
+        <any>1</any>
+      </source>
+      <destination>
+        <any>1</any>
+      </destination>
+      <updated>
+        <username>root@100.101.0.2</username>
+        <time>1729422259.1607</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.2</username>
+        <time>1729422259.1607</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="f22e7c29-8e7f-4223-bdbb-b77b5945bfeb">
+      <type>pass</type>
+      <interface>enc0</interface>
+      <ipprotocol>inet6</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>allow icmpv6 traffic</descr>
+      <direction>in</direction>
+      <quick>1</quick>
+      <protocol>ipv6-icmp</protocol>
+      <source>
+        <any>1</any>
+      </source>
+      <destination>
+        <any>1</any>
+      </destination>
+      <updated>
+        <username>root@100.101.0.2</username>
+        <time>1729422239.7927</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.2</username>
+        <time>1729422239.7927</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="3fd37147-8bb6-4596-b574-d6b7db70c289">
+      <type>pass</type>
+      <interface>enc0</interface>
+      <ipprotocol>inet</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>ipv4 any -&gt; dnsserver 53</descr>
+      <direction>in</direction>
+      <quick>1</quick>
+      <protocol>tcp/udp</protocol>
+      <source>
+        <any>1</any>
+      </source>
+      <destination>
+        <address>dnsserver_ipv4</address>
+        <port>53</port>
+      </destination>
+      <updated>
+        <username>root@100.101.0.2</username>
+        <time>1729420454.3409</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.2</username>
+        <time>1729420454.3409</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="5e5bbb3c-419a-4dfd-bd3e-91e0731582d7">
+      <type>pass</type>
+      <interface>enc0</interface>
+      <ipprotocol>inet6</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>ipv6 any -&gt; dnsserver 53</descr>
+      <direction>in</direction>
+      <quick>1</quick>
+      <protocol>tcp/udp</protocol>
+      <source>
+        <any>1</any>
+      </source>
+      <destination>
+        <address>dnsserver_ipv6</address>
+        <port>53</port>
+      </destination>
+      <updated>
+        <username>root@100.101.0.2</username>
+        <time>1729421802.9498</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.2</username>
+        <time>1729421802.9498</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="9c2836e3-a3e1-474a-856a-6938d502d5e9">
+      <type>pass</type>
+      <interface>enc0</interface>
+      <ipprotocol>inet</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>allow our ssh traffic</descr>
+      <direction>in</direction>
+      <quick>1</quick>
+      <protocol>tcp/udp</protocol>
+      <source>
+        <address>100.101.0.4/24</address>
+      </source>
+      <destination>
+        <any>1</any>
+        <port>22</port>
+      </destination>
+      <updated>
+        <username>root@100.101.0.2</username>
+        <time>1729421876.1507</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.2</username>
+        <time>1729421876.1507</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="3b8cf5dc-f2a0-4951-8068-e5d145bb0372">
+      <type>pass</type>
+      <interface>enc0</interface>
+      <ipprotocol>inet</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>allow us to internal firewall</descr>
+      <direction>in</direction>
+      <quick>1</quick>
+      <source>
+        <address>100.101.0.4/24</address>
+      </source>
+      <destination>
+        <address>100.100.2.1</address>
+      </destination>
+      <updated>
+        <username>root@100.100.2.100</username>
+        <time>1729543975.2328</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.2</username>
+        <time>1729421891.6355</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="b1dc6d99-22c1-444c-aa51-bd6fd27ce2fe">
+      <type>pass</type>
+      <interface>enc0</interface>
+      <ipprotocol>inet</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>allow us to internal firewall</descr>
+      <direction>in</direction>
+      <quick>1</quick>
+      <source>
+        <address>100.101.0.4/24</address>
+      </source>
+      <destination>
+        <address>100.100.1.1</address>
+      </destination>
+      <updated>
+        <username>root@100.100.2.100</username>
+        <time>1729544008.6015</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.100.2.100</username>
+        <time>1729544008.6015</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="3099d793-084b-4885-87fa-2bdb008ec7e1">
+      <type>pass</type>
+      <interface>enc0</interface>
+      <ipprotocol>inet</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>allow dmz traffic ipv4</descr>
+      <direction>in</direction>
+      <quick>1</quick>
+      <source>
+        <address>dmz_subnet_ipv4</address>
+      </source>
+      <destination>
+        <any>1</any>
+      </destination>
+      <updated>
+        <username>root@100.101.0.3</username>
+        <time>1729613698.8178</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.2</username>
+        <time>1729422167.7896</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+      <log>1</log>
+    </rule>
+    <rule uuid="76c07836-f2f0-4d77-9a29-60b644c67a19">
+      <type>pass</type>
+      <interface>enc0</interface>
+      <ipprotocol>inet</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>allow dmz traffic ipv6</descr>
+      <direction>in</direction>
+      <quick>1</quick>
+      <source>
+        <address>dmz_subnet_ipv6</address>
+      </source>
+      <destination>
+        <any>1</any>
+      </destination>
+      <updated>
+        <username>root@100.101.0.2</username>
+        <time>1729422130.5701</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.2</username>
+        <time>1729422130.5701</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="284b26e7-3349-4577-9b02-ac87b2ae79e5">
+      <type>pass</type>
+      <interface>enc0</interface>
+      <ipprotocol>inet</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>Allow logs 514 ipv4</descr>
+      <direction>in</direction>
+      <quick>1</quick>
+      <protocol>tcp/udp</protocol>
+      <source>
+        <address>external_clients_subnet_ipv4</address>
+      </source>
+      <destination>
+        <network>opt1</network>
+        <port>514</port>
+      </destination>
+      <updated>
+        <username>root@100.101.0.3</username>
+        <time>1729613715.2201</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.2</username>
+        <time>1729422103.2984</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="e0764427-d757-4dfd-bba2-d6bfc16754bf">
+      <type>pass</type>
+      <interface>enc0</interface>
+      <ipprotocol>inet6</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>Allow logs 514 ipv6</descr>
+      <direction>in</direction>
+      <quick>1</quick>
+      <protocol>tcp/udp</protocol>
+      <source>
+        <address>external_clients_subnet_ipv6</address>
+      </source>
+      <destination>
+        <address>internal_servers_subnet_ipv6</address>
+        <port>514</port>
+      </destination>
+      <updated>
+        <username>root@100.101.0.2</username>
+        <time>1729422079.5645</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.2</username>
+        <time>1729422079.5645</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="62f47cf7-68cf-4e19-8ddc-5226d4729df4">
+      <type>pass</type>
+      <interface>enc0</interface>
+      <ipprotocol>inet</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>ipv4 employees -&gt; internal_clients</descr>
+      <direction>in</direction>
+      <quick>1</quick>
+      <source>
+        <address>Employees_ipv4</address>
+      </source>
+      <destination>
+        <address>internal_clients_subnet_ipv4</address>
+      </destination>
+      <updated>
+        <username>root@100.101.0.4</username>
+        <time>1729704652.4329</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.2</username>
+        <time>1729422054.656</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="70996617-0c85-46e5-9066-f9e0a48e04f6">
+      <type>pass</type>
+      <interface>enc0</interface>
+      <ipprotocol>inet6</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>ipv6 employees -&gt; internal_clients</descr>
+      <direction>in</direction>
+      <quick>1</quick>
+      <source>
+        <address>Employees_ipv6</address>
+      </source>
+      <destination>
+        <address>internal_clients_subnet_ipv6</address>
+      </destination>
+      <updated>
+        <username>root@100.101.0.4</username>
+        <time>1729704681.8909</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.2</username>
+        <time>1729422035.5277</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="f23e9288-0eb3-403f-967b-7d170a483c27">
+      <type>pass</type>
+      <interface>enc0</interface>
+      <ipprotocol>inet</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>ipv4 operators -&gt; internal</descr>
+      <direction>in</direction>
+      <quick>1</quick>
+      <source>
+        <address>Operators_ipv4</address>
+      </source>
+      <destination>
+        <any>1</any>
+      </destination>
+      <updated>
+        <username>root@100.101.0.2</username>
+        <time>1729422012.2912</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.2</username>
+        <time>1729422012.2912</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="2765b5f8-5ae0-4f96-a3bf-753b67f5bda8">
+      <type>pass</type>
+      <interface>enc0</interface>
+      <ipprotocol>inet6</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>ipv6 operators -&gt; internal</descr>
+      <direction>in</direction>
+      <quick>1</quick>
+      <source>
+        <address>Operators_ipv6</address>
+      </source>
+      <destination>
+        <any>1</any>
+      </destination>
+      <updated>
+        <username>root@100.101.0.2</username>
+        <time>1729421988.032</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.2</username>
+        <time>1729421988.032</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="b74827e8-fd86-49a3-8855-bff47da60660">
+      <type>pass</type>
+      <interface>opt1</interface>
+      <ipprotocol>inet</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>Allow greenbone -&gt; any ipv4</descr>
+      <direction>in</direction>
+      <quick>1</quick>
+      <source>
+        <address>greenbone_ipv4</address>
+      </source>
+      <destination>
+        <any>1</any>
+      </destination>
+      <updated>
+        <username>root@100.101.0.4</username>
+        <time>1728779751.5181</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.4</username>
+        <time>1728779751.5181</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="d492d9a6-d60a-4c3c-a317-168255c49497">
+      <type>pass</type>
+      <interface>opt1</interface>
+      <ipprotocol>inet6</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>Allow greenbone -&gt; any ipv6</descr>
+      <direction>in</direction>
+      <quick>1</quick>
+      <source>
+        <address>greenbone_ipv6</address>
+      </source>
+      <destination>
+        <any>1</any>
+      </destination>
+      <updated>
+        <username>root@100.101.0.4</username>
+        <time>1728812828.4662</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.4</username>
+        <time>1728812828.4663</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="e583c77c-5a2e-43da-b1e1-76e04472f992">
+      <type>pass</type>
+      <interface>opt1</interface>
+      <ipprotocol>inet</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>allow servers http traffic ipv4</descr>
+      <direction>in</direction>
+      <quick>1</quick>
+      <protocol>tcp/udp</protocol>
+      <source>
+        <network>opt1</network>
+      </source>
+      <destination>
+        <any>1</any>
+        <port>80</port>
+      </destination>
+      <updated>
+        <username>root@100.101.0.4</username>
+        <time>1728779175.2798</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.4</username>
+        <time>1728779175.2798</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="4e061455-adb1-4d60-b7c6-8044735bbc34">
+      <type>pass</type>
+      <interface>opt1</interface>
+      <ipprotocol>inet6</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>allow servers http traffic ipv6</descr>
+      <direction>in</direction>
+      <quick>1</quick>
+      <protocol>tcp/udp</protocol>
+      <source>
+        <address>internal_servers_subnet_ipv6</address>
+      </source>
+      <destination>
+        <any>1</any>
+        <port>80</port>
+      </destination>
+      <updated>
+        <username>root@100.101.0.4</username>
+        <time>1728812851.8301</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.4</username>
+        <time>1728812851.8301</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="da7e323c-a442-441a-822a-4ec22cb70681">
+      <type>pass</type>
+      <interface>opt1</interface>
+      <ipprotocol>inet</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>allow servers https traffic ipv4</descr>
+      <direction>in</direction>
+      <quick>1</quick>
+      <protocol>tcp/udp</protocol>
+      <source>
+        <network>opt1</network>
+      </source>
+      <destination>
+        <any>1</any>
+        <port>443</port>
+      </destination>
+      <updated>
+        <username>root@100.101.0.4</username>
+        <time>1728779211.5489</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.4</username>
+        <time>1728779211.5489</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="5967c838-fe86-4bc0-9823-bb77c4c2b830">
+      <type>pass</type>
+      <interface>opt1</interface>
+      <ipprotocol>inet6</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>allow servers https traffic ipv6</descr>
+      <direction>in</direction>
+      <quick>1</quick>
+      <protocol>tcp/udp</protocol>
+      <source>
+        <address>internal_servers_subnet_ipv6</address>
+      </source>
+      <destination>
+        <any>1</any>
+        <port>443</port>
+      </destination>
+      <updated>
+        <username>root@100.101.0.4</username>
+        <time>1728812917.7379</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.4</username>
+        <time>1728812867.427</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="5acd674c-cbb6-42cf-9942-22d3deccd3f1">
+      <type>pass</type>
+      <interface>opt1</interface>
+      <ipprotocol>inet</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>allow servers dns traffic ipv4</descr>
+      <direction>in</direction>
+      <quick>1</quick>
+      <protocol>tcp/udp</protocol>
+      <source>
+        <network>opt1</network>
+      </source>
+      <destination>
+        <any>1</any>
+        <port>53</port>
+      </destination>
+      <updated>
+        <username>root@100.101.0.4</username>
+        <time>1728779228.0552</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.4</username>
+        <time>1728779228.0552</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="67b5c1c7-cca9-47f9-ac60-9680b0377c66">
+      <type>pass</type>
+      <interface>opt1</interface>
+      <ipprotocol>inet6</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>allow servers dns traffic ipv6</descr>
+      <direction>in</direction>
+      <quick>1</quick>
+      <protocol>tcp/udp</protocol>
+      <source>
+        <address>internal_servers_subnet_ipv6</address>
+      </source>
+      <destination>
+        <any>1</any>
+        <port>53</port>
+      </destination>
+      <updated>
+        <username>root@100.101.0.4</username>
+        <time>1728812901.2535</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.4</username>
+        <time>1728812901.2535</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="a1b2772f-5752-4697-8181-7217f01733ba">
+      <type>pass</type>
+      <interface>opt1</interface>
+      <ipprotocol>inet</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>allow servers icmp</descr>
+      <direction>in</direction>
+      <quick>1</quick>
+      <protocol>icmp</protocol>
+      <source>
+        <network>opt1</network>
+      </source>
+      <destination>
+        <any>1</any>
+      </destination>
+      <updated>
+        <username>root@100.101.0.4</username>
+        <time>1728779282.5571</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.4</username>
+        <time>1728779282.5571</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="87501662-8811-4920-835c-319f24b5655f">
+      <type>pass</type>
+      <interface>opt1</interface>
+      <ipprotocol>inet6</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>allow servers icmpv6</descr>
+      <direction>in</direction>
+      <quick>1</quick>
+      <protocol>ipv6-icmp</protocol>
+      <source>
+        <address>internal_servers_subnet_ipv6</address>
+      </source>
+      <destination>
+        <any>1</any>
+      </destination>
+      <updated>
+        <username>root@100.101.0.4</username>
+        <time>1728780402.9522</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.4</username>
+        <time>1728780262.3749</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="248de0f8-df0e-45bd-a65e-05e5acbb8eae">
+      <type>pass</type>
+      <interface>opt1</interface>
+      <ipprotocol>inet</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>ipv4 operators -&gt; servers</descr>
+      <direction>out</direction>
+      <quick>1</quick>
+      <source>
+        <address>Operators_ipv4</address>
+      </source>
+      <destination>
+        <any>1</any>
+      </destination>
+      <updated>
+        <username>root@100.101.0.3</username>
+        <time>1728944352.7314</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.3</username>
+        <time>1728944352.7314</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="e47a8c0c-88ae-48e5-b50a-612ee688cca6">
+      <type>pass</type>
+      <interface>opt1</interface>
+      <ipprotocol>inet6</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>ipv6 operators -&gt; servers</descr>
+      <direction>out</direction>
+      <quick>1</quick>
+      <source>
+        <address>Operators_ipv6</address>
+      </source>
+      <destination>
+        <any>1</any>
+      </destination>
+      <updated>
+        <username>root@100.101.0.3</username>
+        <time>1728944374.1088</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.3</username>
+        <time>1728944374.1088</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="31161a38-7a03-425e-84f0-ebbadcae54b8">
+      <type>pass</type>
+      <interface>opt1</interface>
+      <ipprotocol>inet</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>ipv4 allow proxy to access servers</descr>
+      <direction>out</direction>
+      <quick>1</quick>
+      <protocol>tcp/udp</protocol>
+      <source>
+        <address>proxyserver_ipv4</address>
+      </source>
+      <destination>
+        <network>opt1</network>
+        <port/>
+      </destination>
+      <updated>
+        <username>root@100.101.0.3</username>
+        <time>1728848838.8137</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.4</username>
+        <time>1728813338.1891</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="93a2db24-ae9a-4ff8-a019-a7372291efd9">
+      <type>pass</type>
+      <interface>opt1</interface>
+      <ipprotocol>inet6</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>ipv6 allow proxy to access servers</descr>
+      <direction>out</direction>
+      <quick>1</quick>
+      <protocol>tcp/udp</protocol>
+      <source>
+        <address>proxyserver_ipv6</address>
+      </source>
+      <destination>
+        <address>internal_servers_subnet_ipv6</address>
+        <port/>
+      </destination>
+      <updated>
+        <username>root@100.101.0.3</username>
+        <time>1728848978.1423</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.4</username>
+        <time>1728813387.474</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="bf6a78dd-bd38-4152-9e29-45d55be72851">
+      <type>pass</type>
+      <interface>opt1</interface>
+      <ipprotocol>inet</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>Allow clients -&gt; internal servers ssh</descr>
+      <direction>out</direction>
+      <quick>1</quick>
+      <protocol>tcp/udp</protocol>
+      <source>
+        <address>100.100.2.0/24</address>
+      </source>
+      <destination>
+        <any>1</any>
+        <port>22</port>
+      </destination>
+      <updated>
+        <username>root@100.101.0.2</username>
+        <time>1725654892.0494</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.2</username>
+        <time>1725652861.6555</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="e1802a60-26bd-414e-a731-a84dc4409a41">
+      <type>pass</type>
+      <interface>opt1</interface>
+      <ipprotocol>inet</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>Allow ssh for us</descr>
+      <direction>out</direction>
+      <quick>1</quick>
+      <protocol>tcp/udp</protocol>
+      <source>
+        <address>100.101.0.0/24</address>
+      </source>
+      <destination>
+        <any>1</any>
+        <port>22</port>
+      </destination>
+      <updated>
+        <username>root@100.101.0.4</username>
+        <time>1727786250.1065</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.4</username>
+        <time>1727786250.1065</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="35c375da-dbc2-4a6f-884d-e06a8fcfda5d">
+      <type>pass</type>
+      <interface>opt1</interface>
+      <ipprotocol>inet6</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>Allow clients -&gt; internal servers ssh</descr>
+      <direction>out</direction>
+      <quick>1</quick>
+      <protocol>tcp/udp</protocol>
+      <source>
+        <address>2001:470:b5b8:1b82::/64</address>
+      </source>
+      <destination>
+        <any>1</any>
+        <port>22</port>
+      </destination>
+      <updated>
+        <username>root@100.101.0.2</username>
+        <time>1725654900.3512</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.2</username>
+        <time>1725652759.2859</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="731a0f92-10d6-4fab-908b-5e583ac3baad">
+      <type>pass</type>
+      <interface>opt1</interface>
+      <ipprotocol>inet</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>allow any -&gt; dnsserver dns ipv4</descr>
+      <direction>out</direction>
+      <quick>1</quick>
+      <protocol>tcp/udp</protocol>
+      <source>
+        <any>1</any>
+      </source>
+      <destination>
+        <address>dnsserver_ipv4</address>
+        <port>53</port>
+      </destination>
+      <updated>
+        <username>root@100.101.0.4</username>
+        <time>1728779634.1628</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.4</username>
+        <time>1728779634.1628</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="2a05c15e-caa0-45f5-94fc-66d058f769f9">
+      <type>pass</type>
+      <interface>opt1</interface>
+      <ipprotocol>inet6</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>allow any -&gt; dnsserver dns ipv6</descr>
+      <direction>out</direction>
+      <quick>1</quick>
+      <protocol>tcp/udp</protocol>
+      <source>
+        <any>1</any>
+      </source>
+      <destination>
+        <address>dnsserver_ipv6</address>
+        <port>53</port>
+      </destination>
+      <updated>
+        <username>root@100.101.0.4</username>
+        <time>1728812947.101</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.4</username>
+        <time>1728780530.8941</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="08ad7fdc-1bec-4b81-923a-be04a43e4e4e">
+      <type>pass</type>
+      <interface>opt1</interface>
+      <ipprotocol>inet</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>allow icmp traffic to server</descr>
+      <direction>out</direction>
+      <quick>1</quick>
+      <protocol>icmp</protocol>
+      <source>
+        <any>1</any>
+      </source>
+      <destination>
+        <network>opt1</network>
+      </destination>
+      <updated>
+        <username>root@100.101.0.4</username>
+        <time>1728780340.8421</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.4</username>
+        <time>1728780000.5185</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="d082b923-a4c9-430f-92fb-2d2e0912995b">
+      <type>pass</type>
+      <interface>opt1</interface>
+      <ipprotocol>inet6</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>allow icmpv6 to servers</descr>
+      <direction>out</direction>
+      <quick>1</quick>
+      <protocol>ipv6-icmp</protocol>
+      <source>
+        <any>1</any>
+      </source>
+      <destination>
+        <address>internal_servers_subnet_ipv6</address>
+      </destination>
+      <updated>
+        <username>root@100.101.0.4</username>
+        <time>1728780476.7869</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.4</username>
+        <time>1728780374.7006</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="b24c345a-64d1-4636-b516-758682c15d20">
+      <type>pass</type>
+      <interface>opt1</interface>
+      <ipprotocol>inet</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>allow client -&gt; servers ipv4</descr>
+      <direction>out</direction>
+      <quick>1</quick>
+      <source>
+        <network>lan</network>
+      </source>
+      <destination>
+        <network>opt1</network>
+      </destination>
+      <updated>
+        <username>root@100.101.0.4</username>
+        <time>1728813608.9908</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.4</username>
+        <time>1728813608.9908</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="817e125d-ce96-46db-bb5f-5c76dd355e11">
+      <type>pass</type>
+      <interface>opt1</interface>
+      <ipprotocol>inet6</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>allow client -&gt; servers ipv6</descr>
+      <direction>out</direction>
+      <quick>1</quick>
+      <source>
+        <address>internal_clients_subnet_ipv6</address>
+      </source>
+      <destination>
+        <address>internal_servers_subnet_ipv6</address>
+      </destination>
+      <updated>
+        <username>root@100.101.0.4</username>
+        <time>1728813653.5555</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.4</username>
+        <time>1728813653.5555</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="852d34ff-03ba-47e0-9f74-797b97608aeb">
+      <type>pass</type>
+      <interface>opt1</interface>
+      <ipprotocol>inet</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>allow dmz -&gt; servers ipv4</descr>
+      <direction>out</direction>
+      <quick>1</quick>
+      <source>
+        <address>100.100.6.0/24</address>
+      </source>
+      <destination>
+        <network>opt1</network>
+      </destination>
+      <updated>
+        <username>root@100.101.0.4</username>
+        <time>1728813751.8939</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.4</username>
+        <time>1728813751.8939</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="41d0f17b-cd61-4d13-b7e1-896845c666bd">
+      <type>pass</type>
+      <interface>opt1</interface>
+      <ipprotocol>inet6</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>allow dmz -&gt; servers ipv6</descr>
+      <direction>out</direction>
+      <quick>1</quick>
+      <source>
+        <address>dmz_subnet_ipv6</address>
+      </source>
+      <destination>
+        <address>internal_servers_subnet_ipv6</address>
+      </destination>
+      <updated>
+        <username>root@100.101.0.4</username>
+        <time>1728813778.7411</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.4</username>
+        <time>1728813778.7411</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="bd5c9dbd-d716-4d55-9f0a-af61e82dd621">
+      <type>reject</type>
+      <interface>opt1</interface>
+      <ipprotocol>inet46</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>reject ssh all</descr>
+      <direction>out</direction>
+      <quick>0</quick>
+      <protocol>tcp/udp</protocol>
+      <source>
+        <any>1</any>
+      </source>
+      <destination>
+        <any>1</any>
+        <port>22</port>
+      </destination>
+      <updated>
+        <username>root@100.101.0.4</username>
+        <time>1727786213.5824</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.4</username>
+        <time>1727786153.0732</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule uuid="f7a4d879-7240-4a0a-b520-483cf2b9efe7">
+      <type>reject</type>
+      <interface>opt1</interface>
+      <ipprotocol>inet46</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>block everything out</descr>
+      <direction>out</direction>
+      <quick>0</quick>
+      <source>
+        <any>1</any>
+      </source>
+      <destination>
+        <any>1</any>
+      </destination>
+      <updated>
+        <username>root@100.101.0.4</username>
+        <time>1728779438.4482</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@100.101.0.4</username>
+        <time>1728779396.4012</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+  </filter>
+  <rrd>
+    <enable/>
+  </rrd>
+  <load_balancer>
+    <monitor_type>
+      <name>ICMP</name>
+      <type>icmp</type>
+      <descr>ICMP</descr>
+      <options/>
+    </monitor_type>
+    <monitor_type>
+      <name>TCP</name>
+      <type>tcp</type>
+      <descr>Generic TCP</descr>
+      <options/>
+    </monitor_type>
+    <monitor_type>
+      <name>HTTP</name>
+      <type>http</type>
+      <descr>Generic HTTP</descr>
+      <options>
+        <path>/</path>
+        <host/>
+        <code>200</code>
+      </options>
+    </monitor_type>
+    <monitor_type>
+      <name>HTTPS</name>
+      <type>https</type>
+      <descr>Generic HTTPS</descr>
+      <options>
+        <path>/</path>
+        <host/>
+        <code>200</code>
+      </options>
+    </monitor_type>
+    <monitor_type>
+      <name>SMTP</name>
+      <type>send</type>
+      <descr>Generic SMTP</descr>
+      <options>
+        <send/>
+        <expect>220 *</expect>
+      </options>
+    </monitor_type>
+  </load_balancer>
+  <ntpd>
+    <prefer>0.opnsense.pool.ntp.org</prefer>
+  </ntpd>
+  <widgets>
+    <sequence>system_information-container:00000000-col3:show,services_status-container:00000001-col4:show,gateways-container:00000002-col4:show,interface_list-container:00000003-col4:show</sequence>
+    <column_count>2</column_count>
+  </widgets>
+  <revision>
+    <username>root@100.101.0.4</username>
+    <time>1729704682.003</time>
+    <description>/firewall_rules_edit.php made changes</description>
+  </revision>
+  <OPNsense>
+    <Firewall>
+      <Alias version="1.0.1">
+        <geoip>
+          <url/>
+        </geoip>
+        <aliases>
+          <alias uuid="f90d7c31-2a74-4932-9c7c-ec6a67e17835">
+            <enabled>1</enabled>
+            <name>webserver_ipv4</name>
+            <type>host</type>
+            <proto/>
+            <interface/>
+            <counters>0</counters>
+            <updatefreq/>
+            <content>100.100.6.2</content>
+            <categories/>
+            <description>webserver ipv4</description>
+          </alias>
+          <alias uuid="830e28f4-f3ab-4cc5-b733-de47563301c3">
+            <enabled>1</enabled>
+            <name>webserver_ipv6</name>
+            <type>host</type>
+            <proto/>
+            <interface/>
+            <counters>0</counters>
+            <updatefreq/>
+            <content>2001:470:b5b8:1b06:a65e:ad2c:6d4c:3d75</content>
+            <categories/>
+            <description>webserver ipv6</description>
+          </alias>
+          <alias uuid="ecf5a475-4893-4cfe-b735-c6e3be85d1b5">
+            <enabled>1</enabled>
+            <name>proxyserver_ipv6</name>
+            <type>host</type>
+            <proto/>
+            <interface/>
+            <counters>0</counters>
+            <updatefreq/>
+            <content>2001:470:b5b8:1b06:4c12:44ab:4530:92d9</content>
+            <categories/>
+            <description>proxyserver ipv6</description>
+          </alias>
+          <alias uuid="7eb08849-336c-41a6-95e1-b176fb2e123c">
+            <enabled>1</enabled>
+            <name>proxyserver_ipv4</name>
+            <type>host</type>
+            <proto/>
+            <interface/>
+            <counters>0</counters>
+            <updatefreq/>
+            <content>100.100.6.3</content>
+            <categories/>
+            <description>proxyserver ipv4</description>
+          </alias>
+          <alias uuid="1f04ea92-7839-42b9-be46-70e92d2e9e69">
+            <enabled>1</enabled>
+            <name>clientext_ipv6</name>
+            <type>host</type>
+            <proto/>
+            <interface/>
+            <counters>0</counters>
+            <updatefreq/>
+            <content>2001:470:b5b8:1b04:6e4:41c0:bf4c:79cd
+2001:470:b5b8:1b04::2000</content>
+            <categories/>
+            <description>client ext 1 ipv6</description>
+          </alias>
+          <alias uuid="e6b52dba-96ed-44e8-bf80-70663508f1d0">
+            <enabled>1</enabled>
+            <name>clientext_ipv4</name>
+            <type>host</type>
+            <proto/>
+            <interface/>
+            <counters>0</counters>
+            <updatefreq/>
+            <content>100.100.4.100</content>
+            <categories/>
+            <description>client ext 1 ipv4</description>
+          </alias>
+          <alias uuid="936fe990-38b6-4428-8777-5fa11d99256d">
+            <enabled>1</enabled>
+            <name>fantastic_coffee_ipv4</name>
+            <type>host</type>
+            <proto/>
+            <interface/>
+            <counters>0</counters>
+            <updatefreq/>
+            <content>100.100.4.10</content>
+            <categories/>
+            <description>fantastic-coffee ipv4</description>
+          </alias>
+          <alias uuid="12f54cd6-413e-4d45-b3ec-62598e3b952c">
+            <enabled>1</enabled>
+            <name>arpwatch_ipv4</name>
+            <type>host</type>
+            <proto/>
+            <interface/>
+            <counters>0</counters>
+            <updatefreq/>
+            <content>100.100.2.254</content>
+            <categories/>
+            <description>arpwatch-clients ipv4</description>
+          </alias>
+          <alias uuid="3342aac9-83df-4874-a479-f810fa49784e">
+            <enabled>1</enabled>
+            <name>arpwatch_ipv6</name>
+            <type>host</type>
+            <proto/>
+            <interface/>
+            <counters>0</counters>
+            <updatefreq/>
+            <content>2001:470:b5b8:1b82:fd6c:5c76:bb9d:3cc2</content>
+            <categories/>
+            <description>arpwatch-clients ipv6</description>
+          </alias>
+          <alias uuid="e130ba74-e59f-4a8a-a6ee-3c5e0092f0c0">
+            <enabled>1</enabled>
+            <name>kali_ipv4</name>
+            <type>host</type>
+            <proto/>
+            <interface/>
+            <counters>0</counters>
+            <updatefreq/>
+            <content>100.100.2.100</content>
+            <categories/>
+            <description>kali ipv4</description>
+          </alias>
+          <alias uuid="885410b3-1bbf-4dfe-bd5d-6e942499aeb4">
+            <enabled>1</enabled>
+            <name>kali_ipv6</name>
+            <type>host</type>
+            <proto/>
+            <interface/>
+            <counters>0</counters>
+            <updatefreq/>
+            <content>2001:470:b5b8:1b82:b258:11a1:fb1d:5cf5</content>
+            <categories/>
+            <description>kali ipv6</description>
+          </alias>
+          <alias uuid="f2b32ff2-583f-4304-9b63-5db79c91baeb">
+            <enabled>1</enabled>
+            <name>dnsserver_ipv4</name>
+            <type>host</type>
+            <proto/>
+            <interface/>
+            <counters>0</counters>
+            <updatefreq/>
+            <content>100.100.1.2</content>
+            <categories/>
+            <description>dnsserver ipv4</description>
+          </alias>
+          <alias uuid="b8b84339-415d-4c11-bf75-cfd6524546c1">
+            <enabled>1</enabled>
+            <name>dnsserver_ipv6</name>
+            <type>host</type>
+            <proto/>
+            <interface/>
+            <counters>0</counters>
+            <updatefreq/>
+            <content>2001:470:b5b8:1b81:b4d4:f59e:63a3:5295</content>
+            <categories/>
+            <description>dnsserver ipv6</description>
+          </alias>
+          <alias uuid="e6cb8b3b-1ffc-4936-996b-bf337cb69253">
+            <enabled>1</enabled>
+            <name>logserver_ipv4</name>
+            <type>host</type>
+            <proto/>
+            <interface/>
+            <counters>0</counters>
+            <updatefreq/>
+            <content>100.100.1.3</content>
+            <categories/>
+            <description>logserver ipv4</description>
+          </alias>
+          <alias uuid="bc8052d8-26f2-4c2b-8eab-7a2ef5531c8c">
+            <enabled>1</enabled>
+            <name>logserver_ipv6</name>
+            <type>host</type>
+            <proto/>
+            <interface/>
+            <counters>0</counters>
+            <updatefreq/>
+            <content>2001:470:b5b8:1b81:cc15:6dd7:afe6:561c</content>
+            <categories/>
+            <description>logserver ipv6</description>
+          </alias>
+          <alias uuid="8361492e-5c7b-4d0a-a320-c241e50c3386">
+            <enabled>1</enabled>
+            <name>greenbone_ipv4</name>
+            <type>host</type>
+            <proto/>
+            <interface/>
+            <counters>0</counters>
+            <updatefreq/>
+            <content>100.100.1.4</content>
+            <categories/>
+            <description>greenbone ipv4</description>
+          </alias>
+          <alias uuid="f182431c-fe8e-438f-bb40-858767423938">
+            <enabled>1</enabled>
+            <name>greenbone_ipv6</name>
+            <type>host</type>
+            <proto/>
+            <interface/>
+            <counters>0</counters>
+            <updatefreq/>
+            <content>2001:470:b5b8:1b81:e7ef:8f1f:965e:c8cf</content>
+            <categories/>
+            <description>greenbone ipv6</description>
+          </alias>
+          <alias uuid="b948f259-9006-4f51-ad23-b780c73af5b8">
+            <enabled>1</enabled>
+            <name>graylog_ipv4</name>
+            <type>host</type>
+            <proto/>
+            <interface/>
+            <counters>0</counters>
+            <updatefreq/>
+            <content>100.100.1.10</content>
+            <categories/>
+            <description>graylog ipv4</description>
+          </alias>
+          <alias uuid="2f7b1e0c-62c0-4a82-8262-a33cad33b19a">
+            <enabled>1</enabled>
+            <name>graylog_ipv6</name>
+            <type>host</type>
+            <proto/>
+            <interface/>
+            <counters>0</counters>
+            <updatefreq/>
+            <content>2001:470:b5b8:1b81:6c5a:3d84:64e:fccb</content>
+            <categories/>
+            <description>graylog ipv6</description>
+          </alias>
+          <alias uuid="d924fb9a-a0f1-4694-aa48-681a82e6feab">
+            <enabled>1</enabled>
+            <name>external_clients_subnet_ipv6</name>
+            <type>network</type>
+            <proto/>
+            <interface/>
+            <counters>0</counters>
+            <updatefreq/>
+            <content>2001:470:b5b8:1b04::/64</content>
+            <categories/>
+            <description>external_clients subnet ipv6</description>
+          </alias>
+          <alias uuid="ed7103a4-cb0d-4ac7-af58-87c6e14f8bc6">
+            <enabled>1</enabled>
+            <name>dmz_subnet_ipv6</name>
+            <type>network</type>
+            <proto/>
+            <interface/>
+            <counters>0</counters>
+            <updatefreq/>
+            <content>2001:470:b5b8:1b06::/64</content>
+            <categories/>
+            <description>dmz subnet ipv6</description>
+          </alias>
+          <alias uuid="95515025-ed28-4543-b807-2795b7f9a974">
+            <enabled>1</enabled>
+            <name>internal_servers_subnet_ipv6</name>
+            <type>network</type>
+            <proto/>
+            <interface/>
+            <counters>0</counters>
+            <updatefreq/>
+            <content>2001:470:b5b8:1b81::/64</content>
+            <categories/>
+            <description>internal servers subnet ipv6</description>
+          </alias>
+          <alias uuid="1e5856da-5bed-4324-9c41-ab18491af991">
+            <enabled>1</enabled>
+            <name>internal_clients_subnet_ipv6</name>
+            <type>network</type>
+            <proto/>
+            <interface/>
+            <counters>0</counters>
+            <updatefreq/>
+            <content>2001:470:b5b8:1b82::/64</content>
+            <categories/>
+            <description>internal clients subnet ipv6</description>
+          </alias>
+          <alias uuid="5973f6a4-20f6-49b7-8ae1-9cb411cc28c4">
+            <enabled>1</enabled>
+            <name>dmz_subnet_ipv4</name>
+            <type>network</type>
+            <proto/>
+            <interface/>
+            <counters>0</counters>
+            <updatefreq/>
+            <content>100.100.6.0/24</content>
+            <categories/>
+            <description>dmz subnet ipv4</description>
+          </alias>
+          <alias uuid="9e5d3a98-687f-4986-9d31-bb97f54a2370">
+            <enabled>1</enabled>
+            <name>external_clients_subnet_ipv4</name>
+            <type>network</type>
+            <proto/>
+            <interface/>
+            <counters>0</counters>
+            <updatefreq/>
+            <content>100.100.4.0/24</content>
+            <categories/>
+            <description>external clients subnet ipv4</description>
+          </alias>
+          <alias uuid="f52748be-aa16-4196-a659-c35c88192811">
+            <enabled>1</enabled>
+            <name>internal_clients_subnet_ipv4</name>
+            <type>network</type>
+            <proto/>
+            <interface/>
+            <counters>0</counters>
+            <updatefreq/>
+            <content>100.100.2.0/24</content>
+            <categories/>
+            <description>internal clients subnet ipv4</description>
+          </alias>
+          <alias uuid="7fff7262-b324-4f2c-8b02-ad97c4426ae6">
+            <enabled>1</enabled>
+            <name>internal_servers_subnet_ipv4</name>
+            <type>network</type>
+            <proto/>
+            <interface/>
+            <counters>0</counters>
+            <updatefreq/>
+            <content>100.100.1.0/24</content>
+            <categories/>
+            <description>internal servers subnet ipv4</description>
+          </alias>
+          <alias uuid="eaeb7ccf-91be-436b-aa70-71e2990dc33e">
+            <enabled>1</enabled>
+            <name>Alice_ipv4</name>
+            <type>host</type>
+            <proto/>
+            <interface/>
+            <counters>0</counters>
+            <updatefreq/>
+            <content>100.100.253.2</content>
+            <categories/>
+            <description>Alice operator ipv4</description>
+          </alias>
+          <alias uuid="33ca2f4c-bbe4-4325-9746-cfd2c27f875b">
+            <enabled>1</enabled>
+            <name>Bob_ipv4</name>
+            <type>host</type>
+            <proto/>
+            <interface/>
+            <counters>0</counters>
+            <updatefreq/>
+            <content>100.100.253.6</content>
+            <categories/>
+            <description>Bob employee ipv4</description>
+          </alias>
+          <alias uuid="af9d9acb-3c0e-4bf6-9082-ffb83a3100e0">
+            <enabled>1</enabled>
+            <name>Charles_ipv4</name>
+            <type>host</type>
+            <proto/>
+            <interface/>
+            <counters>0</counters>
+            <updatefreq/>
+            <content>100.100.253.10</content>
+            <categories/>
+            <description>Charles employee ipv4</description>
+          </alias>
+          <alias uuid="23aff8cf-97ff-4896-86d7-aebc524a05db">
+            <enabled>1</enabled>
+            <name>Charles_ipv6</name>
+            <type>network</type>
+            <proto/>
+            <interface/>
+            <counters>0</counters>
+            <updatefreq/>
+            <content>2001:470:b5b8:1bfd::100/124</content>
+            <categories/>
+            <description>Charles employee ipv6</description>
+          </alias>
+          <alias uuid="30d0b8b5-1530-4b32-9302-a8eab8466c9c">
+            <enabled>1</enabled>
+            <name>Bob_ipv6</name>
+            <type>network</type>
+            <proto/>
+            <interface/>
+            <counters>0</counters>
+            <updatefreq/>
+            <content>2001:470:b5b8:1bfd::60/124</content>
+            <categories/>
+            <description>Bob employee ipv6</description>
+          </alias>
+          <alias uuid="8ccc8ed4-d6d5-4785-ba26-5f301c33ed44">
+            <enabled>1</enabled>
+            <name>Employees_ipv4</name>
+            <type>host</type>
+            <proto/>
+            <interface/>
+            <counters>0</counters>
+            <updatefreq/>
+            <content>Bob_ipv4
+Charles_ipv4</content>
+            <categories/>
+            <description>Employees ipv4</description>
+          </alias>
+          <alias uuid="14bcf3e6-39ee-489e-abaf-f963d6572075">
+            <enabled>1</enabled>
+            <name>Operators_ipv4</name>
+            <type>host</type>
+            <proto/>
+            <interface/>
+            <counters>0</counters>
+            <updatefreq/>
+            <content>Alice_ipv4</content>
+            <categories/>
+            <description>Operators ipv4</description>
+          </alias>
+          <alias uuid="289e931a-b932-453c-8875-a2b7d1f0c968">
+            <enabled>1</enabled>
+            <name>Employees_ipv6</name>
+            <type>network</type>
+            <proto/>
+            <interface/>
+            <counters>0</counters>
+            <updatefreq/>
+            <content>Charles_ipv6
+Bob_ipv6</content>
+            <categories/>
+            <description>Employees ipv6</description>
+          </alias>
+          <alias uuid="16d733f2-3f50-4dba-af0a-dd75c4a89e4d">
+            <enabled>1</enabled>
+            <name>Alice_ipv6</name>
+            <type>network</type>
+            <proto/>
+            <interface/>
+            <counters>0</counters>
+            <updatefreq/>
+            <content>2001:470:b5b8:1bfd::20/124</content>
+            <categories/>
+            <description>Alice operator ipv6</description>
+          </alias>
+          <alias uuid="8c0bdd6a-1a87-4b5f-a16b-d0b41861f8cb">
+            <enabled>1</enabled>
+            <name>Operators_ipv6</name>
+            <type>network</type>
+            <proto/>
+            <interface/>
+            <counters>0</counters>
+            <updatefreq/>
+            <content>Alice_ipv6</content>
+            <categories/>
+            <description>Operators ipv6</description>
+          </alias>
+        </aliases>
+      </Alias>
+      <Category version="1.0.0">
+        <categories/>
+      </Category>
+      <Lvtemplate version="0.0.1">
+        <templates/>
+      </Lvtemplate>
+      <Filter version="1.0.3">
+        <rules/>
+        <snatrules/>
+        <npt/>
+      </Filter>
+    </Firewall>
+    <captiveportal version="1.0.1">
+      <zones/>
+      <templates/>
+    </captiveportal>
+    <Netflow version="1.0.1">
+      <capture>
+        <interfaces/>
+        <egress_only/>
+        <version>v9</version>
+        <targets/>
+      </capture>
+      <collect>
+        <enable>0</enable>
+      </collect>
+      <activeTimeout>1800</activeTimeout>
+      <inactiveTimeout>15</inactiveTimeout>
+    </Netflow>
+    <Interfaces>
+      <vxlans version="1.0.2"/>
+      <loopbacks version="1.0.0"/>
+      <neighbors version="1.0.0"/>
+    </Interfaces>
+    <OpenVPNExport version="0.0.1">
+      <servers/>
+    </OpenVPNExport>
+    <Syslog version="1.0.1">
+      <general>
+        <enabled>1</enabled>
+      </general>
+      <destinations>
+        <destination uuid="8de2c300-c40a-490f-846f-cf417b50379e">
+          <enabled>1</enabled>
+          <transport>udp4</transport>
+          <program/>
+          <level>notice,warn,err,crit,alert,emerg</level>
+          <facility/>
+          <hostname>100.100.1.10</hostname>
+          <certificate/>
+          <port>514</port>
+          <rfc5424>0</rfc5424>
+          <description>Graylog</description>
+        </destination>
+      </destinations>
+    </Syslog>
+    <TrafficShaper version="1.0.3">
+      <pipes/>
+      <queues/>
+      <rules/>
+    </TrafficShaper>
+    <cron version="1.0.4">
+      <jobs/>
+    </cron>
+    <proxy version="1.0.6">
+      <general>
+        <enabled>0</enabled>
+        <error_pages>opnsense</error_pages>
+        <icpPort/>
+        <logging>
+          <enable>
+            <accessLog>1</accessLog>
+            <storeLog>1</storeLog>
+          </enable>
+          <ignoreLogACL/>
+          <target/>
+        </logging>
+        <alternateDNSservers/>
+        <dnsV4First>0</dnsV4First>
+        <forwardedForHandling>on</forwardedForHandling>
+        <uriWhitespaceHandling>strip</uriWhitespaceHandling>
+        <enablePinger>1</enablePinger>
+        <useViaHeader>1</useViaHeader>
+        <suppressVersion>0</suppressVersion>
+        <connecttimeout/>
+        <VisibleEmail>admin@localhost.local</VisibleEmail>
+        <VisibleHostname/>
+        <cache>
+          <local>
+            <enabled>0</enabled>
+            <directory>/var/squid/cache</directory>
+            <cache_mem>256</cache_mem>
+            <maximum_object_size/>
+            <maximum_object_size_in_memory/>
+            <memory_cache_mode>always</memory_cache_mode>
+            <size>100</size>
+            <l1>16</l1>
+            <l2>256</l2>
+            <cache_linux_packages>0</cache_linux_packages>
+            <cache_windows_updates>0</cache_windows_updates>
+          </local>
+        </cache>
+        <traffic>
+          <enabled>0</enabled>
+          <maxDownloadSize>2048</maxDownloadSize>
+          <maxUploadSize>1024</maxUploadSize>
+          <OverallBandwidthTrotteling>1024</OverallBandwidthTrotteling>
+          <perHostTrotteling>256</perHostTrotteling>
+        </traffic>
+        <parentproxy>
+          <enabled>0</enabled>
+          <host/>
+          <enableauth>0</enableauth>
+          <user>username</user>
+          <password>password</password>
+          <port/>
+          <localdomains/>
+          <localips/>
+        </parentproxy>
+      </general>
+      <forward>
+        <interfaces>lan</interfaces>
+        <port>3128</port>
+        <sslbumpport>3129</sslbumpport>
+        <sslbump>0</sslbump>
+        <sslurlonly>0</sslurlonly>
+        <sslcertificate/>
+        <sslnobumpsites/>
+        <ssl_crtd_storage_max_size>4</ssl_crtd_storage_max_size>
+        <sslcrtd_children>5</sslcrtd_children>
+        <snmp_enable>0</snmp_enable>
+        <snmp_port>3401</snmp_port>
+        <snmp_password>public</snmp_password>
+        <ftpInterfaces/>
+        <ftpPort>2121</ftpPort>
+        <ftpTransparentMode>0</ftpTransparentMode>
+        <addACLforInterfaceSubnets>1</addACLforInterfaceSubnets>
+        <transparentMode>0</transparentMode>
+        <acl>
+          <allowedSubnets/>
+          <unrestricted/>
+          <bannedHosts/>
+          <whiteList/>
+          <blackList/>
+          <browser/>
+          <mimeType/>
+          <googleapps/>
+          <youtube/>
+          <safePorts>80:http,21:ftp,443:https,70:gopher,210:wais,1025-65535:unregistered ports,280:http-mgmt,488:gss-http,591:filemaker,777:multiling http</safePorts>
+          <sslPorts>443:https</sslPorts>
+          <remoteACLs>
+            <blacklists/>
+            <UpdateCron/>
+          </remoteACLs>
+        </acl>
+        <icap>
+          <enable>0</enable>
+          <RequestURL>icap://[::1]:1344/avscan</RequestURL>
+          <ResponseURL>icap://[::1]:1344/avscan</ResponseURL>
+          <SendClientIP>1</SendClientIP>
+          <SendUsername>0</SendUsername>
+          <EncodeUsername>0</EncodeUsername>
+          <UsernameHeader>X-Username</UsernameHeader>
+          <EnablePreview>1</EnablePreview>
+          <PreviewSize>1024</PreviewSize>
+          <OptionsTTL>60</OptionsTTL>
+          <exclude/>
+        </icap>
+        <authentication>
+          <method/>
+          <authEnforceGroup/>
+          <realm>OPNsense proxy authentication</realm>
+          <credentialsttl>2</credentialsttl>
+          <children>5</children>
+        </authentication>
+      </forward>
+      <pac/>
+      <error_pages>
+        <template/>
+      </error_pages>
+    </proxy>
+    <unboundplus version="1.0.9">
+      <general>
+        <enabled>0</enabled>
+        <port>53</port>
+        <stats/>
+        <active_interface/>
+        <dnssec/>
+        <dns64/>
+        <dns64prefix/>
+        <noarecords/>
+        <regdhcp/>
+        <regdhcpdomain/>
+        <regdhcpstatic/>
+        <noreglladdr6/>
+        <noregrecords/>
+        <txtsupport/>
+        <cacheflush/>
+        <local_zone_type>transparent</local_zone_type>
+        <outgoing_interface/>
+        <enable_wpad/>
+      </general>
+      <advanced>
+        <hideidentity>0</hideidentity>
+        <hideversion>0</hideversion>
+        <prefetch>0</prefetch>
+        <prefetchkey>0</prefetchkey>
+        <dnssecstripped>0</dnssecstripped>
+        <aggressivensec>1</aggressivensec>
+        <serveexpired>0</serveexpired>
+        <serveexpiredreplyttl/>
+        <serveexpiredttl/>
+        <serveexpiredttlreset>0</serveexpiredttlreset>
+        <serveexpiredclienttimeout/>
+        <qnameminstrict>0</qnameminstrict>
+        <extendedstatistics>0</extendedstatistics>
+        <logqueries>0</logqueries>
+        <logreplies>0</logreplies>
+        <logtagqueryreply>0</logtagqueryreply>
+        <logservfail/>
+        <loglocalactions/>
+        <logverbosity>1</logverbosity>
+        <valloglevel>0</valloglevel>
+        <privatedomain/>
+        <privateaddress>0.0.0.0/8,10.0.0.0/8,100.64.0.0/10,169.254.0.0/16,172.16.0.0/12,192.0.2.0/24,192.168.0.0/16,198.18.0.0/15,198.51.100.0/24,203.0.113.0/24,233.252.0.0/24,::1/128,2001:db8::/32,fc00::/8,fd00::/8,fe80::/10</privateaddress>
+        <insecuredomain/>
+        <msgcachesize/>
+        <rrsetcachesize/>
+        <outgoingnumtcp/>
+        <incomingnumtcp/>
+        <numqueriesperthread/>
+        <outgoingrange/>
+        <jostletimeout/>
+        <cachemaxttl/>
+        <cachemaxnegativettl/>
+        <cacheminttl/>
+        <infrahostttl/>
+        <infrakeepprobing/>
+        <infracachenumhosts/>
+        <unwantedreplythreshold/>
+      </advanced>
+      <acls>
+        <default_action>allow</default_action>
+      </acls>
+      <dnsbl>
+        <enabled>0</enabled>
+        <safesearch/>
+        <type/>
+        <lists/>
+        <whitelists/>
+        <blocklists/>
+        <wildcards/>
+        <address/>
+        <nxdomain>0</nxdomain>
+      </dnsbl>
+      <forwarding>
+        <enabled>1</enabled>
+      </forwarding>
+      <dots/>
+      <hosts/>
+      <aliases/>
+      <domains/>
+    </unboundplus>
+    <IPsec version="1.0.1">
+      <general>
+        <enabled/>
+      </general>
+      <keyPairs/>
+      <preSharedKeys>
+        <preSharedKey uuid="3a891ec8-5a6f-4bf5-96c5-602c0cd74e3d">
+          <ident>100.100.254.2</ident>
+          <remote_ident>100.100.254.1</remote_ident>
+          <keyType>PSK</keyType>
+          <Key>b3Buc2Vuc2V0dW5uZWxpbmc=</Key>
+        </preSharedKey>
+      </preSharedKeys>
+    </IPsec>
+    <IDS version="1.0.9">
+      <rules/>
+      <policies/>
+      <userDefinedRules/>
+      <files/>
+      <fileTags/>
+      <general>
+        <enabled>0</enabled>
+        <ips>0</ips>
+        <promisc>0</promisc>
+        <interfaces>wan</interfaces>
+        <homenet>192.168.0.0/16,10.0.0.0/8,172.16.0.0/12</homenet>
+        <defaultPacketSize/>
+        <UpdateCron/>
+        <AlertLogrotate>W0D23</AlertLogrotate>
+        <AlertSaveLogs>4</AlertSaveLogs>
+        <MPMAlgo>ac</MPMAlgo>
+        <detect>
+          <Profile>medium</Profile>
+          <toclient_groups/>
+          <toserver_groups/>
+        </detect>
+        <syslog>0</syslog>
+        <syslog_eve>0</syslog_eve>
+        <LogPayload>0</LogPayload>
+        <verbosity/>
+      </general>
+    </IDS>
+    <monit version="1.0.12">
+      <general>
+        <enabled>0</enabled>
+        <interval>120</interval>
+        <startdelay>120</startdelay>
+        <mailserver>127.0.0.1</mailserver>
+        <port>25</port>
+        <username/>
+        <password/>
+        <ssl>0</ssl>
+        <sslversion>auto</sslversion>
+        <sslverify>1</sslverify>
+        <logfile>syslog facility log_daemon</logfile>
+        <statefile/>
+        <eventqueuePath/>
+        <eventqueueSlots/>
+        <httpdEnabled>0</httpdEnabled>
+        <httpdUsername>root</httpdUsername>
+        <httpdPassword>edqxC8sprC0CJ3dOcSe2f</httpdPassword>
+        <httpdPort>2812</httpdPort>
+        <httpdAllow/>
+        <mmonitUrl/>
+        <mmonitTimeout>5</mmonitTimeout>
+        <mmonitRegisterCredentials>1</mmonitRegisterCredentials>
+      </general>
+      <alert uuid="e385308f-c5f7-43a4-883e-65d0c8fcbd19">
+        <enabled>0</enabled>
+        <recipient>root@localhost.local</recipient>
+        <noton>0</noton>
+        <events/>
+        <format/>
+        <reminder>10</reminder>
+        <description/>
+      </alert>
+      <service uuid="6c34b105-b50f-4ac3-b266-4169d6d09a77">
+        <enabled>1</enabled>
+        <name>$HOST</name>
+        <description/>
+        <type>system</type>
+        <pidfile/>
+        <match/>
+        <path/>
+        <timeout>300</timeout>
+        <starttimeout>30</starttimeout>
+        <address/>
+        <interface/>
+        <start/>
+        <stop/>
+        <tests>1a090f5d-d723-4730-83e8-45924e971a40,71fc3228-4112-4b90-a8c1-40373237cc33,2a55ed11-2037-4728-9340-903c924c4f2c,c70ff490-543f-4c65-ab79-01556f5acf29</tests>
+        <depends/>
+        <polltime/>
+      </service>
+      <service uuid="df180626-dcb9-421e-bc7e-d32caf13d3ab">
+        <enabled>1</enabled>
+        <name>RootFs</name>
+        <description/>
+        <type>filesystem</type>
+        <pidfile/>
+        <match/>
+        <path>/</path>
+        <timeout>300</timeout>
+        <starttimeout>30</starttimeout>
+        <address/>
+        <interface/>
+        <start/>
+        <stop/>
+        <tests>dcb1f1b6-1b5a-4d28-a343-f8bd881c750a</tests>
+        <depends/>
+        <polltime/>
+      </service>
+      <service uuid="413fb222-643e-4963-a7f3-7b1f4216e280">
+        <enabled>0</enabled>
+        <name>carp_status_change</name>
+        <description/>
+        <type>custom</type>
+        <pidfile/>
+        <match/>
+        <path>/usr/local/opnsense/scripts/OPNsense/Monit/carp_status</path>
+        <timeout>300</timeout>
+        <starttimeout>30</starttimeout>
+        <address/>
+        <interface/>
+        <start/>
+        <stop/>
+        <tests>57f1bb91-47a3-47ce-84dc-56442776a277</tests>
+        <depends/>
+        <polltime/>
+      </service>
+      <service uuid="b17259b3-55bd-4faf-9aa3-7607701b9cd7">
+        <enabled>0</enabled>
+        <name>gateway_alert</name>
+        <description/>
+        <type>custom</type>
+        <pidfile/>
+        <match/>
+        <path>/usr/local/opnsense/scripts/OPNsense/Monit/gateway_alert</path>
+        <timeout>300</timeout>
+        <starttimeout>30</starttimeout>
+        <address/>
+        <interface/>
+        <start/>
+        <stop/>
+        <tests>933e537b-5d61-4b49-9ca3-006c575b4998</tests>
+        <depends/>
+        <polltime/>
+      </service>
+      <test uuid="7f84e705-78ba-4c6f-ae32-6b7582792940">
+        <name>Ping</name>
+        <type>NetworkPing</type>
+        <condition>failed ping</condition>
+        <action>alert</action>
+        <path/>
+      </test>
+      <test uuid="04144c2a-7acc-446b-9a2b-6fca1e55ec7b">
+        <name>NetworkLink</name>
+        <type>NetworkInterface</type>
+        <condition>failed link</condition>
+        <action>alert</action>
+        <path/>
+      </test>
+      <test uuid="f063bc31-df4d-4147-87b9-7534a229a00c">
+        <name>NetworkSaturation</name>
+        <type>NetworkInterface</type>
+        <condition>saturation is greater than 75%</condition>
+        <action>alert</action>
+        <path/>
+      </test>
+      <test uuid="1a090f5d-d723-4730-83e8-45924e971a40">
+        <name>MemoryUsage</name>
+        <type>SystemResource</type>
+        <condition>memory usage is greater than 75%</condition>
+        <action>alert</action>
+        <path/>
+      </test>
+      <test uuid="71fc3228-4112-4b90-a8c1-40373237cc33">
+        <name>CPUUsage</name>
+        <type>SystemResource</type>
+        <condition>cpu usage is greater than 75%</condition>
+        <action>alert</action>
+        <path/>
+      </test>
+      <test uuid="2a55ed11-2037-4728-9340-903c924c4f2c">
+        <name>LoadAvg1</name>
+        <type>SystemResource</type>
+        <condition>loadavg (1min) is greater than 4</condition>
+        <action>alert</action>
+        <path/>
+      </test>
+      <test uuid="c70ff490-543f-4c65-ab79-01556f5acf29">
+        <name>LoadAvg5</name>
+        <type>SystemResource</type>
+        <condition>loadavg (5min) is greater than 3</condition>
+        <action>alert</action>
+        <path/>
+      </test>
+      <test uuid="3c206e79-c6f4-446f-8697-dc997bbfe41e">
+        <name>LoadAvg15</name>
+        <type>SystemResource</type>
+        <condition>loadavg (15min) is greater than 2</condition>
+        <action>alert</action>
+        <path/>
+      </test>
+      <test uuid="dcb1f1b6-1b5a-4d28-a343-f8bd881c750a">
+        <name>SpaceUsage</name>
+        <type>SpaceUsage</type>
+        <condition>space usage is greater than 75%</condition>
+        <action>alert</action>
+        <path/>
+      </test>
+      <test uuid="57f1bb91-47a3-47ce-84dc-56442776a277">
+        <name>ChangedStatus</name>
+        <type>ProgramStatus</type>
+        <condition>changed status</condition>
+        <action>alert</action>
+        <path/>
+      </test>
+      <test uuid="933e537b-5d61-4b49-9ca3-006c575b4998">
+        <name>NonZeroStatus</name>
+        <type>ProgramStatus</type>
+        <condition>status != 0</condition>
+        <action>alert</action>
+        <path/>
+      </test>
+    </monit>
+    <Swanctl version="1.0.0">
+      <Connections/>
+      <locals/>
+      <remotes/>
+      <children/>
+      <Pools/>
+      <VTIs/>
+      <SPDs/>
+    </Swanctl>
+    <OpenVPN version="1.0.0">
+      <Overwrites/>
+      <Instances/>
+      <StaticKeys/>
+    </OpenVPN>
+    <Gateways version="1.0.0">
+      <gateway_item uuid="fef74dff-a8c0-4a87-be75-b1d5350492bd">
+        <disabled>0</disabled>
+        <name>GW_WAN</name>
+        <descr>Interface WAN Gateway</descr>
+        <interface>wan</interface>
+        <ipprotocol>inet</ipprotocol>
+        <gateway>100.100.254.1</gateway>
+        <defaultgw>1</defaultgw>
+        <fargw>0</fargw>
+        <monitor_disable>1</monitor_disable>
+        <monitor_noroute>0</monitor_noroute>
+        <monitor/>
+        <force_down>0</force_down>
+        <priority>255</priority>
+        <weight>1</weight>
+        <latencylow/>
+        <latencyhigh/>
+        <losslow/>
+        <losshigh/>
+        <interval>1</interval>
+        <time_period/>
+        <loss_interval/>
+        <data_length/>
+      </gateway_item>
+      <gateway_item uuid="79c68ed6-b803-47bd-a090-a5ff4ebaa7b7">
+        <disabled>1</disabled>
+        <name>GW_SERVERS</name>
+        <descr>Interface SERVERS</descr>
+        <interface>opt1</interface>
+        <ipprotocol>inet6</ipprotocol>
+        <gateway>fe80::e4f5:18ff:fe8b:b3e5</gateway>
+        <defaultgw>0</defaultgw>
+        <fargw>0</fargw>
+        <monitor_disable>1</monitor_disable>
+        <monitor_noroute>0</monitor_noroute>
+        <monitor/>
+        <force_down>0</force_down>
+        <priority>255</priority>
+        <weight>1</weight>
+        <latencylow/>
+        <latencyhigh/>
+        <losslow/>
+        <losshigh/>
+        <interval/>
+        <time_period/>
+        <loss_interval/>
+        <data_length/>
+      </gateway_item>
+    </Gateways>
+    <Kea>
+      <ctrl_agent version="0.0.1">
+        <general>
+          <enabled>0</enabled>
+          <http_host>127.0.0.1</http_host>
+          <http_port>8000</http_port>
+        </general>
+      </ctrl_agent>
+      <dhcp4 version="1.0.0">
+        <general>
+          <enabled>0</enabled>
+          <interfaces/>
+          <valid_lifetime>4000</valid_lifetime>
+          <fwrules>1</fwrules>
+        </general>
+        <ha>
+          <enabled>0</enabled>
+          <this_server_name/>
+        </ha>
+        <subnets/>
+        <reservations/>
+        <ha_peers/>
+      </dhcp4>
+    </Kea>
+    <wireguard>
+      <server version="0.0.4">
+        <servers/>
+      </server>
+      <client version="0.0.7">
+        <clients/>
+      </client>
+      <general version="0.0.1">
+        <enabled>0</enabled>
+      </general>
+    </wireguard>
+    <QemuGuestAgent version="1.0.0">
+      <general>
+        <Enabled>1</Enabled>
+        <LogDebug>0</LogDebug>
+        <DisabledRPCs/>
+      </general>
+    </QemuGuestAgent>
+  </OPNsense>
+  <ca/>
+  <gateways>
+    
+  </gateways>
+  <cert>
+    <refid>5e419b7cd7253</refid>
+    <descr>Web GUI SSL certificate</descr>
+    <crt>LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUdYRENDQkVTZ0F3SUJBZ0lVSkZVa1BhakNWczNXRUdXZ1VOQkVMa0dUR3Mwd0RRWUpLb1pJaHZjTkFRRUwKQlFBd1RqRUxNQWtHQTFVRUJoTUNUa3d4RlRBVEJnTlZCQWdNREZwMWFXUXRTRzlzYkdGdVpERVZNQk1HQTFVRQpCd3dNVFdsa1pHVnNhR0Z5Ym1sek1SRXdEd1lEVlFRS0RBaFBVRTV6Wlc1elpUQWVGdzB5TURBeU1UQXhPREExCk5URmFGdzB5TWpBMU1UVXhPREExTlRGYU1FNHhDekFKQmdOVkJBWVRBazVNTVJVd0V3WURWUVFJREF4YWRXbGsKTFVodmJHeGhibVF4RlRBVEJnTlZCQWNNREUxcFpHUmxiR2hoY201cGN6RVJNQThHQTFVRUNnd0lUMUJPYzJWdQpjMlV3Z2dJaU1BMEdDU3FHU0liM0RRRUJBUVVBQTRJQ0R3QXdnZ0lLQW9JQ0FRQ3ZkcUJmS0lNWmc3bkZmMnA3CnNnZlNuSTBNU1BzRThDUkVHOVJadS90OXQvZVdpL0xDN3FJaThtakozTHJJd29laDBLbkNCc3lpcnJ3a2dWY1cKOGpUZDZ2OVlkOGlYWWRpdVZJdHVlOHV1Z3JpaVpFZGp4bjJuOENaZnNKQ0RGVVZac0o2b2l5SEZYWlo1anJFMQorUlJJZllDNk1TNzR3cEw1eUdjQXlLWUwvYU9LVUNIbUFUNXdLL1g5WE5RVzRocithS1JzdDRSN1hDTlVwWmpsCkgzanJ0emNXSmlGU21yVlA4UnVuSVdwUGwxcnQwOWRvOGZBSUxsWEF3Q2Q0RWIvRmpWYnFkbWJ4ZWpZM2pTWS8KMC9JcEF0U043a00zdjFvdW1MVlEwbWY1dEUvTHlFT014aWl1VkpCMkhPMnVsZTI0RUNXZFQ3MWowMG9mQ0daZwpZNmZoZEdVeVNwaG5jWk8rNUREdzdaS3RwR2tvZnZtbjBIZFhuN3lZeFk3UVZoVE5PQWRuelhPTno0UlRoNVpTCkQvdVM5SmVrK04vcGNGS2RPZHFVNk9GQ1VZdnBheXhZVWY2VkVZcmNBc2tKTWlTdkRZUU5zYWJUV0h5OGIwdkwKbTVOVjRreThreG1wMWJoaXZTbXFNN0lNN1laYlhhWDBqTEgzV2F5TGF5Q2xmMW5ydGFSWUNRbUdBdFRyQTRtbwpkTWc2eUd0UEN0MUJNc0pnTzBORUErSm5IaUFpTCtKUlg0RW01QVNCTWJZYW9mNWlzTHRYRHpVNzVnaU1KR1g3Cm1XbjAvZ01rd0ZBc1hhMDZlNW1SRWtZZitQcHliaXYvWWZpcTN5aWFhaTdMT0o3T3IzZDFkN1pGSjVLTXNrVlkKNWIySWtxd3VnZGRlM2tqa1Qrek9YNGRucHdJREFRQUJvNElCTURDQ0FTd3dDUVlEVlIwVEJBSXdBREFSQmdsZwpoa2dCaHZoQ0FRRUVCQU1DQmtBd013WUpZSVpJQVliNFFnRU5CQ1lXSkU5d1pXNVRVMHdnUjJWdVpYSmhkR1ZrCklGTmxjblpsY2lCRFpYSjBhV1pwWTJGMFpUQWRCZ05WSFE0RUZnUVVuZ3hIclMxRkdhZm5Jb0YwYnNQK29uM0wKTkYwd2dZc0dBMVVkSXdTQmd6Q0JnSUFVbmd4SHJTMUZHYWZuSW9GMGJzUCtvbjNMTkYyaFVxUlFNRTR4Q3pBSgpCZ05WQkFZVEFrNU1NUlV3RXdZRFZRUUlEQXhhZFdsa0xVaHZiR3hoYm1ReEZUQVRCZ05WQkFjTURFMXBaR1JsCmJHaGhjbTVwY3pFUk1BOEdBMVVFQ2d3SVQxQk9jMlZ1YzJXQ0ZDUlZKRDJvd2xiTjFoQmxvRkRRUkM1Qmt4ck4KTUIwR0ExVWRKUVFXTUJRR0NDc0dBUVVGQndNQkJnZ3JCZ0VGQlFnQ0FqQUxCZ05WSFE4RUJBTUNCYUF3RFFZSgpLb1pJaHZjTkFRRUxCUUFEZ2dJQkFHbXhlbStzZkVmdjQ2UUFUck1PbHlkYklLOG53YmtxeXRQYS9QMEdjN1FjCkxoRWFLcUFpeGw0bkg0OFQrSy9zVmNueEc5NVhzSk5CbjNYQ3liYnIzRmJLdHdlTVZiUUg4UElpVTl2OFlLSlkKbTRxaUNIZE5XTUE1TjBMYVBlcVpRYjV5Zm9PcmkrTEJoR0lHUUJWMEM3VGFuaGRnRUtiSm9IeWt0akpJaDNldApIeEozVDJLOVlqOG15UStZOTlJc1dQU2l5RG5pQUJOcnNyM3pSajByb1dCTmNYazZyOUx3MlBoNld2WjB0cnRLCm16TjVBdldpMGZaVGpwT3kzZE1YdS9RNUlwSkgwdU45WkVQOU9HN2ljRi9jeit4Zm5XU09nWVN4RXF2RktiOU4KcFc2dVRsNis0T2lLeUoxWmp1ZWJwUDl0OGxHTHcvaFlEcFpZQmFtdGtyaGNQSFhqWVBicEVVMS9SSXFvQmdDMQpqUmo5RUdZbFA3TENaRUtWNHZDMkE3M21jaVcveDV4cjR4U1FDNmQ2TmtDTmdZWTZ4UHhOZzN6MnBmSWFRM3JCCnZoK1Z5MHdzTmRPK3lXNTZnc042Mm5WU0NOUFIxNzg0TFkvVHZ1eXBsdVZna2U2M3RlUFdxbDZJWDF4RUNFMXUKZ0I1Y3RGTGxWSnFjT290eVo0Sk5vanI0cHZDRDc0ZFF3TTRzcGJZRlVyNlNLSlJuWnRRYSszV0c0dm1BWFVLdApqWFJSelJDVW9WdTkwTWl6eUF6eEdQUHo2alNPR3dQd0VLSnR4VTdmc3VpRFVpWno3ZzJhdHY1Mkp5dW1GY2pqCi9XRWkyUURmTis5eFJOSFNtWW5Jd3pwUGU4b1FiVWlBcklIMnp2M3ZXTHRqOVZObTAwcFBJZjNwWk1CS2dDKzgKLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=</crt>
+    <prv>LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSUpRZ0lCQURBTkJna3Foa2lHOXcwQkFRRUZBQVNDQ1N3d2dna29BZ0VBQW9JQ0FRQ3ZkcUJmS0lNWmc3bkYKZjJwN3NnZlNuSTBNU1BzRThDUkVHOVJadS90OXQvZVdpL0xDN3FJaThtakozTHJJd29laDBLbkNCc3lpcnJ3awpnVmNXOGpUZDZ2OVlkOGlYWWRpdVZJdHVlOHV1Z3JpaVpFZGp4bjJuOENaZnNKQ0RGVVZac0o2b2l5SEZYWlo1CmpyRTErUlJJZllDNk1TNzR3cEw1eUdjQXlLWUwvYU9LVUNIbUFUNXdLL1g5WE5RVzRocithS1JzdDRSN1hDTlUKcFpqbEgzanJ0emNXSmlGU21yVlA4UnVuSVdwUGwxcnQwOWRvOGZBSUxsWEF3Q2Q0RWIvRmpWYnFkbWJ4ZWpZMwpqU1kvMC9JcEF0U043a00zdjFvdW1MVlEwbWY1dEUvTHlFT014aWl1VkpCMkhPMnVsZTI0RUNXZFQ3MWowMG9mCkNHWmdZNmZoZEdVeVNwaG5jWk8rNUREdzdaS3RwR2tvZnZtbjBIZFhuN3lZeFk3UVZoVE5PQWRuelhPTno0UlQKaDVaU0QvdVM5SmVrK04vcGNGS2RPZHFVNk9GQ1VZdnBheXhZVWY2VkVZcmNBc2tKTWlTdkRZUU5zYWJUV0h5OApiMHZMbTVOVjRreThreG1wMWJoaXZTbXFNN0lNN1laYlhhWDBqTEgzV2F5TGF5Q2xmMW5ydGFSWUNRbUdBdFRyCkE0bW9kTWc2eUd0UEN0MUJNc0pnTzBORUErSm5IaUFpTCtKUlg0RW01QVNCTWJZYW9mNWlzTHRYRHpVNzVnaU0KSkdYN21XbjAvZ01rd0ZBc1hhMDZlNW1SRWtZZitQcHliaXYvWWZpcTN5aWFhaTdMT0o3T3IzZDFkN1pGSjVLTQpza1ZZNWIySWtxd3VnZGRlM2tqa1Qrek9YNGRucHdJREFRQUJBb0lDQUE5cEg5Uzd2aWZ6aGRGdXkyOXB4MzRiCitkZG1ZWVdoZ2MzcGs5RDl6YXpSQjVIVllORDJISTl0TXY3bndBLzU1ZWUwWi9SK25HSjlibERXZTB1c29qQUwKZjduSmEzakFRME9zY1VLVzVPREM0bXlBMmpSTkxxUWRWNEY0QkhrKzJRUnptcnU2M0pCMUU4NUJWaGNqZFVDWQpwVUcxS0NiNUQrZVlUbE9uUzg0cHpMOU5JbTBORnVyTE1hTzdEM1dqRGpQaUJPNzNmMDlHWEdRRzExTG9YTHAzCk1RTmsvZkEvWGtWVEs5YVYvTHhZMHNlb24zYThLUlRPM1FFODN6cVFkSU5wVW9UdE9VVmtNbmJXa3RGd1VBaUMKRXlFVUdCdEJWeTVZZ3pSQ0JwZkwybVpQaEg5TXVDMzNoMmlZU2RmWG16VmJWYkpuV243MkE4Q09BRS9lOE5PYQovMUpEVTRON2ZDaUN2UmlIK3h3WnVjNXJjbk13TGdsLy9wQmhaV010c3dxYkRod1VoTkhnRFkycVF0czJlakNMClo5OEdwOEw3L25OeEdMeXhyVndjaFVUVXJtdkNkMnVvamc4amJQaE5RK1BOejFvb2plTDllWXhuVjlDVzJxT2EKNGY0OTc2M1RpVEswMjNHL2ROcHQ3TFBHUW15c2d0dFViYVJBMWRyUDhPQVpwazBIMmdEMmtKdTZGZVJwaVliYQo4dG1DQWZJS2QxWmtsc2x0Szd6MlRpZjdFeTN5Z1Joak1aWTNKTEtEKytlL2JHS3hqT1Fzb05xaWk2UWZDK0s3CkpHSzdTcjVCSFAxVWxHM2FiNXVoMlN6QUhBMFJ1QUM2OG95aTdxOXlMV0JUY2FDUklpVjFOSzZjUGdWUDZmcGoKd0cvNDJkTWFkd1VVcHR5UnFXcWhBb0lCQVFEb0lBYlhSY1hmdDZKWkxxV3lDbnJMQ0ZkdjZrNVNEQ3d6b0VwbwpvOTcwVEE3V3ZzUk01STg3S3F4UWQrd1BVREt4dDlySG9wcDFXUzZmVnJiRG9ubzdLQVBWbXVUTVExSWhabkZQCnBNYWlyNFVMeHRZbnBWM01YOXprYTFsSTcyZ2NPSitpWk4xZktQRllUWHZQUjBtRWxreUpnYXV3Y2lzb2NpaUsKdWlUWEZvT1RwQ3N3YmkwVVozcFBtTG14ZmQrNG9WaVk2SENZMlZ1SVNkMEhLWUMwVGhVYWUxbGFiR1VDSk9xTQpYQjBJdUlRMURoems4VjJHZDdDZ3lhL0k3cDcxNk1yY0sxajIwVmJLTnU5ZkJPNm02NGl0eFpaQzZsb0RvTWFuCjZ0TTYwcm5HVjNqanFTQ0dSRzROaXpaa29JL0tyRkF1eGYvVXZaMG4vTksra1U5akFvSUJBUURCZ3FyalVsUU0Kb0xGUlRDZklSSmV1bU5sZFRFQ21DVC9LWlRxZUlQL1ZKTFNBa0FQOFZuNUdHVnE1MmwvbENFaTFFWDU0ejBybQpSaUh5dndkOU53MWlwZ1FZdHZnRTk2ZEdocUhJZkNmR21Uc0NmUDc0ZXZ4c3h6Z1pBcHRNb0VMcnVQcEFyU2pVCkxnZjhLSkFiNVVEaWU2S0liNVdWU1piYWpBTTd2M2dKeEdJbVYyZlFTZFVVeU1lVHEwTWRDMXgydDh2amUwNWIKOEhPMmV0TW5NRnJaREUwU3hXT1RSRTVwV0swMDkxd0l0WnBnYzZ2Q0NJMEJPMzlqVHlWeU1ac1p3U09sUjNLaApQb1FYRVF0c2tCYS9uQTBZeUFhcHhYSCtibWZpZnUwWjNuamF6bFJXdTR5TnBBM2hMM3NEWGxaSHlPakRhK3pQCnowR24yZDV0L2tQdEFvSUJBSHpVbkZrd29KVUxBRGZOcWpYeEJOQWpFRUtUVXNNMDRLQnkxeEVtNzBPWmszRlEKN2VnY0VoclRmQTlhTG95ZHFHV0NaaGx1REhxSEYxZUJIcEJlMURUejgvdnZiSk9jc0pKZHNSb1Bsdkx1U1RKbwpIOHI2VjFNTlNwRmNXWXVyaytWNVhmL0xGbkdTWnhnQnMwOXBHdFErcjdKVEZhMngrQnVzS0xsU0dYWENHY2hRClJSbXFabnZPbWl3c0NkQzF6SlpSem4rTW9PRFNJek5MNVoxd2FGS09teksrbXZMUjBCQXpJaCtSZWR1eXZ3WjUKTEhqQ2hIVkg4S2pIVGMxVTVnK0F2WGRocUZvemdlVUZYZjFQZmJndWVqWlpSOUY4amlQZFZuZi9CTkZoZVo1OApjL3FhZlc4M1phZks4ZGx6cjJCakFrdmxGd3VsWE5xZ1VBVkR4OWtDZ2dFQU83Y1hCUTlpNElLMk5XQks1b0pFClRKemVkdXdSQnl2VGc2RzVkUks1NEF4enB6aktBaFN1NHZMd0RHcFhMVlpoR1g5TWgvdHdJWitDMm1ZWTZZc1QKbGwyazVmdVFqZmZlcHVUbEIvbElUUUQ4Tk1oZDVsQU5sWVBreTlNQ0dhTmJBMk1SMXVPWXRlRitsVkh2SnF5WQpXVXZOM0V5UzNIN1pEcGdtWjBtdXdWVFk5UHdFRFVLN2ZxNTI2QnJ4bXdUbWc3dzBMdjdlTDRFRU5FdXkzV1VPCm8rd24zS01ORjJUOHpZV1A3Y2hubmtoc1cxZFdxWW41K1dkaTZFS0VTN2tESSs5MkVJcjcxTVoxL0toRjNqcVkKeW9oZGdrZzN4aXdvQVZ3UXN0UjRWb05ReURUajBlQU9mNmNnb1YwRm1RU0RtNk5rTU9vZEtnUExQd0Q4b3ZUVQpBUUtDQVFFQWxLNkp6Nk0vbVI4SU1ITHNXbHJlYjRRVVF3MzdWT2ZReVd3MmdpNHIrQTJ5UHFRTVhKc1dYNTh5CjRPNWU4RXV3cWo4Y1BGcUNkZHlWKytpN21aTGFsem1vRVpQU25vdFM0ZU5aQWV2cnZERVhPKzkzaURhWkM5MysKbUlyYnl0dHdEZDNmRThBWWRJQWtUL1pNTG44TXR5blFsRjlaVXpWVU5KQ01SVHhqNkdwTE9wR2xuQ01rcy9LOQp3c2NsOGlIUGNINmFTOGZteTkxOEFacFpJNGp3ZDFYdE5tOW8wWTlFYTREVTlIWDkyakdqZWxERTZlaDFSNHBsCkZKc29zNVdKdWY0M01pVHRyTzVUQjNRY2VDYWRkVWtUNE5WN2lrTTNRNld2TWl0MWRpZGV4VmtXRFF6eVk1MXMKR2hBZ0d0dmZMK0EwVTloMXk1Z1VaT0luNGZZRHlBPT0KLS0tLS1FTkQgUFJJVkFURSBLRVktLS0tLQo=</prv>
+  </cert>
+  <ppps>
+    <ppp/>
+  </ppps>
+  <staticroutes version="1.0.0">
+    <route uuid="26cf07ea-9348-4b69-ac98-c4e7775d367c">
+      <network>2001:470:b5b8:1b81::/64</network>
+      <gateway>GW_SERVERS</gateway>
+      <descr>For the IPv6 address of DNS</descr>
+      <disabled>1</disabled>
+    </route>
+  </staticroutes>
+  <virtualip version="1.0.0">
+    <vip/>
+  </virtualip>
+  <vlans version="1.0.0">
+    <vlan/>
+  </vlans>
+  <openvpn/>
+  <laggs version="1.0.0">
+    <lagg/>
+  </laggs>
+  <ifgroups version="1.0.0"/>
+  <bridges>
+    <bridged/>
+  </bridges>
+  <gifs>
+    <gif/>
+  </gifs>
+  <gres>
+    <gre/>
+  </gres>
+  <wireless>
+    <clone/>
+  </wireless>
+  <ipsec>
+    <phase1>
+      <ikeid>1</ikeid>
+      <iketype>ikev2</iketype>
+      <interface>wan</interface>
+      <protocol>inet</protocol>
+      <myid_type>myaddress</myid_type>
+      <peerid_type>peeraddress</peerid_type>
+      <encryption-algorithm>
+        <name>aes256gcm16</name>
+      </encryption-algorithm>
+      <lifetime>28800</lifetime>
+      <pre-shared-key>b3Buc2Vuc2V0dW5uZWxpbmc=</pre-shared-key>
+      <authentication_method>pre_shared_key</authentication_method>
+      <descr>IPSec tunneling to main</descr>
+      <nat_traversal>on</nat_traversal>
+      <dhgroup>14</dhgroup>
+      <hash-algorithm>sha512</hash-algorithm>
+      <private-key/>
+      <remote-gateway>100.100.254.1</remote-gateway>
+    </phase1>
+    <phase1>
+      <ikeid>2</ikeid>
+      <iketype>ikev2</iketype>
+      <interface>wan</interface>
+      <protocol>inet6</protocol>
+      <myid_type>myaddress</myid_type>
+      <peerid_type>peeraddress</peerid_type>
+      <encryption-algorithm>
+        <name>aes256gcm16</name>
+      </encryption-algorithm>
+      <lifetime>28800</lifetime>
+      <pre-shared-key>b3Buc2Vuc2V0dW5uZWxpbmc=</pre-shared-key>
+      <authentication_method>pre_shared_key</authentication_method>
+      <descr>IPSec tunneling to main ipv6</descr>
+      <nat_traversal>on</nat_traversal>
+      <dhgroup>14</dhgroup>
+      <hash-algorithm>sha512</hash-algorithm>
+      <private-key/>
+      <remote-gateway>2001:470:b5b8:1b0f:d0cb:c3ff:fe2b:367e</remote-gateway>
+    </phase1>
+    <phase2>
+      <ikeid>1</ikeid>
+      <uniqid>6715611dae2b0</uniqid>
+      <mode>tunnel</mode>
+      <pfsgroup>14</pfsgroup>
+      <lifetime>3600</lifetime>
+      <descr>tunnel ipv4 clients network to Internet</descr>
+      <protocol>esp</protocol>
+      <localid>
+        <type>lan</type>
+      </localid>
+      <remoteid>
+        <type>network</type>
+        <address>0.0.0.0</address>
+        <netbits>0</netbits>
+      </remoteid>
+      <encryption-algorithm-option>
+        <name>aes256gcm16</name>
+      </encryption-algorithm-option>
+      <hash-algorithm-option>hmac_sha512</hash-algorithm-option>
+      <reqid>13</reqid>
+    </phase2>
+    <phase2>
+      <ikeid>1</ikeid>
+      <uniqid>67156138d0d95</uniqid>
+      <mode>tunnel</mode>
+      <pfsgroup>14</pfsgroup>
+      <lifetime>3600</lifetime>
+      <descr>tunnel ipv4 servers network to Internet</descr>
+      <protocol>esp</protocol>
+      <localid>
+        <type>opt1</type>
+      </localid>
+      <remoteid>
+        <type>network</type>
+        <address>0.0.0.0</address>
+        <netbits>0</netbits>
+      </remoteid>
+      <encryption-algorithm-option>
+        <name>aes256gcm16</name>
+      </encryption-algorithm-option>
+      <hash-algorithm-option>hmac_sha512</hash-algorithm-option>
+      <reqid>14</reqid>
+    </phase2>
+    <phase2>
+      <ikeid>2</ikeid>
+      <uniqid>6716bc4152b64</uniqid>
+      <mode>tunnel6</mode>
+      <pfsgroup>14</pfsgroup>
+      <lifetime>3600</lifetime>
+      <descr>tunnel IPv6 internal servers to internet</descr>
+      <protocol>esp</protocol>
+      <localid>
+        <type>network</type>
+        <address>2001:470:b5b8:1b81::</address>
+        <netbits>64</netbits>
+      </localid>
+      <remoteid>
+        <type>network</type>
+        <address>::</address>
+        <netbits>0</netbits>
+      </remoteid>
+      <encryption-algorithm-option>
+        <name>aes256gcm16</name>
+      </encryption-algorithm-option>
+      <hash-algorithm-option>hmac_sha512</hash-algorithm-option>
+      <reqid>16</reqid>
+    </phase2>
+    <phase2>
+      <ikeid>2</ikeid>
+      <uniqid>6716bc71efa8a</uniqid>
+      <mode>tunnel6</mode>
+      <pfsgroup>14</pfsgroup>
+      <lifetime>3600</lifetime>
+      <descr>tunnel IPv6 internal clients to internet</descr>
+      <protocol>esp</protocol>
+      <localid>
+        <type>network</type>
+        <address>2001:470:b5b8:1b82::</address>
+        <netbits>64</netbits>
+      </localid>
+      <remoteid>
+        <type>network</type>
+        <address>::</address>
+        <netbits>0</netbits>
+      </remoteid>
+      <encryption-algorithm-option>
+        <name>aes256gcm16</name>
+      </encryption-algorithm-option>
+      <hash-algorithm-option>hmac_sha512</hash-algorithm-option>
+      <reqid>17</reqid>
+    </phase2>
+    <client/>
+    <ipsec_asn>1</ipsec_asn>
+    <ipsec_cfg>1</ipsec_cfg>
+    <ipsec_chd>1</ipsec_chd>
+    <ipsec_dmn>1</ipsec_dmn>
+    <ipsec_enc>1</ipsec_enc>
+    <ipsec_esp>1</ipsec_esp>
+    <ipsec_ike>1</ipsec_ike>
+    <ipsec_imc>1</ipsec_imc>
+    <ipsec_imv>1</ipsec_imv>
+    <ipsec_job>1</ipsec_job>
+    <ipsec_knl>1</ipsec_knl>
+    <ipsec_lib>1</ipsec_lib>
+    <ipsec_mgr>1</ipsec_mgr>
+    <ipsec_net>1</ipsec_net>
+    <ipsec_pts>1</ipsec_pts>
+    <ipsec_tls>1</ipsec_tls>
+    <ipsec_tnc>1</ipsec_tnc>
+    <enable>1</enable>
+    <passthrough_networks>100.100.2.0/24,100.100.1.0/24,2001:470:b5b8:1b81::/64,2001:470:b5b8:1b82::/64</passthrough_networks>
+  </ipsec>
+</opnsense>
