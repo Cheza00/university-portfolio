@@ -1,0 +1,9 @@
+/etc/init.d/networking restart
+
+mkdir -p /dev/net
+mknod /dev/net/tun c 10 200
+chmod 600 /dev/net/tun
+
+# Launch openvpn at startup...
+# ... but we don't want that as per point 10, so I commented it out
+# openvpn root/server.conf

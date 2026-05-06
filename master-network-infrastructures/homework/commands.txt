@@ -1,0 +1,5 @@
+ssh -NL 4321:200.0.0.4:1194 myuser2@150.0.0.250
+
+# then I modified the client.conf for pc1 and I opened a new terminal to run "openvpn /root/client.conf"
+
+NOTE: the passphrase used whenever needed in this homework is: password 
