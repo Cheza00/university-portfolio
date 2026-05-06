@@ -1,0 +1,27 @@
+/etc/init.d/networking restart
+/etc/init.d/ssh restart
+
+useradd myuser1 -m
+
+mkdir /home/myuser1/.ssh
+touch /home/myuser1/.ssh/authorized_keys
+chown myuser1:myuser1 /home/myuser1/.ssh
+chmod 700 /home/myuser1/.ssh
+chown myuser1:myuser1 /home/myuser1/.ssh/authorized_keys
+chmod 600 /home/myuser1/.ssh/authorized_keys
+
+cat /shared/id_rsa.pub > /home/myuser1/.ssh/authorized_keys
+
+#I've created the CA and the certificates interactively with the following commands
+#cd /usr/share/easy-rsa
+#./easyrsa init-pki
+#./easyrsa build-ca
+#with passphrase "idontlovessh" (the same used to encrypt the private key),
+# giving the CN my_ca to the new CA
+#Generating the certificate for the server
+#./easyrsa build-server-full myserver
+#Generating the certificates for the two clients
+#./easyrsa build-client-full pc1
+#same thing for pc2
+#I copied all the files in the shared folder
+

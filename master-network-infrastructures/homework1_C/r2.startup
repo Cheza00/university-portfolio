@@ -1,0 +1,8 @@
+/etc/init.d/networking restart
+/etc/init.d/isc-dhcp-server start
+
+# for subnet B 
+ip route add 151.100.161.0/24 via 10.0.0.9
+
+# for subnet C and default
+ip route add default via 10.0.0.7

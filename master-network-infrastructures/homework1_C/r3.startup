@@ -1,0 +1,7 @@
+/etc/init.d/networking restart
+
+# for subnet A and default
+ip route add default via 10.0.0.8
+
+# for subnet C
+ip route add 151.100.164.0/22 via 10.0.0.11

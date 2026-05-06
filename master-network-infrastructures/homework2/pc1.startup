@@ -1,0 +1,16 @@
+/etc/init.d/networking restart
+
+#echo -e '\n\n\n' | ssh-keygen	I don't need this anymore
+
+#cp /root/.ssh/id_rsa.pub /shared
+#scp .ssh/id_rsa.pub myuser1@200.0.1.5:/home/myuser1/client_key.pub 
+
+mkdir /root/.ssh
+cp /shared/id_rsa.pub /root/.ssh
+
+mkdir -p /dev/net
+mknod /dev/net/tun c 10 200
+chmod 600 /dev/net/tun
+
+# Launch openvpn at startup
+openvpn root/client.conf

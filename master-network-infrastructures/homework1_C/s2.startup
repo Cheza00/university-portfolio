@@ -1,0 +1,7 @@
+/etc/init.d/networking restart
+
+ip address add 151.100.164.2/22 dev eth0
+# the lowest possible indicate the subnet itself and the 
+# next one is already assigned to r4. I assign it the lowest available 
+
+ip route add default via 151.100.164.1

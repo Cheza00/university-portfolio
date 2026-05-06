@@ -1,0 +1,7 @@
+/etc/init.d/networking restart
+/etc/init.d/quagga restart
+
+iptables -A INPUT -p tcp --dport 22 -j ACCEPT
+
+iptables -A INPUT ! -p tcp --dport 22 -j DROP
+

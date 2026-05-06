@@ -1,0 +1,11 @@
+/etc/init.d/networking restart
+/etc/init.d/quagga restart
+
+iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 1194 -j DNAT --to-destination 192.168.0.100:5000
+iptables -A FORWARD -i eth0 -m state --state NEW -p tcp --dport 1194 -j ACCEPT
+iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+iptables -A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT
+
+#Used this in point 4, but had to comment it to make the vpn work
+#iptables -A FORWARD -i eth0 -m state --state NEW -j DROP
+

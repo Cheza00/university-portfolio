@@ -1,0 +1,6 @@
+/etc/init.d/networking restart
+ip address add 151.100.161.254/24 dev eth0
+# the highest possible, 151.100.161.255 is the broadcast address, so I can't use it 
+
+ip route add default via 151.100.161.1
+
