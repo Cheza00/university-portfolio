@@ -1,0 +1,27 @@
+Cerco un modo per ottimizzare, mi passa già tutti i test
+
+Prima di tutto apro il file e lo salvo in una variabie su cui chiamo una funzione 
+per togliere i caratteri speciali, tranne gli a capo, in quanto mi servono immediatamente 
+dopo per fare un primo split e dividere in righe. Ora inizio un ciclo considerando tutte le 
+singole righe (le righe potrebbero essere anche vuote e in questo caso le ignoro) e le inserisco 
+in un dizionario, per poi fare un ulteriore split per dividerle in parole. Da qui inizio un for annidato
+in cui considero ciascuna parola della riga (se è '' la ignoro) e calcolo gli accenti, sostituendo 
+eventualmente i 2 con 0 e considerando il caso in cui non si conoscano gli accenti di una parola.
+Concateno la stringa ottenuta alla stringa inizialmente vuota che avevo nel dizionario con la riga come chiave,
+in questo modo non devo calcolarlo più volte (idem con il numero di 1 di un verso, che vedremo successivamente)
+A questo punto man mano calcolo la lunghezza massima e poi alla fine con un altro ciclo esterno aggiungo 
+gli 0 necessari.
+Con due cicli annidati confronto a due a due le righe facendo in modo di non considerare due volte
+la stessa coppia, quindi confrontanto una riga solo con le successive e non con le precedenti. Intanto 
+calcolo e inserisco nel dizionario m_A e m_B (o le ripesco se già calcolate) e vado a costruirmi man mano
+una variabile che poi vado a copiare nel testo di output (che ho confrontato con l'expected e sembra essere 
+giusto). Poi calcolo c(A|B) e c(B|A) attraverso una funzione, calcolo il sync (anche il caso in cui è 0), 
+lo metto in una lista, faccio la media e la ritorno, arrotondandola.
+Per la funzione per calcolare c(A|B) e c(B|A), questa funziona con un ciclo esterno e due interni
+non annidati, uno che scorre il vettore A e uno che scorre il B. Quando si trova un 1, si considera 
+la porzione dell'altra stringa che parte dall'indice i (dove si è trovato l'1 nella prima stringa) - tau,
+quindi i-tau, all'indice i e se in quella porzione c'è un 1, allora si incrementa la variabile corrispondente per 
+contare il numero di accenti preceduti da un accento nell'altra stringa.
+
+Scusate per la lunghezza della spiegazione, non sapevo proprio come descrivere tutto altrimenti!
+

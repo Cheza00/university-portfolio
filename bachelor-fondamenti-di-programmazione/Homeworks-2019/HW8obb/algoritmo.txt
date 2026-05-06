@@ -1,0 +1,22 @@
+# -*- coding: utf-8 -*-
+
+Sto avendo molte difficoltà con quest'homework (mi è stato possibile fare solo
+la primissima parte) e so di essere abbastanza nei casini.
+Apro il file, lo leggo e lo memorizzo. Successivamente lo divido in due variabili
+distinte, una per la matrice e una per le parole. 
+Da qui la mia idea è quella di: iniziare a cercare la prima lettera della prima
+parola all'interno della matrice. Se non la trovo inserisco in una nuova lista -1 
+(così come farò per le altre parole non appena non riesca a trovare una lettera),
+altrimenti salvo le coordinate della prima lettera e continuo la ricerca provando
+prima ad andare a destra e poi giù. Man mano che procedo, inserisco
+le lettere degli spostamenti nella tupla che poi andrà nella lista finale da 
+consegnare. Poi procedo con le altre parole. 
+All'inizio per dividere il file, utilizzo tre cicli for (non annidati). C'è un
+modo più efficiente per farlo? Ho notato che nei test sono presenti sia lettere 
+maiuscole che minuscole, è necessario uniformarle oppure le lettere maiuscole 
+nelle parole sono maiuscole anche nella matrice? Infine non ho ben capito dove 
+conviene usare la ricorsione e come gestire il caso in cui c'è una diramazione,
+ovvero prima inizio ad andare a destra per qualche lettera, poi incontro un 
+carattere che non corrisponde e quindi dovrei tornare indietro per cercare in 
+basso.                                           
+                                            

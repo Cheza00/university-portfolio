@@ -1,0 +1,33 @@
+
+# indizi: 	la	bocca	sollevò	dal	fiero	pasto
+# inizio:	ROMA
+# segreti:
+#     ('vendita diamanti rubati stanotte ad anversa', 'CANCUN')
+#     ('vendita cannoni mercato nero del cairo',      'CANCUN')
+#     ('furto di diamanti a buckingham palace',       'MILANO')
+#     ('mata hari ha sedotto ambasciatore zambia',    'MILANO')
+ROMAlaPARIGIvendita	
+ROMAlaCAIROfurto
+ROMAlaMOSCAmata
+
+	PARIGIboccaBERLINOdiamanti
+	PARIGIboccaCANCUNcannoni
+	CAIROboccaMILANOdi
+	MOSCAboccaPECHINOhari
+
+		BERLINOsollevòPECHINOrubati
+		CANCUNsollevòROMAmercato
+		MILANOsollevòPARIGIdiamanti
+		PECHINOsollevòMILANOha
+			PECHINOdalROMAstanotte
+			ROMAdalMOSCAnero
+			PARIGIdalCAIROa
+			MILANOdalPARIGIsedotto
+				ROMAfieroPARIGIad
+				MOSCAfieroBERLINOdel
+				CAIROfieroCANCUNbuckingham
+				PARIGIfieroPECHINOambasciatore
+					PARIGIpastoCANCUNanversa
+					BERLINOpastoCANCUNcairo
+					CANCUNpastoMILANOpalace
+					PECHINOpastoMILANOzambia

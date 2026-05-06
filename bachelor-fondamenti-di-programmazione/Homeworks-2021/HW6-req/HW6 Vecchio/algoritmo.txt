@@ -1,0 +1,31 @@
+Purtroppo mi servirebbe davvero un grosso aiuto, perchè non riesco a capire come
+disegnare i rettangoli. Descriverò il metodo che sto provando ad usare, ma accetto 
+volentieri qualsiasi consiglio (anche sulle altre parti del programma), perchè
+non so se è il giusto modo di procedere.
+
+Prima di tutto apro il file, copio il contenuto in una variabile e poi la divido
+in una lista con le varie righe, per splittarle di nuovo per dividere i vari elementi
+che inserisco in una nuova lista formata da tante liste quante sono le righe (in
+modo da mantenere la divisione e lavorare più facilmente). Creo un dizionario per 
+ogni riga in cui inserisco: la somma di tutte le larghezze dei palazzi della riga
+(che mi servirà più avanti), l'altezza del palazzo più alto della fascia, 
+il numero dei palazzi in quella fascia e la lunghezza della fascia (che poi 
+confronterò man mano per trovare la larghezza dell'immagine). Calcolo l'altezza 
+dell'immagine. 
+
+A questo punto creo un'immagine nera delle dimensioni trovate precedentemente.
+Per ogni elemento della lista su cui ho lavorato prima calcolo di quanto dovrebbe 
+essere ogni giardino orizzontale, mentre per quelli verticali li calcolo solo implicitamente 
+direttamente quando mi servono con (altezza del palazzo più alto - altezza del palazzo
+che voglio creare) // 2. Procedo con un ciclo annidato per ogni 5-pla che descrive 
+un palazzo all'interno della fascia che sto prendendo in considerazione e mi salvo le
+coordinate x,y del vertice in alto a sinistra, per poi cercare di creare il rettangolo
+con altri due cicli annidati. Infine salvo l'immagine ma, come detto, non riesco a 
+creare correttamente i rettangoli o a manipolare correttamente gli indici, perchè
+riesco a creare solo linee obique di diversi colori.
+
+                    self.check_imports(allowed=['program01', '_io', 'images','encodings.utf_8']), \
+                    
+                    
+
+

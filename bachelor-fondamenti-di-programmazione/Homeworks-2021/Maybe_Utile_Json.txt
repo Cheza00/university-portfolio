@@ -1,0 +1,180 @@
+# -*- coding: utf-8 -*-
+
+# %%% file json
+import json
+
+# %%%% leggo il file json 'api.github.com.json'
+# ne estraggo il dizionario/struttura
+
+with open('api.github.com.json', encoding='utf-8',) as F:
+    dizionario = json.load(F)
+
+# %%%% costruisco un dizionario e lo salvo in un file json
+with open('api.github.com.2.json', mode='w', encoding='utf-8',) as F:
+    json.dump(dizionario, F, indent=4)
+    
+    
+    
+    for f in os.listdir(dir):
+        fn = "{}/{}".format(dir, f)
+        if os.path.isdir(fn):
+                        if fn.endswith(ext):
+                        
+                        
+                        
+                        
+# %%% HTTP requests
+# importo la libreria
+import requests
+
+# %%%% leggo una pagina da https://python.org
+
+pagina = requests.get('https://python.org')
+
+# lo status code ci dice se tutto Ã¨ andato bene
+status = pagina.status_code
+
+# se Ã¨ un testo nell'attributo text trovo il testo decodificato
+contenuto = pagina.text
+
+# leggo da internet una pagina JSON
+pagina_json = requests.get('https://api.github.com')
+
+# la decodifica avviene automaticamente col metodo json()
+risultato = pagina_json.json()
+
+# %%%% leggo una immagine da https://www.python.org/static/img/python-logo@2x.png
+logo = requests.get('https://www.python.org/static/img/python-logo@2x.png')
+
+# se si tratta di un file di dati (immagine/audio/film ...) il contenuto lo trovo nell'attributo content
+dati = logo.content
+
+# per salvarlo in un file devo aprirlo in scrittura ('w') e in modo binario ('b')
+with open('logo.png', mode='wb') as F:
+    F.write(dati)
+
+# %%% analisi del testo e ricerca
+# ho un elenco di files con il loro encoding, ottenuto unzippando files.zip
+files = {
+    'files/holmes.txt'       : 'utf-8-sig', 
+    'files/alice.txt'        : 'utf-8-sig', 
+    'files/frankenstein.txt' : 'utf-8-sig', 
+    'files/alice_it.txt'     : 'latin', 
+    'files/prince.txt'       : 'utf-8-sig'
+    }
+
+# %%%% lettura di dati da un file di testo
+
+    # apro il file e lo leggo tutto
+with open('dati.txt', encoding='utf-8') as F:
+    testo = F.read()
+    # rimuovo le virgole
+    testo = testo.replace(',', ' ')    
+    # uso split per separare i numeri
+    frammenti = testo.split()
+    # converto i frammenti di testo in numeri
+    numeri = [ int(valore) for valore in frammenti  ]
+
+
+# %%%% lettura di matrici
+    # apro il file
+matrice = []
+with open('matrice.txt', encoding='utf8') as F:
+    # ripeto per ogni riga
+    for riga in F:
+        # la splitto e converto in numeri
+        frammenti = riga.split('|')
+        numeri = [ int(pezzo) for pezzo in frammenti ]
+        # aggiungo la riga alla matrice
+        matrice.append(numeri)
+
+# lo stesso posso fare con una list comprehension
+with open('matrice.txt', encoding='utf8') as F:
+    # ripeto per ogni riga
+    matrice2 = [
+        [ int(el) for el in riga.split('|') ]   # costruisco una lista di interi dai frammenti ottenuti con split
+            for riga in F                       # per ogni riga del file F
+        ]
+
+# in stile funzionale
+with open('matrice.txt', encoding='utf8') as F:
+    # definisco una funzione che converte una riga in una lista di interi
+    def converti_riga(riga):
+        return list(map(int, riga.split('|')))    # applico 'int' a tutti i frammenti ottenuti da riga.split
+    matrice3 = list(map(converti_riga, F))        # qui applico converti_riga a tutte le righe del file 
+
+# ricorsiva?
+
+# %%%% - estrazione delle parole (rimpiazzando i nonalpha con spazi)
+
+# per estrarre le parole da un file che contiene anche segni di interpunzione
+def estrai_parole(filename, encoding):
+    # apro il file e ne leggo il contenuto
+    with open(filename, encoding=encoding) as FILE:
+        text = FILE.read()
+        # se voglio lo converto in lowercase (ma potrei preferire di no)
+        text = text.lower()
+        # calcolo l'insieme dei caratteri presenti nel testo
+        caratteri = set(text)
+        # ne estraggo solo i caratteri non-alpha
+        nonalfa = [ c for c in caratteri if not c.isalpha() ]
+        # li rimpiazzo con spazio
+        for c in nonalfa:
+            text = text.replace(c, ' ')
+        # uso split sul testo in cui ho eliminato tutti i non-apha
+        return text.split()
+
+# esempio: parole del libro Alice nel paese delle meraviglie
+parole = estrai_parole('files/alice_it.txt', 'latin')
+
+# come usare meno memoria? lavorando riga per riga
+
+# %%%% - mi serve l'importanza di una parola in un testo
+
+# per contare quante sono le parole
+def conta_parole_lenta(parole):
+    # trovo le parole uniche usando un insieme
+    parole_uniche = set(parole)
+    # e costruisco il dizionario parola:conteggio usando count  ### INEFFICIENTE
+    return { parole.count(parola) for parola in parole_uniche }
+
+# piÃ¹ rapido: scansione unica e costruzione incrementale del dizionario
+def conta_parole(parole):
+    risultato = {}
+    for parola in parole:
+        if parola in risultato:
+            risultato[parola] += 1
+        else:
+            risultato[parola]  = 1
+    N = len(parole)
+    # divido ciascun valore per N per avere la percentuale di presenza della parola
+    for chiave in risultato:
+        risultato[chiave] /= N
+    return risultato
+
+# rifaccio i conti sulle parole di Alice
+conteggi = conta_parole(parole)
+
+# le 50 parole piÃ¹ presenti sono:
+piÃ¹_presenti = sorted(conteggi.items(), reverse=True, key=lambda X: X[1])[:50]
+
+
+# %%%% per ogni file costruiamo il dizionario delle frequenze delle sua parole
+# per tutti i file costruiamo il dizionario del numero di files in cui appaiono
+
+frequenze = {}      # conteggio delle parole nei file: frequenze[name][parola] -> % di parole
+presenze  = {}      # conteggio del numero di file che contengono una parola: presenze[parola] -> # di file
+
+for filename, encoding in files.items():
+    parole = estrai_parole(filename, encoding)
+    conteggio = conta_parole(parole)
+    frequenze[filename] = conteggio
+    # conto i file che contengono una parola
+    for parola in conteggio:
+        if parola in presenze:
+            presenze[parola] += 1
+        else:
+            presenze[parola]  = 1
+Nfile = len(files)
+for parola in presenze:
+    presenze[parola] /= Nfile

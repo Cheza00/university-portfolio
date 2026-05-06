@@ -1,0 +1,70 @@
+Mi servirebbe un grande aiuto, perchè per ora mi è riuscito solo un pattern su praticamente 5, 
+ma non so da dove iniziare per gli altri. Qualsiasi aiuto è bene accetto anche per un cambio di strategia.
+Per quanto riguarda la creazione di vrect e hrect, stavo pensando di farmi tutte le possibili disposizioni, 
+ma dovrebbero essere con ripetizioni e non riesco a capire come farle, e poi creare le immagini partendo da quelle
+(propagandole per ogni riga o per ogni colonna dell'immagine)
+
+Per quanto riguarda invece l'unico pattern che mi riesce, questo è cross, per il quale mi calcolo prima tutte
+le possibili disposizioni senza ripetizioni per ogni coppia di elementi e creo con l'alternanza di questi una riga
+dell'immagine. A questo punto per ogni coppia di colori, avrò due righe, una che inizia con ciascun colore.
+Mi creo le immagini per ciascuna disposizione creata in precedenza, alternando la riga rappresentante la 
+disposizione stessa, con l'altra (adiacente, per come le ho create) che contiene gli stessi colori ma invertiti.
+A questo punto inserisco l'immagine in una lista finale e poi returno la lista.
+
+
+
+
+# per non dimenticare lol
+Analizzare il conflitto capitale natura attraverso la critica delle teorie ecologiche dominanti, come 
+ad esempio la green economy. Esporre le teorie alternative dell’incompatibilità del modo di 
+produzione capitalistico con la sostenibilità ecologica, sociale, economica e politica facendo 
+riferimento anche all’approccio ecomarxista. Presentare un caso studio, supportando 
+empiricamente la trattazione con riferimento a banche dati e con proprie elaborazioni dei dati, 
+esponendo anche considerazioni personali.
+
+
+# 2
+# -*- coding: utf-8 -*-
+"""
+Created on Sat Dec 18 19:58:33 2021
+
+@author: lulup
+"""
+
+Per risolvere questo problema ho cercato di ragionare per casi. Ne ho distinti 5:
+- immagini che non hanno nessun pattern;
+- immagini che hanno il 'pattern_diff_';
+- immagini che hanno il 'pattern_cross_';
+- immagini che hanno il 'pattern_hrect_';
+- immagini che hanno il 'pattern_vrect_'.
+
+la mia intenzione è stata quella di trovare tutte le combinazioni, lunghe D, possibili
+per ogni colore nella lista colors, con una funzione ricorsiva,
+e inserirle in una tupla di tuple come descritto nel valore aspettato dai test.
+Per le immagini senza pattern ho applicato proprio questa idea, perchè, apppunto,
+non essendoci il pattern non ho dovuto fare altri controlli per eliminare le tuple
+indesiderate, come invece accade per gli altri 4 casi.
+
+LAVORI IN CORSO.......
+IL FILE VERRA' AGGIORNATO NON APPENA AVRO' FINITO ANCHE GLI ALTRI CASI.
+
+NEL FRATTEMPO SONO BEN ACCETTI DEI CONSIGLI PER ANDARE AVANTI NELLO SVOLGIMENTO 
+DELL'HOMEWORK.
+
+
+#1
+Con molta fatica rispetto al solito, sono riuscito a far funzionare il tutto sviluppando una classe che risolve il pattern vuoto,
+e con sottoclassi che risolvono gli altri pattern.
+
+la funzione iniziale fa semplicemente il triage di img_properties, indirizzando ai vari casi possibili.
+trovato il caso, creo un oggetto della classe collegata con il pattern e invoco il metodo next_states che ho implementato con funzionamento ricorsivo.
+restituisco la lista di immagini che creo con il metodo anch'esso ricorsivo leaves (che "raccoglie" le foglie dell'albero che l'oggetto genera ricorsivamente).
+
+ho creato classi che hanno come attributi colors, D e stato.
+inizializzando l'oggetto con lo stato vuoto, vado a creare dei figli (ulteriore attributo dell'oggetto) che a loro volta genereranno dei figli finché:
+-o la condizione di generazione dei figli non è rispettata (per esempio, la condizione che lo stato dell'oggetto abbia già raggiunto la dimensione desiderata)
+-o una delle condizioni propria ad un pattern non sia rispettata (per esempio, nel pattern diff, se come primo pixel ho 0, provando a inserire in un pixel adiacente
+un altro 0 la ricorsione si bloccherà e il ramo non arriverà alla dimensione completa).
+il metodo leaves prende, per ogni foglia, il grande array che ho creato ricorsivamente e lo impacchetterà in tupla di tuple.
+
+

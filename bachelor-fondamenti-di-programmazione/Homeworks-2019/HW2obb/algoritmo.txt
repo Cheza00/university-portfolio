@@ -1,0 +1,14 @@
+# -*- coding: utf-8 -*-
+"""
+Ho copiato la lista2 in una nuova lista, in modo da riuscire a manipolare direttamente
+la lista da riconsegnare in uscita, per poi scorrere la lista1.
+Successivamente ho considerato i due casi possibili. Se il primo carattere 
+dell'elemento corrisponde a 'e', trovo l'indice della variabile all'interno di lista3 
+che corrisponde alla parte numerica dell'elemento (ovvero dalla posizione 1 della stringa in poi)
+ e lo memorizzo, per comodità, in var2, che verrà a sua volta utilizzata come indice
+ dell'elemento da rimuovere.
+Se, invece, come primo carattere c'è la 's', ripeto lo stesso procedimento per trovare l'indice
+e in var3 memorizzo (dopo averlo estratto dalla lista) l'elemento seguente
+ (ovvero l'elemento che deve sorpassare), per poi inserirlo nella posizione precedente 
+(così da rappresentare l'effettivo sorpasso)
+"""

@@ -1,0 +1,32 @@
+Per risolvere l'esercizio l'ho diviso prima di tutto in sottoproblemi, che sono poi andata a 
+risolvere man mano, dividendoli in diverse funzioni dove possibile.
+Per prima cosa ho affrontato il problema di far scontrare tra loro i partecipanti, attraverso
+due cicli annidati che richiamassero delle funzioni al loro interno per confrontare le 
+stringhe e per calcolare i punteggi. Il ciclo interno parte dall'indice successivo all'elemento
+del ciclo esterno, in modo da effettuare ogni sfida tra due partecipanti una sola volta, evitando
+ripetizioni. Nella funzione di confronto, usando dei cicli, ho fatto in modo di passare all'
+iterazione successiva qualora si incontrassero spazi vuoti o tab, in modo da ignorarli. Inoltre 
+appena noto di essere arrivato alla fine di anche una sola delle stringhe, faccio in modo di passare 
+al conteggio dei punti, in quanto so che arrivati a quel punto anche nell'altra stringa devono 
+necessariamente esserci al più spazi vuoti (perchè ho finito gli elementi da confrontare). 
+Inizialmente in questa funzione avevo pensato di calcolare anche man mano la somma dei caratteri delle 
+stringhe, ma alla fine è risultato molto più efficiente e rapido calcolarla solo nei casi di 
+necessità in caso di pareggio.
+Ho quindi implementato una funzione per calcolare le vittorie anche nei vari casi di pareggio
+e ho memorizzato le vittorie in una lista: il punteggio con indice "x" si riferisce al
+partecipante in quella posizione nella lista matches. Infine, in una funzione per stilare 
+la classifica, attraverso un ciclo calcolo man mano il massimo nella lista dei punteggi e 
+inserisco il suo indice nella lista della classifica, per poi cambiare il valore in -1 in modo da poter
+passare al massimo successivo, e returno la classifica finale.
+
+Non ho particolari problemi con il codice, sono riuscita a passare tutti i test e a prendere il
+bonus complessità, ma sono 300 msec troppo lenta per il bonus efficienza, mi servirebbero consigli
+su questo aspetto per velocizzare ulteriormente. La cosa che maggiormente rallenta e credo di 
+poter migliorare è il calcolo della classifica finale: non credo sia molto conveniente 
+dover trovare ogni volta il massimo nella lista. Sto pensando di provare a utilizzare un dizionario
+oppure invece che una lista sola con i punteggi farne due, una delle quali verrà poi ordinata.
+
+
+
+
+#                    self.check_imports(allowed=['program01','_io']), \

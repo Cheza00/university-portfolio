@@ -1,0 +1,246 @@
+def fun_pattern_diff(immagine, immagini, D, i, j, colors):
+    # indice di riga
+    if i == D:
+        i = 0
+        j += 1
+    # indice di colonna
+    if j == D:
+        immagini.append(copia(immagine))
+        return immagini     
+    else:
+        if i == 0:
+            if j == 0:                       
+                for colore in colors:
+                    # non ho nulla da controllare perchè è il primo pixel
+                    immagine[0][0] = colore
+                    fun_pattern_diff(immagine, immagini, D, i+1, j, colors)
+            else:
+                for colore in colors:
+                    # devo controllare solo il pixel in alto e in alto a dx
+                    if colore != immagine[j-1][0]:
+                        if i+1 != D and colore == immagine[j-1][i+1]:
+                            continue
+                        immagine[j][0] = colore
+                        fun_pattern_diff(immagine, immagini, D, i+1, j, colors)
+        else:
+            if j == 0:
+                for colore in colors:
+                    # devo controllare solo il pixel a sx
+                    if colore != immagine[0][i-1]:
+                        immagine[0][i] = colore
+                        fun_pattern_diff(immagine, immagini, D, i+1, j, colors)
+            else:
+                for colore in colors:
+                    # controllo i tre pixel intorno (a sx, in alto a sx e in alto)
+                    if (colore != immagine[j][i-1]) and (colore != immagine[j-1][i-1]) and (colore != immagine[j-1][i]):
+                        # controllo anche il pixel in alto a dx
+                        if i+1 != D and colore == immagine[j-1][i+1]:
+                            continue
+                        immagine[j][i] = colore
+                        fun_pattern_diff(immagine, immagini, D, i+1, j, colors)
+        return immagini
+
+
+
+
+----------------------
+
+Complessità ciclomatica massima	19 (+171.4%)
+Test superati	17 (+325%)
+Tempo di esecuzione	317.417 msec
+Voto (provvisorio)	32 (+2 efficienza )
+
+
+def ex(colors, D, img_properties):
+    riga = [-1 for _ in range(D)]
+    i = 0
+    if img_properties ==  "pattern_cross_":
+        lista2 = [-1 for _ in range(D)]
+        disposizioni = []
+        disposizioni = cross(colors, riga, lista2, disposizioni)
+        immagini = costruisci_immagine_cross(disposizioni, D)
+        return immagini
+    elif img_properties == "pattern_vrect_":
+        disposizioni = []
+        disposizioni = fun_pattern_rect(riga, disposizioni, i, D, colors, colors)
+        immagini = costruisci_immagine_vrect(D, disposizioni)
+        return immagini
+    elif img_properties == "pattern_hrect_":
+        disposizioni = []
+        i = 0
+        disposizioni = fun_pattern_rect(riga, disposizioni, i, D, colors, colors)
+        immagini = costruisci_immagine_hrect(D, disposizioni)
+        return immagini
+    elif img_properties == "pattern_diff_":
+        j = 0
+        immagine = []
+        immagini = []
+        for _ in range(D):
+            immagine.append(riga[:])
+        immagini = fun_pattern_diff(immagine, immagini, D, i, j, colors)
+        immagini = trasforma_in_tuple(immagini)
+        return immagini
+    else: 
+        disposizioni = []
+        disposizioni = fun_no_pattern(riga, disposizioni, i, D, colors)
+        immagini = []
+        immagine = [-1 for _ in range(D)]
+        immagini = genera_immagini_random(D, disposizioni, i, immagini, immagine)
+        return immagini
+
+def cross(colors, lista, lista2, disposizioni):
+    if len(colors) == 2:
+        for i in range(len(lista)):
+            if i % 2:
+                lista[i] = colors[1]
+                lista2[i] = colors[0]
+            else:
+                lista[i] = colors[0]
+                lista2[i] = colors[1]
+        disposizioni.append(lista[:])
+        disposizioni.append(lista2[:])
+        return disposizioni
+    else:
+        for colore in colors[1:]:
+            for i in range(len(lista)):
+                if i % 2:
+                    lista[i] = colore
+                    lista2[i] = colors[0]
+                else:
+                    lista[i] = colors[0]
+                    lista2[i] = colore
+            disposizioni.append(lista[:])
+            disposizioni.append(lista2[:])
+        cross(colors[1:], lista, lista2, disposizioni)
+        return disposizioni
+   
+def costruisci_immagine_cross(disposizioni, D):
+    img = [-1 for _ in range(D)]
+    immagini = []
+    for i in range(0,len(disposizioni)):
+        if i % 2:
+            immagini = (immagine_cross_ric(immagini, img, disposizioni[i], disposizioni[i-1], D, 0))
+        else:
+            immagini = (immagine_cross_ric(immagini, img, disposizioni[i], disposizioni[i+1], D, 0))
+    return immagini
+           
+def immagine_cross_ric(immagini, img, riga1, riga2, D, i):       
+    img[i] = tuple(riga1)    
+    if i == D-1:
+        immagini.append(tuple(img))
+        return immagini
+    else:
+        immagine_cross_ric(immagini, img, riga2, riga1, D, i+1)
+        return immagini
+    
+    
+    
+def fun_pattern_rect(riga, disposizioni, i, D, colors, colori):
+    if i == D:
+        disposizioni.append(riga[:])
+        return disposizioni
+    else:
+        for colore in colori:
+            riga[i] = colore
+            fun_pattern_rect(riga, disposizioni, i+1, D, colors, colors[:colors.index(colore)]+colors[colors.index(colore)+1:])
+        return disposizioni
+                    
+def costruisci_immagine_vrect(D, disposizioni):
+    immagini = []
+    for disposizione in disposizioni:
+        immagine = []
+        for i in range(D):
+            immagine.append(tuple(disposizione))
+        immagini.append(tuple(immagine))
+    return immagini
+
+def costruisci_immagine_hrect(D, disposizioni):
+    immagini = []
+    for disposizione in disposizioni:
+        immagine = []
+        for colore in disposizione:
+            riga = [colore for _ in range(D)]
+            immagine.append(tuple(riga))
+        immagini.append(tuple(immagine))
+    return immagini
+
+
+
+def fun_no_pattern(riga, disposizioni, i, D, colors):
+    if i == D:
+        disposizioni.append(riga[:])
+        return disposizioni
+    else:
+        for colore in colors:
+            riga[i] = colore
+            fun_no_pattern(riga, disposizioni, i+1, D, colors)
+        return disposizioni 
+
+def genera_immagini_random(D, disposizioni, i, immagini, immagine):
+    if i == D:
+        immagini.append(tuple(immagine))
+        return immagini
+    else:
+        for disposizione in disposizioni:
+            immagine[i] = tuple(disposizione)
+            genera_immagini_random(D, disposizioni, i+1, immagini, immagine)
+        return immagini 
+
+
+
+def fun_pattern_diff(immagine, immagini, D, i, j, colors):
+    # indice di riga
+    if i == D:
+        i = 0
+        j += 1
+    # indice di colonna
+    if j == D:
+        immagini.append(copia(immagine))
+        return immagini     
+    else:
+        if i == 0:
+            if j == 0:                       
+                for colore in colors:
+                    # non ho nulla da controllare perchè è il primo pixel
+                    immagine[0][0] = colore
+                    fun_pattern_diff(immagine, immagini, D, i+1, j, colors)
+            else:
+                for colore in colors:
+                    # devo controllare solo il pixel in alto e in alto a dx
+                    if colore != immagine[j-1][0]:
+                        if i+1 != D and colore == immagine[j-1][i+1]:
+                            continue
+                        immagine[j][0] = colore
+                        fun_pattern_diff(immagine, immagini, D, i+1, j, colors)
+        else:
+            if j == 0:
+                for colore in colors:
+                    # devo controllare solo il pixel a sx
+                    if colore != immagine[0][i-1]:
+                        immagine[0][i] = colore
+                        fun_pattern_diff(immagine, immagini, D, i+1, j, colors)
+            else:
+                for colore in colors:
+                    # controllo i tre pixel intorno (a sx, in alto a sx e in alto)
+                    if (colore != immagine[j][i-1]) and (colore != immagine[j-1][i-1]) and (colore != immagine[j-1][i]):
+                        # controllo anche il pixel in alto a dx
+                        if i+1 != D and colore == immagine[j-1][i+1]:
+                            continue
+                        immagine[j][i] = colore
+                        fun_pattern_diff(immagine, immagini, D, i+1, j, colors)
+        return immagini
+
+def copia(immagine):
+    temp = []
+    for elemento in immagine:
+        temp.append(elemento[:])
+    return temp
+
+def trasforma_in_tuple(immagini):
+    immagini2 = []
+    for immagine in immagini:
+        immagine2 = []
+        for riga in immagine:
+            immagine2.append(tuple(riga))
+        immagini2.append(tuple(immagine2))
+    return immagini2

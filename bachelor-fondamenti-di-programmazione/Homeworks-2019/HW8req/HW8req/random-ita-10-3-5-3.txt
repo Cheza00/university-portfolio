@@ -1,0 +1,10 @@
+# cities:  PEKANBARU GEORGSMARIENHÜTTE PENICHE PUNDONG BHIKANGAON TALIPPARAMBA GUALÁN MEHLVILLE AVOLA MYTISHCHI
+# secrets:
+#	['rintracciati', 'vinceste', 'degneremo', 'affilia', 'ricercammo']
+#	['dominiamo', 'svaluterei', 'assenze', 'neofascismo', 'cuci']
+#	['ritornavo', 'leggevo', 'orale', 'brontolano', 'rimborsarti']
+# clues:   interrogando compilerai estirpazione umida guida
+# start:   PEKANBARU
+
+         PENICHEestirpazioneGUALÁNorale            BHIKANGAONguidaBHIKANGAONricercammo                   PUNDONGcompileraiPEKANBARUsvaluterei
+           AVOLAguidaMYTISHCHIrimborsarti                   PEKANBARUinterrogandoTALIPPARAMBArintracciati                 PEKANBARUinterrogandoPUNDONGdominiamo        MEHLVILLEcompileraiPENICHEleggevo                     AVOLAcompileraiMYTISHCHIrimborsarti               PEKANBARUestirpazionePENICHEassenze          AVOLAumidaMYTISHCHIrimborsarti    PENICHEumidaGUALÁNneofascismo    PUNDONGestirpazionePEKANBARUdegneremo        TALIPPARAMBAcompileraiPUNDONGvinceste           AVOLAestirpazioneMYTISHCHIrimborsarti       GUALÁNumidaAVOLAbrontolano                   GUALÁNguidaPUNDONGcuci      PEKANBARUumidaBHIKANGAONaffilia                     PEKANBARUinterrogandoMEHLVILLEritornavo           AVOLAinterrogandoMYTISHCHIrimborsarti

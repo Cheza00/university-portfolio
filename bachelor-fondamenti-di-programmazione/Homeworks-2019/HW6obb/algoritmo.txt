@@ -1,0 +1,10 @@
+Carico l'immagine e la salvo in una variabile. Successiamente procedo a cercare
+la griglia all'interno dell'immagine e poi la distanza tra un vertice dei quadrati
+(punto verde) all'altro, in modo da salvare questa distanza in una variabile e 
+cercare direttamente attraverso quest'ultima i quadrati, così da non svolgere i
+controlli per ogni pixel. Inizializzo un contatore e attraverso dei cicli, partendo 
+dal primo vertice della griglia e scorrendola man mano, controllo che sia in 
+orizzontale che in verticale, il pixel corrispondende al vertice successivo-1
+sia di colore rosso. Se così non fosse, interromperei il ciclo. Una volta 
+trovato un quadrato completo di lato k, incremento il contatore che verrà 
+restituito alla fine dei controlli.

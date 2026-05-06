@@ -1,0 +1,1174 @@
+# apro il file, scorro le righe e salvo ogni riga in una lista
+# salvate le righe del file nella lista chiamo una funzione che scorre ogni elemento e:
+	# pulisce l'elemento all'interno della lista da eventuali caratteri non alfabetici
+	# calcola lo stress_pattern della parola passata e lo aggiunge a una lista
+	# se si tratta di una parola senza traduzione fonetica aggiungo tanti zeri quante sono le lettere contenute nella metà intera della parola
+# la lista viene "pulita" da tutti gli eventuali numeri maggiori di 1 e sostituiti con lo 0
+# normalizzo la matrice di 0 e 1 ottenuta rendendo le liste della matrice della stessa len
+# nella stessa funzione scrivo il file
+# confronto le liste della matrice due alla volta e lcreo un set delle posizioni uguali a 1
+# per controllare se la somma dei valori all'interno delle due liste è maggiore di zero controllo la len dei set appena creati
+		# se una delle due len è zero considero il valore = 0 e lo salvo in una lista Sync
+		# se la len è maggiore di zero chiamo una funzione che conta gli accenti validi per il calcolo
+	# per controllare gli accenti validi non scorro tutta la lista ma trovo tutti gli indici uguali (che fanno parte di entrambi gli insiemi)
+	# mentre per tutti gli elementi non in comune faccio i controlli sulla validità (tra indice e indice - tau) 
+# Al termine ho ottenuto una lista Sync con tutti i risultati dei confronti le righe.
+# Calcolo la media degli elementi della lista Sync e ritorno il valore arrotondato alla sesta cifra decimale
+
+
+---------------
+
+def leggitxt:
+    #apro il file in input
+    #scorro il file in input riga per riga
+    #print(ls)
+    #ritorna lista di liste con le righe (solo alfanumerici e spazi)
+
+def scrivitxt:
+    #apro il file in scrittura
+    #trasformo ogni riga (lista) in una stringa
+    #conto le righe
+    #se non sono all'ultima riga inserisco l'accapo
+    
+def spazio: #pulisco la stringa per - e ' , ritorno una lista di parole "pulite"
+    
+def vuoto: #pulisco la stringa per caratteri vuoti
+            
+def lsfonetica:
+    #scorro la lista riga per riga
+    #scorro la lista parola per parola
+    #valore fonetico della parola
+    #print(len(p))
+    #test di esistenza di almeno una traduzione fonetica
+    #stringa di accenti della prima traduzione fonetica
+    #se nella parola ci sono "'" o "-" la splitto ulteriormente con la funzione spazio
+    #calcolo degli accenti sulle nuove parole generate dallo split
+    #se non esiste traduzione fonetica
+    #aggiungo zeri in base alla parte intera della lunghezza della parola diviso 2
+    #0 dopo ogni parola
+    #ricavo la lunghezza massima della riga
+    #aggiungo la riga di accenti alla lista di righe di accenti
+    
+def accenti: #ritorna la lista di accenti
+    #ciclo su ogni carattere della stringa di accenti
+    #se il valore è 1 (accento primario), lo aggiungo alla lista
+    #altrimenti aggiungo 0
+    
+def riempi: #la funzione riempie con 0 le righe di lunhgezza minore del massimo
+    
+def sync: #calcolo della sincronizzazione di due liste di accenti
+    #se una delle due righe non ha accenti ritorna 0
+    #se le due liste sono uguali ritorna 1
+    #lista con le posizioni di 1 in A
+    #lista con le posizioni di 1 in B
+    #numero di 1 in posizione tau AvsB
+    #numero di 1 in posizione tau BvsA
+    #ritorno il calcolo della sincronizzazione
+        
+def posizioni: #la funzione scorre la lista in input e restituisce una lista tutti gli indici corrispondenti al valore 1
+    
+def C: #calcolo degli 1 in posizione n - t nella lista in input
+    
+def PoemSync:
+    #leggo il file di testo
+    #unpacking della tupla lista di liste (accenti), lunghezza max
+    #aggiungo zeri alleliste di accenti di lunghezza < maxl
+    #scrivo il file di testo con le liste di accenti
+    #confronto le coppie di liste di accenti e calcolo il valore di sincronizzazione
+
+-------------------
+
+## Introduzione
+
+-   Questo documento plain-text è stato scritto con un editor Markdown, per una sua corretta visualizzazione si consiglia quindi di utilizzare il seguente editor markdown online:  [https://stackedit.io/app#](https://stackedit.io/app#)
+    
+-   Non posso specificare (come da regolamento del corso) il mio nome, ma resta fermo il fatto che su questo documento (che sia per intero o per parti, e per quanto di mia produzione) tutti i diritti sono riservati e pertanto non dev'essere condiviso con nessuno.
+    
+    Gli unici da me autorizzati legalmente alla sua lettura sono i professori amministratori del nostro Q2A e i colleghi assegnatari che lo ricevono nell'ambito del peer-assessment; infine saranno autorizzati alla sua sola lettura anche tutti gli iscritti al corso nell'eventualità in cui anche per questo Homework verrà resa disponibile questa possibilità dal professore in seguito alla scadenza della sua data di consegna.
+    
+-   **P.S:** alcune ulteriori suddivisioni in funzioni che ho praticato sono qui omesse (rese parti della spiegazione senza specificare però che fanno parte di specifiche funzioni), quindi non vi preoccupate, al momento in cui scrivo ho già ottenuto sia il bonus intricatezza che il bonus efficienza
+    
+-   Grazie per l'attenzione e buona lettura! Ho fatto del mio meglio affinché fosse spiegato il più chiaro possibile, spero possa esservi d'aiuto per migliorare il vostro codice o di poter presto valutare positivamente eventuali vostri consigli per migliorare il mio (che sono molto ben accetti) :-)
+    
+
+## PoemSync
+
+**DESCRIZIONE:**  La funzione principale, esattamente per come definita dalla consegna
+
+**FUNZIONAMENTO:**
+
+-   **Apriamo**  il file in input in modalità di lettura
+    -   **Apriamo**  il file di output in modalità di scrittura
+        -   Genero una prima versione della matrice degli accenti con l'ausilio della funzione  **generaMatrice**, e allo stesso tempo salvo il valore della lunghezza massima delle stringhe di accenti che essa mi restituisce, così come la matrice delle liste delle posizioni degli accenti
+        -   Correggo la matrice degli accenti generata (ora che conosco la lunghezza massima) <u>aggiungendo ad ogni stringa degli accenti tanti zeri quanti ne servono per portarle tutti alla stessa lunghezza</u> (ovvero la lunghezza massima)
+        -   Il testo da scrivere nel file di output dev'essere appositamente costruito aggiungendo un a capo ('**\n**') alla fine di ogni riga della matrice e restituendo il tutto sottoforma di stringa (unendo quindi ogni riga della matrice in un'unica stringa multi-linea)
+            -   In questo modo con un'unica operazione di **write** scriviamo direttamente il file completo.
+-   Per via del costrutto che ho utilizzato per aprire i due file essi si chiudono e scrivono sul file automaticamente.
+
+**RESTITUISCE:**  L'indice di sync arrotondato alla sesta cifra decimale.
+
+## generaMatrice(inputfilename)
+
+**DESCRIZIONE:**
+
+-   Funzione atta a generare la matrice delle stringhe di accenti a partire dalle righe del poema contenuto nel file in input alla funzione PoemSync
+
+**FUNZIONAMENTO:**
+
+-   Inizializzo due liste importanti per questa funzione (verranno riempite man mano):
+    
+    -   **matrAccenti**: matrice delle stringhe di accenti;
+    -   **matrPosAccenti**: matrice delle posizioni degli accenti nelle singole stringhe.
+-   Per ogni riga del file in input:
+    
+    -   Se la riga è vuota (contiene solo il carattere newline) la ignoro
+    -   Inizializzo:
+        -   Come  **stringa vuota**  la stringa degli accenti di tutte le parole della riga attuale;
+        -   Come  **lista vuota**  la lista delle posizioni degli accenti di tutte le parole della riga attuale.
+    -   <u>OTTENIMENTO DELLE SINGOLE PAROLE</u>
+        -   **N.B**.: per "**parola**" (come da nota del professore alla consegna dell'Homework) intendiamo "sequenza massimale di caratteri alfabetici".
+            
+            Questo significa che termini inglesi come "can't" e "don't" nel nostro svolgimento non rappresentano una singola parola, bensì due parole distinte:
+            
+            -   "<u>can't</u>" è composto di due parole (sequenze [...]): "<mark>can</mark>" e "<mark>t</mark>";
+            -   "<u>don't</u>" è composto di due parole (sequenze [...]): "<mark>don</mark>" e "<mark>t</mark>".
+            
+            I  **caratteri non-alfabetici**  servono quindi da separatori tra coppie di parole, e come da consegna in corrispondenza di una coppia di parole in mezzo aggiungeremo uno zero.
+            
+            <u>Un ulteriore zero andrà aggiunto poi alla fine della riga</u>.
+            
+        -   **Per ogni carattere della riga:**
+            
+            -   Se il carattere è alfabetico:
+                -   Lo aggiungo alla stringa dei caratteri della parola attuale
+            -   Altrimenti:
+                -   Concludo l'eventuale parola attuale e la passo come parametro alla funzione ausiliaria "**ottieniAccentoParola**" per calcolarne la stringa di accenti corrispondente;
+                    
+                -   Aggiungo la stringa di accenti ottenuta dalla parola alla stringa degli accenti di tutte le parole della riga attuale;
+                    
+                -   Aggiorno di conseguenza la stringa di accenti della riga attuale;
+                    
+                -   Aggiorno di conseguenza la lista delle posizioni degli accenti nella stringa di accenti della riga attuale.
+                    
+-   Aggiorno la lunghezza massima qualora la lunghezza della lista degli accenti di tutte le parole della riga attuale sia maggiore della lunghezza massima calcolata finora;
+    
+-   Aggiungo alla matrice delle stringhe degli accenti (**matrAccenti**) la stringa degli accenti della riga appena finita di scansionare
+    
+-   Aggiungo alla matrice delle posizioni degli accenti nelle stringhe di accenti (**matrPosAccenti**) la lista delle posizioni degli accenti nella stringa di accenti della riga appena finita di scansionare
+
+**RESTITUISCE:**
+
+-   La lunghezza massima tra le lunghezze delle stringhe degli accenti (quella che siamo andati aggiornando man mano ad ogni riga scansionata);
+-   ****matrAccenti****;
+-   **matrPosAccenti**.
+
+## ottieniAccentiParola(parola):
+
+**DESCRIZIONE:**  Funzione atta a generare la degli accenti corrispondente ad una parola passata come parametro.
+
+**FUNZIONAMENTO:**
+
+-   Utilizzo la funzione "**phones_for_word**" parte del modulo "**pronouncing**" per ottenere una listas di fonemi della parola e un numeri rappresentante il tipo di accento dopo ogni singola vocale
+    -   **Se** la funzione  **phones_for_word**  non restituisce alcun fonema (ovvero una lista vuota):
+        
+        -   Restituisce una stringa di zeri lunga quanto il risultato della divisione intera della lunghezza della parola per 2
+            
+            ***N.B.:**  se viene '0' allora la stringa sarà vuota*
+            
+    -   **Altrimenti**:
+        
+        -   Utilizza la funzione "**stresses**" parte del modulo "**pronouncing**" per ottenere, a partire dall'output della funzione dello stesso modulo chiamata precedentemente, i soli numeri rappresentanti i tipi di accento;
+            
+        -   Sostituisce tutti i '2' (gli accenti secondari) con degli '0' (nessun accento), perché come da consegna ci interessa considerare solo gli accenti primari (quelli rappresentati dal numero '1');
+        
+        -   Restituisce la stringa di accenti composta quindi da:
+
+              - **zeri**: in corrispondenza di nessun accento o accenti secondari;
+              - **uni**: in corrispondenza di accenti primari.
+
+## calcolaIndiceSync
+
+**DESCRIZIONE:**  Funzione che utilizzo per determinare le coppie tra cui calcolare il valore di sync (aiutandomi con l'altra funzione ausiliaria  **sync**) e infine calcolare l'indice di sincronizzazione (dato dalla media di tutti i valori di sync).
+
+**FUNZIONAMENTO:**
+
+-   Inizializzo a 0 il  **totalizzatore**  per la <u>somma dei singoli sync</u> e il  **contatore** del <u>numero di sync calcolati</u> (in preparazione alla media che scaturirà da essi una volta computati)
+-   Inoltre creo un  **dizionario vuoto**  che conterrà:
+    -   Come  **valori**  i valori di sync già calcolati;
+    -   Come  **chiavi**  le due stringhe di accenti (concatenate) da cui derivano i corrispondenti valori di sync.
+-   **Per ogni**  riga A
+    -   **Se**  la lunghezza della riga A attuale è 0:
+        -   La somma non cambia (perché il valore di sync in questi casi è 0), mentre il conteggio viene incrementato del numero di valori di sync (uguali a 0) pari a quante erano le righe successive B (che per ottimizzazione quindi non considero nemmeno).
+    -   **Altrimenti**, per ogni riga B (per tutte le righe successiva alla riga A):
+        -   **Se**  la lunghezza della riga B è diversa da 0:
+            -   **Se**  tra due stringhe di accenti come quelle attuali non è mai stato calcolato il valore di sync allora lo calcolo e lo aggiungo al dizionario;
+            -   **Altrimenti**  utilizzo il valore già calcolato.
+            -   In entrambi casi il valore di sync viene sommato al totalizzatore della somma.
+    -   **Altrimenti**  non eseguo alcuna somma (sarebbe inutile sommare 0), incremento di 1 il contatore e procedo alla prossima riga B
+
+**RESTITUISCE:**  L'indice di sincronizzazione calcolato come  **somma / contatore**.
+
+## calcolaSync
+
+**DESCRIZIONE:**  Funzione che utilizzo per calcolare il valore di sync tra una coppia di righe della matrice date le loro stringhe di accenti, le liste delle posizioni degli accenti in esse e il valore tau
+
+**FUNZIONAMENTO:**
+
+-   **Per ogni**  posizione degli accenti della riga A
+    -   **Per ogni**  valore della stringa di accenti (della riga B) precedente di fino a  **tau**  posizioni rispetto alla posizione attuale
+        -   **Se**  il valore attualmente scandito è 1
+            -   Incrementa  **c(A|B)**  di 1
+            -   Passa alla prossima posizione degli accenti della riga A
+        -   _(**altrimenti**  continua a scandire gli altri valori previsti)_
+-   **Per ogni**  posizione degli accenti della riga B
+    -   **Per ogni**  valore della stringa di accenti (della riga A) precedente di fino a  **tau**  posizioni rispetto alla posizione attuale
+        -   **Se**  il valore attualmente scandito è 1
+            -   Incrementa  **c(B|A)**  di 1
+            -   Passa alla prossima posizione degli accenti della riga B
+        -   _(**altrimenti**  continua a scandire gli altri valori previsti)_
+
+**RESTITUISCE:**
+
+Il valore di sync tra le due righe A e B calcolato secondo la seguente formula (come da consegna):
+
+```
+        0.5 * (c(B|A) + c(A|B))
+Sync = -----------------------
+           sqrt(m(A)*m(B))
+```
+
+-   Dove  **m(A)**  ed  **m(B)**  nel nostro caso corrispondono alle lunghezze delle liste delle posizioni degli accenti nelle rispettive stringhe di accenti (essendo che contengono tanti elementi quanti gli uni nelle stringhe di accenti, in quanto gli elementi sono le loro posizioni)
+
+----------------------------------------------------------------
+# PRIMA VERSIONE
+
+
+Complessità ciclomatica massima	18
+Test superati	9
+Tempo di esecuzione	483.276 msec
+Voto (provvisorio)	30
+ 
+
+import pronouncing
+import math
+
+def PoemSync(inputfilename, outputfilename, tau):
+    dizionario = {}
+    max_len = 0
+    lista_sync = []
+    with open(inputfilename, encoding='utf8') as f:
+        poema = f.read()
+    poema = togli_char(poema)
+    poema = poema.split('\n')
+    for riga in poema:
+        if riga == '':
+            continue
+        verso = str(riga)
+        dizionario[verso] = ['']
+        riga = riga.split()
+        for parola in riga:
+            if parola == '':
+                continue
+            fonetica = pronouncing.phones_for_word(parola)
+            if fonetica != []:
+                accenti = pronouncing.stresses(fonetica[0])
+                if '2' in accenti:
+                    accenti = accenti.replace('2','0')
+            else:
+                accenti = '0' * (len(parola) // 2)
+            dizionario[verso][0] += (accenti + '0')
+        lunghezza = len(dizionario[verso][0])
+        if lunghezza > max_len:
+            max_len = lunghezza
+    for elemento in dizionario:
+        if len(dizionario[elemento][0]) < max_len:
+            dizionario[elemento][0] = dizionario[elemento][0] + ('0' * (max_len - len(dizionario[elemento][0])))
+    i = 0
+    testo = ''
+    for y in range(len(poema)):
+        if poema[y] == '':
+                i += 1
+                continue
+        A = dizionario[poema[y]][0]
+        testo = testo + A + '\n'
+        if len(dizionario[poema[y]]) == 1:
+            m_A = A.count('1')
+            dizionario[poema[y]].append(m_A)
+        else:
+            m_A = dizionario[poema[y]][1]
+        for x in range(i+1,len(poema)):
+            if poema[x] == '':
+                continue
+            B = dizionario[poema[x]][0]
+            if len(dizionario[poema[x]]) == 1:
+                m_B = B.count('1')
+                dizionario[poema[x]].append(m_B)
+            else:
+                m_B = dizionario[poema[x]][1]
+            if m_A == 0 or m_B == 0:
+                lista_sync.append(0)
+                continue
+            c_b, c_a = confronta(A, B, tau)
+            sync = (0.5 * (c_b + c_a)) / math.sqrt(m_A * m_B)
+            lista_sync.append(sync)
+        i += 1  
+    with open(outputfilename, mode='w', encoding='utf8') as f:
+        f.write(testo)
+    media_sync = sum(lista_sync) / len(lista_sync)
+    return round(media_sync,6)
+
+def confronta(A, B, tau):
+    i = 0 
+    j = 0
+    c_b = 0
+    c_a = 0
+    temp1 = []
+    temp2 = []
+#    print(A,B)
+    while i < len(A) or j < len(B):
+        if i < len(A):
+            while i < len(A) and A[i] == '0':
+                i += 1
+            if i < len(A):
+                if i-tau >= 0:
+                    temp1 = B[i-tau:i+1]
+                else:
+                    temp1 = B[:i+1]
+                #print(temp1)
+                if '1' in temp1:
+                    c_a += 1
+            i += 1
+        if j < len(B):
+            while j < len(B) and B[j] == '0':
+                j += 1
+            if j < len(B):
+                if j-tau >= 0:
+                    temp2 = A[j-tau:j+1]
+                else:
+                    temp2 = A[:j+1]
+                if '1' in temp2:
+                    c_b += 1 
+            j += 1
+#    print(c_a, c_b)
+    return c_b, c_a
+
+def togli_char(poema):
+    poema2 = poema[:]
+    for lettera in poema:
+        if not lettera.isalpha():
+            if lettera == '\n' or lettera == ' ': 
+                continue
+            else:
+                poema2 = poema2.replace(lettera, ' ')
+    return poema2
+    
+            
+if __name__ == "__main__":
+    # your tests go here
+    pass
+
+# =============================================================================
+# lunghezza = len(dizionario[str(riga)][0])
+#             if lunghezza > max_len:
+#                 max_len = lunghezza
+
+# =============================================================================
+                
+# usare dizionari per memorizzare info su ogni riga?
+# per la pronuncia fonetica considerare solo la prima (indice 0)
+
+
+----------------------------
+# SECONDA VERSIONE
+
+Complessità ciclomatica massima	9
+Test superati	9
+Tempo di esecuzione	493.672 msec
+Voto (provvisorio)	30
+
+import pronouncing
+import math
+
+def PoemSync(inputfilename, outputfilename, tau):
+    with open(inputfilename, encoding='utf8') as f:
+        poema = f.read()
+    poema = togli_char(poema)
+    poema = poema.split('\n')
+    lista_sync, testo = crea_dizionario(poema, tau)
+    with open(outputfilename, mode='w', encoding='utf8') as f:
+        f.write(testo)
+    media_sync = sum(lista_sync) / len(lista_sync)
+    return round(media_sync,6)
+
+
+def sync(poema, dizionario, tau):
+    lista_sync = []
+    i = 0
+    testo = ''
+    for y in range(len(poema)):
+        if poema[y] == '':
+                i += 1
+                continue
+        A = dizionario[poema[y]][0]
+        testo = testo + A + '\n'
+        if len(dizionario[poema[y]]) == 1:
+            m_A = A.count('1')
+            dizionario[poema[y]].append(m_A)
+        else:
+            m_A = dizionario[poema[y]][1]
+        lista_sync = calcola_sync(i, tau, A, dizionario, poema, m_A, lista_sync)
+        i += 1
+    return lista_sync, testo
+
+
+def calcola_sync(i, tau, A, dizionario, poema, m_A, lista_sync):
+    for x in range(i+1,len(poema)):
+        if poema[x] == '':
+            continue
+        B = dizionario[poema[x]][0]
+        if len(dizionario[poema[x]]) == 1:
+            m_B = B.count('1')
+            dizionario[poema[x]].append(m_B)
+        else:
+            m_B = dizionario[poema[x]][1]
+        if m_A == 0 or m_B == 0:
+            lista_sync.append(0)
+            continue
+        c_a = confronta_A(A, B, tau)
+        c_b = confronta_B(A, B, tau)
+        sync = (0.5 * (c_b + c_a)) / math.sqrt(m_A * m_B)
+        lista_sync.append(sync)
+    return lista_sync
+    
+
+
+def crea_dizionario(poema, tau):
+    dizionario = {}
+    max_len = 0
+    for riga in poema:
+        if riga == '':
+            continue
+        verso = str(riga)
+        dizionario[verso] = ['']
+        riga = riga.split()
+        for parola in riga:
+            if parola == '':
+                continue
+            fonetica = pronouncing.phones_for_word(parola)
+            if fonetica != []:
+                accenti = pronouncing.stresses(fonetica[0])
+                accenti = accenti.replace('2','0')
+            else:
+                accenti = '0' * (len(parola) // 2)
+            dizionario[verso][0] += (accenti + '0')
+        lunghezza = len(dizionario[verso][0])
+        if lunghezza > max_len:
+            max_len = lunghezza
+    for elemento in dizionario:
+        if len(dizionario[elemento][0]) < max_len:
+            dizionario[elemento][0] = dizionario[elemento][0] + ('0' * (max_len - len(dizionario[elemento][0])))
+    return sync(poema, dizionario, tau)
+
+
+def confronta_A(A, B, tau):
+    i = 0 
+    c_a = 0
+    temp1 = []
+    while i < len(A):
+        while i < len(A) and A[i] == '0':
+            i += 1
+        if i < len(A):
+            if i-tau >= 0:
+                temp1 = B[i-tau:i+1]
+            else:
+                temp1 = B[:i+1]
+            if '1' in temp1:
+                c_a += 1
+        i += 1
+    return c_a
+
+
+def confronta_B(A, B, tau):
+    j = 0
+    c_b = 0
+    temp2 = []
+    while j < len(B):
+        while j < len(B) and B[j] == '0':
+            j += 1
+        if j < len(B):
+            if j-tau >= 0:
+                temp2 = A[j-tau:j+1]
+            else:
+                temp2 = A[:j+1]
+            if '1' in temp2:
+                c_b += 1 
+        j += 1
+    return c_b
+
+
+def togli_char(poema):
+    poema2 = poema[:]
+    for lettera in poema:
+        if not lettera.isalpha():
+            if lettera == '\n' or lettera == ' ': 
+                continue
+            else:
+                poema2 = poema2.replace(lettera, ' ')
+    return poema2
+
+
+------------------------
+
+# TERZA VERSIONE
+
+Complessità ciclomatica massima	7
+Test superati	9
+Tempo di esecuzione	471.886 msec
+Voto (provvisorio)	32
+
+import pronouncing
+import math
+
+def PoemSync(inputfilename, outputfilename, tau):
+    with open(inputfilename, encoding='utf8') as f:
+        poema = f.readlines()
+    poema = togli_char(poema)
+    lista_sync, testo = crea_dizionario(poema, tau)
+    with open(outputfilename, mode='w', encoding='utf8') as f:
+        f.write(testo)
+    media_sync = sum(lista_sync) / len(lista_sync)
+    return round(media_sync,6)
+
+
+def sync(poema, dizionario, tau):
+    concatenazioni = {}
+    lista_sync = []
+    i = 0
+    testo = ''
+    for y in range(len(poema)):
+        A = dizionario[poema[y]][0]
+        testo = testo + A + '\n'
+        if len(dizionario[poema[y]]) == 1:
+            m_A = A.count('1')
+            dizionario[poema[y]].append(m_A)
+        else:
+            m_A = dizionario[poema[y]][1]
+        lista_sync, concatenazioni = calcola_sync(i, tau, A, dizionario, poema, m_A, lista_sync, concatenazioni)
+        i += 1
+    return lista_sync, testo
+
+
+def calcola_sync(i, tau, A, dizionario, poema, m_A, lista_sync, concatenazioni):
+    for x in range(i+1,len(poema)):
+        B = dizionario[poema[x]][0]
+        if len(dizionario[poema[x]]) == 1:
+            m_B = B.count('1')
+            dizionario[poema[x]].append(m_B)
+        else:
+            m_B = dizionario[poema[x]][1]
+        if m_A == 0 or m_B == 0:
+            lista_sync.append(0)
+            continue
+        if A+B in concatenazioni:
+            c_a = concatenazioni[A+B]
+            c_b = concatenazioni[B+A]
+        else:
+            c_a = confronta_A(A, B, tau)
+            concatenazioni[A+B] = c_a
+            c_b = confronta_B(A, B, tau)
+            concatenazioni[B+A] = c_b
+        sync = (0.5 * (c_b + c_a)) / math.sqrt(m_A * m_B)
+        lista_sync.append(sync)
+    return lista_sync, concatenazioni
+    
+
+
+def crea_dizionario(poema, tau):
+    dizionario = {}
+    max_len = 0
+    for riga in poema:
+        verso = str(riga)
+        dizionario[verso] = ['']
+        riga = riga.split()
+        for parola in riga:
+            fonetica = pronouncing.phones_for_word(parola)
+            if fonetica != []:
+                accenti = pronouncing.stresses(fonetica[0])
+                accenti = accenti.replace('2','0')
+            else:
+                accenti = '0' * (len(parola) // 2)
+            dizionario[verso][0] += (accenti + '0')
+        lunghezza = len(dizionario[verso][0])
+        if lunghezza > max_len:
+            max_len = lunghezza
+    for elemento in dizionario:
+        if len(dizionario[elemento][0]) < max_len:
+            dizionario[elemento][0] = dizionario[elemento][0] + ('0' * (max_len - len(dizionario[elemento][0])))
+    return sync(poema, dizionario, tau)
+
+
+def confronta_A(A, B, tau):
+    i = 0 
+    c_a = 0
+    temp1 = []
+    while i < len(A):
+        while i < len(A) and A[i] == '0':
+            i += 1
+        if i < len(A):
+            if i-tau >= 0:
+                temp1 = B[i-tau:i+1]
+            else:
+                temp1 = B[:i+1]
+            if '1' in temp1:
+                c_a += 1
+        i += 1
+    return c_a
+
+
+def confronta_B(A, B, tau):
+    j = 0
+    c_b = 0
+    temp2 = []
+    while j < len(B):
+        while j < len(B) and B[j] == '0':
+            j += 1
+        if j < len(B):
+            if j-tau >= 0:
+                temp2 = A[j-tau:j+1]
+            else:
+                temp2 = A[:j+1]
+            if '1' in temp2:
+                c_b += 1 
+        j += 1
+    return c_b
+
+
+def togli_char(poema):
+    poema2 = []
+    for parola in poema:
+        for lettera in parola:
+            if not lettera.isalpha() and lettera != ' ':
+                parola = parola.replace(lettera, ' ')
+        if parola != " ":
+            poema2.append(parola)
+    return poema2
+
+-------------------
+# QUARTA LEZIONE 
+
+
+Complessità ciclomatica massima	7
+Test superati	9
+Tempo di esecuzione	392.066 msec
+Voto (provvisorio)	32
+
+import pronouncing
+import math
+
+def PoemSync(inputfilename, outputfilename, tau):
+    with open(inputfilename, encoding='utf8') as f:
+        poema = f.readlines()
+    poema = togli_char(poema)
+    lista_sync, testo = crea_dizionario(poema, tau)
+    with open(outputfilename, mode='w', encoding='utf8') as f:
+        f.write(testo)
+    media_sync = sum(lista_sync) / len(lista_sync)
+    return round(media_sync,6)
+
+
+def sync(poema, dizionario, tau):
+    concatenazioni = {}
+    lista_sync = []
+    i = 0
+    testo = ''
+    for y in range(len(poema)):
+        A = dizionario[poema[y]][0]
+        testo = testo + A + '\n'
+        if len(dizionario[poema[y]]) == 1:
+            m_A = A.count('1')
+            dizionario[poema[y]].append(m_A)
+        else:
+            m_A = dizionario[poema[y]][1]
+        lista_sync, concatenazioni = calcola_sync(i, tau, A, dizionario, poema, m_A, lista_sync, concatenazioni)
+        i += 1
+    return lista_sync, testo
+
+
+def calcola_sync(i, tau, A, dizionario, poema, m_A, lista_sync, concatenazioni):
+    for x in range(i+1,len(poema)):
+        B = dizionario[poema[x]][0]
+        if len(dizionario[poema[x]]) == 1:
+            m_B = B.count('1')
+            dizionario[poema[x]].append(m_B)
+        else:
+            m_B = dizionario[poema[x]][1]
+        if m_A == 0 or m_B == 0:
+            lista_sync.append(0)
+            continue
+        if A+B in concatenazioni:
+            c_a = concatenazioni[A+B]
+            c_b = concatenazioni[B+A]
+        else:
+            c_a = confronta_A(A, B, tau)
+            concatenazioni[A+B] = c_a
+            c_b = confronta_B(A, B, tau)
+            concatenazioni[B+A] = c_b
+        sync = (0.5 * (c_b + c_a)) / math.sqrt(m_A * m_B)
+        lista_sync.append(sync)
+    return lista_sync, concatenazioni
+    
+
+
+def crea_dizionario(poema, tau):
+    dizionario = {}
+    max_len = 0
+    for riga in poema:
+        verso = str(riga)
+        dizionario[verso] = ['']
+        riga = riga.split()
+        for parola in riga:
+            fonetica = pronouncing.phones_for_word(parola)
+            if fonetica != []:
+                accenti = pronouncing.stresses(fonetica[0])
+                accenti = accenti.replace('2','0')
+            else:
+                accenti = '0' * (len(parola) // 2)
+            dizionario[verso][0] += (accenti + '0')
+        lunghezza = len(dizionario[verso][0])
+        if lunghezza > max_len:
+            max_len = lunghezza
+    for elemento in dizionario:
+        if len(dizionario[elemento][0]) < max_len:
+            dizionario[elemento][0] = dizionario[elemento][0] + ('0' * (max_len - len(dizionario[elemento][0])))
+    return sync(poema, dizionario, tau)
+
+
+def confronta_A(A, B, tau):
+    i = 0 
+    c_a = 0
+    temp1 = []
+    while i < len(A):
+        while i < len(A) and A[i] == '0':
+            i += 1
+        if i < len(A):
+            if i-tau >= 0:
+                temp1 = B[i-tau:i+1]
+            else:
+                temp1 = B[:i+1]
+            if '1' in temp1:
+                c_a += 1
+        i += 1
+    return c_a
+
+
+def confronta_B(A, B, tau):
+    j = 0
+    c_b = 0
+    temp2 = []
+    while j < len(B):
+        while j < len(B) and B[j] == '0':
+            j += 1
+        if j < len(B):
+            if j-tau >= 0:
+                temp2 = A[j-tau:j+1]
+            else:
+                temp2 = A[:j+1]
+            if '1' in temp2:
+                c_b += 1 
+        j += 1
+    return c_b
+
+
+def togli_char(poema):
+    poema2 = []
+    for parola in poema:
+        for lettera in parola:
+            if not lettera.isalpha() and lettera != ' ':
+                parola = parola.replace(lettera, ' ')
+        if parola != " ":
+            poema2.append(parola)
+    return poema2
+
+---------------------
+
+# PROVA CON SET
+
+import pronouncing
+import math
+
+def PoemSync(inputfilename, outputfilename, tau): #1
+    with open(inputfilename, encoding='utf8') as f:
+        poema = f.readlines()
+    poema = togli_char(poema)
+    tot, cont, testo = crea_dizionario(poema, tau)
+    with open(outputfilename, mode='w', encoding='utf8') as f:
+        f.write(testo)
+    media_sync = tot / cont
+    return round(media_sync,6)
+
+
+def sync(poema, dizionario, tau): #5
+    concatenazioni = {}
+    tot = 0
+    cont = 0
+    i = 0
+    testo = ''
+    for y in range(len(poema)):
+        A = dizionario[poema[y]][0]
+        testo = testo + A + '\n'
+        if len(dizionario[poema[y]]) == 2:
+            m_A = A.count('1')
+            dizionario[poema[y]].append(m_A)
+        else:
+            m_A = dizionario[poema[y]][2]
+        tot, cont, concatenazioni = calcola_sync(i, tau, A, dizionario, poema, m_A, tot, cont, concatenazioni, dizionario[poema[y]][1])
+        i += 1
+    return tot, cont, testo
+
+
+def calcola_sync(i, tau, A, dizionario, poema, m_A, tot, cont, concatenazioni, posizioniA): #6
+    for x in range(i+1,len(poema)):
+        B = dizionario[poema[x]][0]
+        if len(dizionario[poema[x]]) == 2:
+            m_B = B.count('1')
+            dizionario[poema[x]].append(m_B)
+        else:
+            m_B = dizionario[poema[x]][2]
+        if m_A == 0 or m_B == 0:
+            cont += 1
+            continue
+        if A+B in concatenazioni:
+            c_a = concatenazioni[A+B]
+            c_b = concatenazioni[B+A]
+        else:
+            c_a, c_b = confronta(posizioniA, dizionario[poema[x]][1], tau)
+            concatenazioni[A+B] = c_a
+            concatenazioni[B+A] = c_b
+        tot += (0.5 * (c_b + c_a)) / math.sqrt(m_A * m_B)
+        cont += 1
+    return tot, cont, concatenazioni
+    
+
+
+def crea_dizionario(poema, tau): #3
+    dizionario = {}
+    max_len = 0
+    for riga in poema:
+        verso = str(riga)
+        dizionario[verso] = ['']
+        riga = riga.split()
+        for parola in riga:
+            fonetica = pronouncing.phones_for_word(parola)
+            if fonetica != []:
+                accenti = pronouncing.stresses(fonetica[0])
+                accenti = accenti.replace('2','0')
+            else:
+                accenti = '0' * (len(parola) // 2)
+            dizionario[verso][0] += (accenti + '0')
+        lunghezza = len(dizionario[verso][0])
+        if lunghezza > max_len:
+            max_len = lunghezza
+    for elemento in dizionario:
+        if len(dizionario[elemento][0]) < max_len:
+            dizionario[elemento][0] = dizionario[elemento][0] + ('0' * (max_len - len(dizionario[elemento][0])))
+        dizionario = salva_posizioni(elemento, dizionario[elemento][0], dizionario)
+    return sync(poema, dizionario, tau)
+
+
+def salva_posizioni(elemento, elemento0, dizionario): #4
+    dizionario[elemento].append(set())    
+    for i in range(len(elemento0)):
+        if elemento0[i] == '1':
+            dizionario[elemento][1].add(i)
+    return dizionario
+
+
+def confronta(posizioniA, posizioniB, tau): #7
+    c_a = 0
+    c_b = 0
+    for indice in posizioniA:
+        print(indice, c_a)
+        if set(range(indice-tau, indice+1)).intersection(posizioniB):
+            c_a += 1
+        print(set(range(indice-tau, indice+1)), posizioniB)
+        if set(range(indice, indice+tau+1)).intersection(posizioniB):
+            c_b += 1
+    return c_a, c_b
+
+
+def togli_char(poema): #2
+    poema2 = []
+    for parola in poema:
+        for lettera in parola:
+            if not lettera.isalpha() and lettera != ' ':
+                parola = parola.replace(lettera, ' ')
+        if parola != " ":
+            poema2.append(parola)
+    return poema2
+
+--------------------------------
+
+Complessità ciclomatica massima	7
+Test superati	9
+Tempo di esecuzione	425.669 msec
+Voto (provvisorio)	32
+
+import pronouncing
+import math
+
+def PoemSync(inputfilename, outputfilename, tau):
+    with open(inputfilename, encoding='utf8') as f:
+        poema = f.readlines()
+    poema = togli_char(poema)
+    tot, cont, testo = crea_dizionario(poema, tau)
+    with open(outputfilename, mode='w', encoding='utf8') as f:
+        f.write(testo)
+    media_sync = tot / cont
+    return round(media_sync,6)
+
+
+def sync(poema, dizionario, tau):
+    concatenazioni = {}
+    tot = 0
+    cont = 0
+    i = 0
+    testo = ''
+    for y in range(len(poema)):
+        A = dizionario[poema[y]][0]
+        testo = testo + A + '\n'
+        if len(dizionario[poema[y]]) == 1:
+            m_A = A.count('1')
+            dizionario[poema[y]].append(m_A)
+        else:
+            m_A = dizionario[poema[y]][1]
+        tot, cont, concatenazioni = calcola_sync(i, tau, A, dizionario, poema, m_A, tot, cont, concatenazioni)
+        i += 1
+    return tot, cont, testo
+
+
+def calcola_sync(i, tau, A, dizionario, poema, m_A, tot, cont, concatenazioni):
+    for x in range(i+1,len(poema)):
+        B = dizionario[poema[x]][0]
+        if len(dizionario[poema[x]]) == 1:
+            m_B = B.count('1')
+            dizionario[poema[x]].append(m_B)
+        else:
+            m_B = dizionario[poema[x]][1]
+        if m_A == 0 or m_B == 0:
+            cont += 1
+            continue
+        if A+B in concatenazioni:
+            c_a = concatenazioni[A+B]
+            c_b = concatenazioni[B+A]
+        else:
+            c_a = confronta_A(A, B, tau)
+            concatenazioni[A+B] = c_a
+            c_b = confronta_B(A, B, tau)
+            concatenazioni[B+A] = c_b
+        tot += (0.5 * (c_b + c_a)) / math.sqrt(m_A * m_B)
+        cont += 1
+    return tot, cont, concatenazioni
+    
+
+
+def crea_dizionario(poema, tau):
+    dizionario = {}
+    max_len = 0
+    for riga in poema:
+        verso = str(riga)
+        dizionario[verso] = ['']
+        riga = riga.split()
+        for parola in riga:
+            fonetica = pronouncing.phones_for_word(parola)
+            if fonetica != []:
+                accenti = pronouncing.stresses(fonetica[0])
+                accenti = accenti.replace('2','0')
+            else:
+                accenti = '0' * (len(parola) // 2)
+            dizionario[verso][0] += (accenti + '0')
+        lunghezza = len(dizionario[verso][0])
+        if lunghezza > max_len:
+            max_len = lunghezza
+    for elemento in dizionario:
+        if len(dizionario[elemento][0]) < max_len:
+            dizionario[elemento][0] = dizionario[elemento][0] + ('0' * (max_len - len(dizionario[elemento][0])))
+    return sync(poema, dizionario, tau)
+
+
+def confronta_A(A, B, tau):
+    i = 0 
+    c_a = 0
+    temp1 = []
+    while i < len(A):
+        while i < len(A) and A[i] == '0':
+            i += 1
+        if i < len(A):
+            if i-tau >= 0:
+                temp1 = B[i-tau:i+1]
+            else:
+                temp1 = B[:i+1]
+            if '1' in temp1:
+                c_a += 1
+        i += 1
+    return c_a
+
+
+def confronta_B(A, B, tau):
+    j = 0
+    c_b = 0
+    temp2 = []
+    while j < len(B):
+        while j < len(B) and B[j] == '0':
+            j += 1
+        if j < len(B):
+            if j-tau >= 0:
+                temp2 = A[j-tau:j+1]
+            else:
+                temp2 = A[:j+1]
+            if '1' in temp2:
+                c_b += 1 
+        j += 1
+    return c_b
+
+
+def togli_char(poema):
+    poema2 = []
+    for parola in poema:
+        for lettera in parola:
+            if not lettera.isalpha() and lettera != ' ':
+                parola = parola.replace(lettera, ' ')
+        if parola != " ":
+            poema2.append(parola)
+    return poema2
+
+---------
+
+VERSIONE BUONAAAAAAA
+
+
+Complessità ciclomatica massima	7
+Test superati	9
+Tempo di esecuzione	191.588 msec
+Voto (provvisorio)	34
+
+import pronouncing
+import math
+
+def PoemSync(inputfilename, outputfilename, tau): #1
+    with open(inputfilename, encoding='utf8') as f:
+        poema = f.readlines()
+    poema = togli_char(poema)
+    tot, cont, testo = crea_dizionario(poema, tau)
+    with open(outputfilename, mode='w', encoding='utf8') as f:
+        f.write(testo)
+    media_sync = tot / cont
+    return round(media_sync,6)
+
+
+def sync(poema, dizionario, tau): #5
+    concatenazioni = {}
+    tot = 0
+    cont = 0
+    i = 0
+    testo = ''
+    for y in range(len(poema)):
+        A = dizionario[poema[y]][0]
+        testo = testo + A + '\n'
+        if len(dizionario[poema[y]]) == 2:
+            m_A = A.count('1')
+            dizionario[poema[y]].append(m_A)
+        else:
+            m_A = dizionario[poema[y]][2]
+        tot, cont, concatenazioni = calcola_sync(i, tau, A, dizionario, poema, m_A, tot, cont, concatenazioni, dizionario[poema[y]][1])
+        i += 1
+    return tot, cont, testo
+
+
+def calcola_sync(i, tau, A, dizionario, poema, m_A, tot, cont, concatenazioni, posizioniA): #6
+    for x in range(i+1,len(poema)):
+        B = dizionario[poema[x]][0]
+        if len(dizionario[poema[x]]) == 2:
+            m_B = B.count('1')
+            dizionario[poema[x]].append(m_B)
+        else:
+            m_B = dizionario[poema[x]][2]
+        if m_A == 0 or m_B == 0:
+            cont += 1
+            continue
+        if A+B in concatenazioni:
+            c_a = concatenazioni[A+B]
+            c_b = concatenazioni[B+A]
+        else:
+            c_a, c_b = confronta(posizioniA, dizionario[poema[x]][1], A, B, tau)
+            concatenazioni[A+B] = c_a
+            concatenazioni[B+A] = c_b
+        tot += (0.5 * (c_b + c_a)) / math.sqrt(m_A * m_B)
+        cont += 1
+    return tot, cont, concatenazioni
+    
+
+
+def crea_dizionario(poema, tau): #3
+    dizionario = {}
+    max_len = 0
+    for riga in poema:
+        verso = str(riga)
+        dizionario[verso] = ['']
+        riga = riga.split()
+        for parola in riga:
+            fonetica = pronouncing.phones_for_word(parola)
+            if fonetica != []:
+                accenti = pronouncing.stresses(fonetica[0])
+                accenti = accenti.replace('2','0')
+            else:
+                accenti = '0' * (len(parola) // 2)
+            dizionario[verso][0] += (accenti + '0')
+        lunghezza = len(dizionario[verso][0])
+        if lunghezza > max_len:
+            max_len = lunghezza
+    for elemento in dizionario:
+        if len(dizionario[elemento][0]) < max_len:
+            dizionario[elemento][0] = dizionario[elemento][0] + ('0' * (max_len - len(dizionario[elemento][0])))
+        dizionario = salva_posizioni(elemento, dizionario[elemento][0], dizionario)
+    return sync(poema, dizionario, tau)
+
+
+def salva_posizioni(elemento, elemento0, dizionario): #4
+    dizionario[elemento].append(set())    
+    for i in range(len(elemento0)):
+        if elemento0[i] == '1':
+            dizionario[elemento][1].add(i)
+    return dizionario
+
+
+
+def confronta(posizioniA, posizioniB, A, B, tau): #7
+    c_a = 0
+    c_b = 0
+    for indice in posizioniA:
+        if indice-tau >= 0:
+            temp = B[indice-tau:indice+1]
+        else:
+            temp = B[:indice+1]
+        if '1' in temp:
+            c_a += 1
+    for indice in posizioniB:
+        if indice-tau >= 0:
+            temp = A[indice-tau:indice+1]
+        else:
+            temp = A[:indice+1]
+        if '1' in temp:
+            c_b += 1
+    return c_a, c_b
+
+
+
+def togli_char(poema):
+    poema2 = []
+    for parola in poema:
+        for lettera in parola:
+            if not lettera.isalpha() and lettera != ' ':
+                parola = parola.replace(lettera, ' ')
+        if parola != " ":
+            poema2.append(parola)
+    return poema2

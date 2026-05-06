@@ -1,0 +1,20 @@
+"""Ho aperto il file e ho memorizzaro l'intero della prima riga (ovvero la lunghezza della 
+parola da cercare) in una variabile, poi ho continuato a leggere il file e l'ho memorizzato 
+in una lista di stringhe, prima di chiudere il file. 
+Successivamente ho rimpiazzato i caratteri \n negli elementi della lista utilizzando un ciclo
+for e una condizione per cui l'elemento avrebbe dovuto avere lunghezza >= 2. Sempre 
+secondo questa condizione, ho inserito e concatenato tutte le stringhe prima della
+riga vuota come unico valore per una chiave di un dizionario, ottenendo le singole stringhe 
+da analizzare. Da questo punto in poi non mi è stato possibile andare avanti. Anche se
+non mi è riuscito, avevo intenzione di utilizzare degli insiemi. Inizialmente, nel primo
+avrei salvato tutte le sottostringhe di lunghezza M presenti nel primo elemento del
+dizionario e nel secondo quelle del secondo elemento. Avrei confrontato i due insiemi 
+e avrei inserito in un terzo insieme gli elementi comuni. Poi avrei continuato confrontando
+via via le altre stringhe con gli insiemi ottenuti.
+Il mio problema principale è stato il non riuscire a dividere i valori del dizionario 
+in sottostrighe, per cui accetto qualsiasi consiglio a riguardo, oltre che sul modo di 
+ragionare in generale
+"""
+
+
+

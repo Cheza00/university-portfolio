@@ -1,0 +1,778 @@
+def ex(matches, k):
+    classifica = []
+    lunghezza1 = len(matches)
+    vittorie = [0 for _ in range(lunghezza1)]
+    i = 0
+    for partecipante1 in matches:
+        for x in range(i+1,lunghezza1):
+            punti1, punti2, totale1, totale2 = confronta(partecipante1, matches[x], k)
+            if punti1 == punti2:
+                vittorie = pareggio(totale1, totale2, partecipante1, matches[x], matches, i, vittorie, x)
+            elif punti1 > punti2:
+                vittorie[matches.index(partecipante1)] += 1           
+            else:
+                vittorie[x] += 1 
+        i += 1
+    return fun_classifica(classifica, vittorie)
+        
+
+def confronta(partecipante1, partecipante2, k):
+    punti1 = 0
+    punti2 = 0
+    totale1 = 0
+    totale2 = 0
+    i = 0
+    lunghezza2 = len(partecipante2)
+    for lettera in partecipante1:
+        if lettera == " " or lettera == '\t':
+            continue
+        while (partecipante2[i] == " " or partecipante2[i] == '\t'):
+            i += 1
+        numero1 = ord(lettera)
+        numero2 = ord(partecipante2[i])
+        totale1 += numero1
+        totale2 += numero2
+        if lettera > partecipante2[i]:
+            if (numero1 - numero2) <= k:
+                punti1 += 1
+            else:
+                punti2 += 1
+        elif partecipante2[i] > lettera:
+            if (numero2 - numero1) <= k:
+                punti2 += 1
+            else:
+                punti1 += 1
+        i += 1
+    return punti1, punti2, totale1, totale2
+
+
+def fun_classifica(classifica, vittorie):
+    for _ in range(len(vittorie)):
+        max_index = vittorie.index(max(vittorie))
+        classifica.append(max_index)
+        vittorie[max_index] = -1
+    return classifica
+    
+            
+def pareggio(totale1, totale2, partecipante1, partecipante2, matches, i, vittorie, x):
+    if totale1 == totale2:
+        j = 0
+        for lettera in partecipante1:
+            if lettera == " " or lettera == '\t':
+                continue
+            while (partecipante2[i] == " " or partecipante2[i] == '\t'):
+                j += 1
+            if lettera == partecipante2[i]:
+                continue
+            elif lettera < partecipante2[i]:
+                vittorie[matches.index(partecipante1)] += 1
+            else:
+                vittorie[x] += 1
+    elif totale1 < totale2:
+        vittorie[matches.index(partecipante1)] += 1
+    else:
+        vittorie[x] += 1
+    return vittorie
+
+------------------------------------------------------------------------
+9763.36 msec poi 11558.3 msec
+
+def ex(matches, k):
+    classifica = []
+    lunghezza1 = len(matches)
+    vittorie = [0 for _ in range(lunghezza1)]
+    i = 0
+    for partecipante1 in matches:
+        for x in range(i+1,lunghezza1):
+            punti1, punti2 = confronta(partecipante1, matches[x], k)
+            if punti1 == punti2:
+                vittorie = pareggio(partecipante1, matches[x], matches, vittorie, x)
+            elif punti1 > punti2:
+                vittorie[matches.index(partecipante1)] += 1           
+            else:
+                vittorie[x] += 1 
+        i += 1
+    return fun_classifica(classifica, vittorie)
+        
+
+def confronta(partecipante1, partecipante2, k):
+    punti1 = 0
+    punti2 = 0
+    i = 0
+    for lettera in partecipante1:
+        if lettera in [' ','\t']:
+            continue
+        while partecipante2[i] in [' ','\t']:
+            i += 1
+        numero1 = ord(lettera)
+        numero2 = ord(partecipante2[i])
+        if lettera > partecipante2[i]:
+            if (numero1 - numero2) <= k:
+                punti1 += 1
+            else:
+                punti2 += 1
+        elif partecipante2[i] > lettera:
+            if (numero2 - numero1) <= k:
+                punti2 += 1
+            else:
+                punti1 += 1
+        i += 1
+    return punti1, punti2
+
+
+def fun_classifica(classifica, vittorie):
+    for _ in range(len(vittorie)):
+        max_index = vittorie.index(max(vittorie))
+        classifica.append(max_index)
+        vittorie[max_index] = -1
+    return classifica
+    
+            
+def pareggio(partecipante1, partecipante2, matches, vittorie, x):
+    totale1 = 0
+    totale2 = 0
+    for lettera in partecipante1:
+        if lettera not in [' ','\t']:
+            totale1 += ord(lettera)
+    for lettera in partecipante2:
+        if lettera not in [' ','\t']:
+            totale2 += ord(lettera)
+    if totale1 == totale2:
+        if min(partecipante1, partecipante2) == partecipante1:
+            vittorie[matches.index(partecipante1)] += 1
+        else:
+            vittorie[x] += 1
+    elif totale1 < totale2:
+        vittorie[matches.index(partecipante1)] += 1
+    else:
+        vittorie[x] += 1
+    return vittorie
+
+------------------------------
+
+Complessità ciclomatica massima	9
+Test superati	16
+Tempo di esecuzione	11675.4 msec
+Voto (provvisorio)	32
+
+def ex(matches, k):
+    classifica = []
+    lunghezza1 = len(matches)
+    vittorie = [0 for _ in range(lunghezza1)]
+    i = 0
+    for partecipante1 in matches:
+        for x in range(i+1,lunghezza1):
+            punti1, punti2 = confronta(partecipante1, matches[x], k)
+            if punti1 != punti2:
+                if punti1 > punti2:
+                    vittorie[matches.index(partecipante1)] += 1   
+                else:
+                    vittorie[x] += 1 
+            else:
+                vittorie = pareggio(partecipante1, matches[x], matches, vittorie, x)
+        i += 1
+    return fun_classifica(classifica, vittorie)
+        
+
+def confronta(partecipante1, partecipante2, k):
+    punti1 = 0
+    punti2 = 0
+    spazi = [' ','\t']
+    i = 0
+    for lettera in partecipante1:
+        if lettera in spazi:
+            continue
+        while partecipante2[i] in spazi:
+            i += 1
+        if lettera > partecipante2[i]:
+            if (ord(lettera) - ord(partecipante2[i])) <= k:
+                punti1 += 1
+            else:
+                punti2 += 1
+        elif partecipante2[i] > lettera:
+            if (ord(partecipante2[i]) - ord(lettera)) <= k:
+                punti2 += 1
+            else:
+                punti1 += 1
+        i += 1
+    return punti1, punti2
+
+
+def fun_classifica(classifica, vittorie):
+    lunghezza = len(vittorie)
+    for _ in range(lunghezza):
+        max_index = vittorie.index(max(vittorie))
+        classifica.append(max_index)
+        vittorie[max_index] = -1
+    return classifica
+    
+            
+def pareggio(partecipante1, partecipante2, matches, vittorie, x):
+    totale1 = 0
+    totale2 = 0
+    spazi = [' ','\t']
+    lunghezza1 = len(partecipante1)
+    lunghezza2 = len(partecipante2)
+    for i in range(max(lunghezza1,lunghezza2)):
+        if i < lunghezza1 and partecipante1[i] not in spazi:
+            totale1 += ord(partecipante1[i])
+        if i < lunghezza2 and partecipante2[i] not in spazi:
+            totale2 += ord(partecipante2[i])
+    if totale1 == totale2:
+        if min(partecipante1, partecipante2) == partecipante1:
+            vittorie[matches.index(partecipante1)] += 1
+        else:
+            vittorie[x] += 1
+    elif totale1 < totale2:
+        vittorie[matches.index(partecipante1)] += 1
+    else:
+        vittorie[x] += 1
+    return vittorie
+
+
+---------------------------------
+Ho creato una serie di funzioni:
+1. Una funzione che elimina dalle stringhe gli spazi e \t. Questa funzione crea inoltre un 
+dizionario nel quale associo ad ogni stringa il punteggio iniziale (0)
+2. Una funzione che trova tutti i possibili match tra stringhe
+3. Una funzione che preso in esame un match, compara ogni singolo elemento della prima stringa
+con l'n-esimo elemento della seconda stringa. Quando si verifica una condizione, il contatore 
+di un "giocatore" sale di uno.
+4. Una funzione che considera i casi di pareggio dei contatori e che ritorna il vincitore.
+5. Una funzione che crea un nuovo dizionario che ha come chiave la posizione in entrata della
+stringa (0,1,2...ecc) e come valore il punteggio ottenuto nei match. Inoltre viene creata 
+una lista-classifica ordinata in base al punteggio di ciascun giocatore.
+
+Nella funzione "ex" vengono combinate tutte queste funzioni. 
+Per ogni match trovato nella funzione 2, viene applicata la funzione 3 
+e 4. Ogni volta che un giocatore vince un match, il suo punteggio
+nel dizionario definito nella funzione 1 aumenta di uno. 
+Infine con la funzione 5 viene stabilito l'output finale. 
+
+-----------------------------
+
+Il programma riceve in input una funzione matches e un paramentro k.
+Copio la lista in matches in una nuova lista in modo che posso modificare la nuova lista. 
+La prima cosa da fare è fare in modo che le stringhe giocate siano tutte della stessa lunghezza e in una funzione apposita passo la lista di stringhe e faccio in modo da togliere tutti gli eventuali spazi bianchi e tab ('\t').
+Ritorno quindi al programma principale la lista matches di stringhe in cui tutte le stringhe hanno la stessa lunghezza e non hanno spazi bianchi. 
+A questo punto inizia il torneo e mi creo una lista lunga quanti sono i giocatori che partecipano al torneo inizializzata per tutti i giocatori 0, dunque di questa lista gli indici mi indicano il numero di giocatore e come elementi ho il numero delle partite vinte dei giocatori del torneo. 
+A questo punto utilizzo due for per scorrere i giocatori: in quello più esterno ho il primo giocatore, mentre in quello più interno il secondo.
+Creo una funzione apposita in cui passo i due giocatori e il parametro k e questa funzione mi calcola il vincitore della partita, seguendo tutte le regole del gioco "chi la spara più grossa",
+quindi controllo i valori dei singoli caratteri delle stringhe dei due giocatori, vedo se k sballa e in caso di pareggio, devo fare ulteriori controlli che consistono nel far vincere il giocatore che a parità di punteggio, ha la somma più bassa;
+se anche la somma è uguale, allora vince il giocatore che ha la stringa più piccola seguendo l'ordine lessicografico.
+A questo punto, visto che ho controllato tutti i casi possibili, ritorno il vincitore della partita.
+Torno alla funzione principale del programma e incremento di 1 il punteggio del giocatore i-esimo o j-esimo nella lista torneo che ha vinto la partita. 
+A questo punto ho la lista torneo che mi contiene per ogni giocatore il numero di partite che hanno vinto e faccio in modo da ritornare in output una lista che mi contiene in ordine decrescente la classifica dei giocatori, dunque nella prima posizione avrò il vincitore e in caso di pareggio i giocatori sono ordinati in base alla posizione.
+
+-----------------------------
+
+#creo una variabile per il numero dei giocatori della lunghezza di matches1
+	#eseguo un ciclo for per pulire le stringhe della lista di imput da spazi e tab
+#creo una variabile nEle della lunghezza di ogni stringa della lista di imput
+#creo la lista vuota tabellone
+	#eseguo un ciclo for ed inserisco le singole lettere di ogni stringa in tabellone
+#creo una lista vuota e la chiamo vincite
+	#eseguo un ciclo for ed inserisco il valore 0 in questa lista per il numero di giocatori
+#eseguo un doppio ciclo for con indici opportunamente delimitati per ottenere le sfide a due a due dei concorrenti
+		#creo alcuni contatori per i due concorrenti della singola sfida e due stringhe vuote
+		# a cui assegno le due stringhe dei concorrenti
+		#creo la lista vuota punteggio
+			#creo con un ciclo for una matrice di liste con righe il numero di elementi delle stringhe
+			#e colonne il numero dei giocatori
+			#eseguo un ciclo for sul numero di elementi per ottenere gli indice delle stringha
+			#estraggo il carattere ascii dei caratteri delle stringhe
+			#aggiorno contatori
+			#con un ciclo if else stabilisco i criteri di vincita delle singole sfide
+		#con due cicli if elif else indentati stabilisco i criteri di vincita della classifica finale
+		#confrontando i valori ottenuti da variabili e contatori
+#creo la lista indici con gli indici dei giocatori
+#creo una lista con la funzione zip inrociando vincite ed indici
+#creo la lista classifica in cui con una list comprehencion inserisco gli elementi della lista precedente
+#con il metodo reverse inverto l'ordine degli elementi
+#ritorno la lista classifica
+
+-----------------------
+
+Mi piace molto il tuo codice. Una soluzione alternativa con un dizionario si potrebbe realizzare cosi: I giocatori di una
+ sfida sono le chiavi di un diz e le sfide vinte sono il valore della chiave. Per ogni sfida si aumenta il valore con 1 
+con diz[matches[i]] = diz.get(matches[i], 0) + 1
+ 
+---------------------
+
+def ex(matches, k):
+    classifica = []
+    lunghezza1 = len(matches)
+    lista_copia = matches.copy()
+    for x in range(lunghezza1):
+        lista_copia[x] = lista_copia[x].replace(' ', '').replace('\t','')
+        print(lista_copia[x])
+    vittorie = {c: 0 for c in lista_copia}
+    i = 0
+    for partecipante1 in lista_copia:
+        for x in range(i+1,lunghezza1):
+            punti1, punti2 = confronta(partecipante1, lista_copia[x], k)
+            if punti1 == punti2:
+                vittorie = pareggio(partecipante1, lista_copia[x], lista_copia, vittorie, x)
+            elif punti1 > punti2:
+                vittorie[partecipante1] += 1           
+            else:
+                vittorie[lista_copia[x]] += 1 
+        i += 1
+    return fun_classifica(classifica, vittorie, lista_copia)
+        
+
+def confronta(partecipante1, partecipante2, k):
+    punti1 = 0
+    punti2 = 0
+    for i in range(len(partecipante1)):
+        print(partecipante1, partecipante2)
+        print(len(partecipante1)==len(partecipante2))
+        numero1 = ord(partecipante1[i])
+        numero2 = ord(partecipante2[i])
+        if partecipante1[i] > partecipante2[i]:
+            if (numero1 - numero2) <= k:
+                punti1 += 1
+            else:
+                punti2 += 1
+        elif partecipante2[i] > partecipante1[i]:
+            if (numero2 - numero1) <= k:
+                punti2 += 1
+            else:
+                punti1 += 1
+    return punti1, punti2
+
+
+def fun_classifica(classifica, vittorie, lista_copia):
+    sortedVittorie = sorted(vittorie.items(), key=lambda x: x[1], reverse=True)
+    for i in range(len(vittorie)):
+        classifica.append(lista_copia.index(sortedVittorie[i][0]))
+    return classifica
+    
+            
+def pareggio(partecipante1, partecipante2, lista_copia, vittorie, x):
+    totale1 = 0
+    totale2 = 0
+    for lettera in partecipante2:
+        totale1 += ord(lettera)
+    for lettera in partecipante2:
+        totale2 += ord(lettera)
+    if totale1 == totale2:
+        if min(partecipante1, partecipante2) == partecipante1:
+            vittorie[partecipante1] += 1
+        else:
+            vittorie[partecipante2] += 1
+    elif totale1 < totale2:
+        vittorie[partecipante1] += 1
+    else:
+        vittorie[lista_copia[x]] += 1
+    return vittorie
+
+
+-----------------
+BUONO?
+def ex(matches, k):
+    classifica = []
+    lunghezza1 = len(matches)
+    vittorie = [0 for _ in range(lunghezza1)]
+    i = 0
+    for partecipante1 in matches:
+        for x in range(i+1,lunghezza1):
+            punti1, punti2 = confronta(partecipante1, matches[x], k)
+            if punti1 == punti2:
+                vittorie = pareggio(partecipante1, matches[x], matches, vittorie, x)
+            elif punti1 > punti2:
+                vittorie[matches.index(partecipante1)] += 1           
+            else:
+                vittorie[x] += 1 
+        i += 1
+    return fun_classifica(classifica, vittorie)
+        
+
+def confronta(partecipante1, partecipante2, k):
+    punti1 = 0
+    punti2 = 0
+    i = 0
+    for lettera in partecipante1:
+        if lettera in [' ','\t']:
+            continue
+        while partecipante2[i] in [' ','\t']:
+            i += 1
+        numero1 = ord(lettera)
+        numero2 = ord(partecipante2[i])
+        if lettera > partecipante2[i]:
+            if (numero1 - numero2) <= k:
+                punti1 += 1
+            else:
+                punti2 += 1
+        elif partecipante2[i] > lettera:
+            if (numero2 - numero1) <= k:
+                punti2 += 1
+            else:
+                punti1 += 1
+        i += 1
+    return punti1, punti2
+
+
+def fun_classifica(classifica, vittorie):
+    copia = vittorie[:]
+    vittorie.sort(reverse=True)
+    for vittoria in vittorie:
+        max_index = copia.index(vittoria)
+        classifica.append(max_index)
+        copia[max_index] = -1
+    return classifica
+    
+            
+def pareggio(partecipante1, partecipante2, matches, vittorie, x):
+    totale1 = 0
+    totale2 = 0
+    for lettera in partecipante1:
+        if lettera not in [' ','\t']:
+            totale1 += ord(lettera)
+    for lettera in partecipante2:
+        if lettera not in [' ','\t']:
+            totale2 += ord(lettera)
+    if totale1 == totale2:
+        if min(partecipante1, partecipante2) == partecipante1:
+            vittorie[matches.index(partecipante1)] += 1
+        else:
+            vittorie[x] += 1
+    elif totale1 < totale2:
+        vittorie[matches.index(partecipante1)] += 1
+    else:
+        vittorie[x] += 1
+    return vittorie
+
+
+--------------------
+
+
+
+def ex(matches, k):
+    classifica = []
+    lunghezza1 = len(matches)
+    vittorie = [0 for _ in range(lunghezza1)]
+    i = 0
+    for partecipante1 in matches:
+        for x in range(i+1,lunghezza1):
+            punti1, punti2 = confronta(partecipante1, matches[x], k)
+            if punti1 == punti2:
+                vittorie = pareggio(partecipante1, matches[x], matches, vittorie, x)
+            elif punti1 > punti2:
+                vittorie[matches.index(partecipante1)] += 1           
+            else:
+                vittorie[x] += 1 
+        i += 1
+    return fun_classifica(classifica, vittorie)
+        
+
+def confronta(partecipante1, partecipante2, k):
+    punti1 = 0
+    punti2 = 0
+    i = 0
+    for lettera in partecipante1:
+        if lettera in [' ','\t']:
+            continue
+        while partecipante2[i] in [' ','\t']:
+            i += 1
+        numero1 = ord(lettera)
+        numero2 = ord(partecipante2[i])
+        if lettera > partecipante2[i]:
+            if (numero1 - numero2) <= k:
+                punti1 += 1
+            else:
+                punti2 += 1
+        elif partecipante2[i] > lettera:
+            if (numero2 - numero1) <= k:
+                punti2 += 1
+            else:
+                punti1 += 1
+        i += 1
+    return punti1, punti2
+
+
+def fun_classifica(classifica, vittorie):
+    copia = vittorie.copy()
+    vittorie.sort(reverse=True)
+    for vittoria in vittorie:
+        max_index = copia.index(vittoria)
+        classifica.append(max_index)
+        copia[max_index] = -1
+    return classifica
+    
+            
+def pareggio(partecipante1, partecipante2, matches, vittorie, x):
+    totale1 = 0
+    totale2 = 0
+    for lettera in partecipante1:
+        if lettera not in [' ','\t']:
+            totale1 += ord(lettera)
+    for lettera in partecipante2:
+        if lettera not in [' ','\t']:
+            totale2 += ord(lettera)
+    if totale1 == totale2:
+        if partecipante1 < partecipante2:
+            vittorie[matches.index(partecipante1)] += 1
+        else:
+            vittorie[x] += 1
+    elif totale1 < totale2:
+        vittorie[matches.index(partecipante1)] += 1
+    else:
+        vittorie[x] += 1
+    return vittorie
+
+
+-----------------------
+
+def ex(matches, k):
+    classifica = []
+    lunghezza1 = len(matches)
+    vittorie = [0 for _ in range(lunghezza1)]
+    dizionario = {}
+    i = 0
+    j = 0
+    dizionario[0] = []
+    for lettera in matches[0]: 
+        dizionario[0].append(ord(lettera))
+    while j < lunghezza1:
+        for x in range(i+1,lunghezza1):
+            print(x in dizionario)
+            if x not in dizionario:
+                dizionario[x] = []
+                for lettera in matches[x]: 
+                    dizionario[x].append(ord(lettera))
+            punti1, punti2 = confronta(matches[j], matches[x], k, dizionario, j, x)
+            if punti1 == punti2:
+                vittorie = pareggio(matches[j], matches[x], matches, vittorie, j, x, dizionario)
+            elif punti1 > punti2:
+                vittorie[matches.index(matches[j])] += 1           
+            else:
+                vittorie[x] += 1 
+        i += 1
+        j += 1
+    return fun_classifica(classifica, vittorie)
+        
+
+def confronta(partecipante1, partecipante2, k, dizionario, j, x):
+    punti1 = 0
+    punti2 = 0
+    i = 0
+    y = 0
+    while y < len(partecipante1):
+        if partecipante1[y] in [' ','\t']:
+            y += 1
+            continue
+        while partecipante2[i] in [' ','\t']:
+            i += 1
+        numero1 = dizionario[j][y]
+        numero2 = dizionario[x][i]
+        if partecipante1[y] > partecipante2[i]:
+            if (numero1 - numero2) <= k:
+                punti1 += 1
+            else:
+                punti2 += 1
+        elif partecipante2[i] > partecipante1[y]:
+            if (numero2 - numero1) <= k:
+                punti2 += 1
+            else:
+                punti1 += 1
+        i += 1
+        y += 1
+    return punti1, punti2
+
+
+def fun_classifica(classifica, vittorie):
+    copia = vittorie.copy()
+    vittorie.sort(reverse=True)
+    for vittoria in vittorie:
+        max_index = copia.index(vittoria)
+        classifica.append(max_index)
+        copia[max_index] = -1
+    return classifica
+    
+            
+def pareggio(partecipante1, partecipante2, matches, vittorie, j, x, dizionario):
+    totale1 = 0
+    totale2 = 0
+    for i in range(len(partecipante1)):
+        if partecipante1[i] not in [' ','\t']:
+            totale1 += dizionario[j][i]
+    for i in range(len(partecipante2)):
+        if partecipante2[i] not in [' ','\t']:
+            totale2 += dizionario[x][i]
+    if totale1 == totale2:
+        if partecipante1 < partecipante2:
+            vittorie[matches.index(partecipante1)] += 1
+        else:
+            vittorie[x] += 1
+    elif totale1 < totale2:
+        vittorie[matches.index(partecipante1)] += 1
+    else:
+        vittorie[x] += 1
+    return vittorie
+
+------------------
+
+def ex(matches, k):
+    classifica = []
+    lunghezza1 = len(matches)
+    vittorie = [0 for _ in range(lunghezza1)]
+    dizionario = {}
+    i = 0
+    j = 0
+    for temp in range(lunghezza1):
+        dizionario[temp] = []
+        for lettera in matches[temp]:
+            dizionario[temp].append(ord(lettera))
+    while j < lunghezza1:
+        for x in range(i+1,lunghezza1):
+            punti1, punti2 = confronta(matches[j], matches[x], k, dizionario, j, x)
+            if punti1 == punti2:
+                vittorie = pareggio(matches[j], matches[x], matches, vittorie, j, x, dizionario)
+            elif punti1 > punti2:
+                vittorie[matches.index(matches[j])] += 1           
+            else:
+                vittorie[x] += 1 
+        i += 1
+        j += 1
+    return fun_classifica(classifica, vittorie)
+        
+
+def confronta(partecipante1, partecipante2, k, dizionario, j, x):
+    punti1 = 0
+    punti2 = 0
+    i = 0
+    y = 0
+    while y < len(partecipante1):
+        if partecipante1[y] in [' ','\t']:
+            y += 1
+            continue
+        while partecipante2[i] in [' ','\t']:
+            i += 1
+        numero1 = dizionario[j][y]
+        numero2 = dizionario[x][i]
+        if partecipante1[y] > partecipante2[i]:
+            if (numero1 - numero2) <= k:
+                punti1 += 1
+            else:
+                punti2 += 1
+        elif partecipante2[i] > partecipante1[y]:
+            if (numero2 - numero1) <= k:
+                punti2 += 1
+            else:
+                punti1 += 1
+        i += 1
+        y += 1
+    return punti1, punti2
+
+
+def fun_classifica(classifica, vittorie):
+    copia = vittorie.copy()
+    vittorie.sort(reverse=True)
+    for vittoria in vittorie:
+        max_index = copia.index(vittoria)
+        classifica.append(max_index)
+        copia[max_index] = -1
+    return classifica
+    
+            
+def pareggio(partecipante1, partecipante2, matches, vittorie, j, x, dizionario):
+    totale1 = 0
+    totale2 = 0
+    for i in range(len(partecipante1)):
+        if partecipante1[i] not in [' ','\t']:
+            totale1 += dizionario[j][i]
+    for i in range(len(partecipante2)):
+        if partecipante2[i] not in [' ','\t']:
+            totale2 += dizionario[x][i]
+    if totale1 == totale2:
+        if partecipante1 < partecipante2:
+            vittorie[matches.index(partecipante1)] += 1
+        else:
+            vittorie[x] += 1
+    elif totale1 < totale2:
+        vittorie[matches.index(partecipante1)] += 1
+    else:
+        vittorie[x] += 1
+    return vittorie
+
+-------------------- 
+BUONO, 11495.8 msec (-0.5%)
+
+def ex(matches, k):
+    classifica = []
+    lunghezza1 = len(matches)
+    vittorie = [0 for _ in range(lunghezza1)]
+    i = 0
+    for partecipante1 in matches:
+        for x in range(i+1,lunghezza1):
+            punti1, punti2 = confronta(partecipante1, matches[x], k)
+            if punti1 == punti2:
+                vittorie = pareggio(partecipante1, matches, vittorie, x)
+            elif punti1 > punti2:
+                vittorie[matches.index(partecipante1)] += 1           
+            else:
+                vittorie[x] += 1 
+        i += 1
+    return fun_classifica(classifica, vittorie)
+        
+
+def confronta(partecipante1, partecipante2, k):
+    punti1 = 0
+    punti2 = 0
+    i = 0
+    for lettera in partecipante1:
+        if lettera in [' ','\t']:
+            continue
+        while partecipante2[i] in [' ','\t']:
+            i += 1
+        numero1 = ord(lettera)
+        numero2 = ord(partecipante2[i])
+        if lettera > partecipante2[i]:
+            if (numero1 - numero2) <= k:
+                punti1 += 1
+            else:
+                punti2 += 1
+        elif partecipante2[i] > lettera:
+            if (numero2 - numero1) <= k:
+                punti2 += 1
+            else:
+                punti1 += 1
+        i += 1
+    return punti1, punti2
+
+
+def fun_classifica(classifica, vittorie):
+    copia = vittorie.copy()
+    vittorie.sort(reverse=True)
+    for vittoria in vittorie:
+        max_index = copia.index(vittoria)
+        classifica.append(max_index)
+        copia[max_index] = -1
+    return classifica
+    
+            
+def pareggio(partecipante1, matches, vittorie, x):
+    partecipante2 = matches[x]
+    totale1 = 0
+    totale2 = 0
+    i = 0
+    lunghezza1 = len(partecipante1)
+    lunghezza2 = len(partecipante2)
+    maxlen = max(lunghezza1, lunghezza2)
+    while i < maxlen:
+        if i < lunghezza1 and partecipante1[i] not in [' ','\t']:
+            totale1 += ord(partecipante1[i])
+        if i < lunghezza2 and partecipante2[i] not in [' ','\t']:
+            totale2 += ord(partecipante2[i])
+        i += 1
+    if totale1 == totale2:
+        if partecipante1 < partecipante2:
+            vittorie[matches.index(partecipante1)] += 1
+        else:
+            vittorie[x] += 1
+    elif totale1 < totale2:
+        vittorie[matches.index(partecipante1)] += 1
+    else:
+        vittorie[x] += 1
+    return vittorie

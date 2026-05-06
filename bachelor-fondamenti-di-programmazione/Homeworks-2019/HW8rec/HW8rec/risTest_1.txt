@@ -1,0 +1,1 @@
+ThisdocumentprovidesanapplicabilitystatementfortheuseofUDPtransportchecksumswithIPv6.Itdefinesrecommendationsandreq

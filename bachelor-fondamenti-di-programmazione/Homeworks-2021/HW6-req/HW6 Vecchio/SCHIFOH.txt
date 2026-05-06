@@ -1,0 +1,1419 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Sat Dec  4 18:36:24 2021
+
+@author: Alixel
+"""
+
+## -----------------------------------
+## DESCRIZIONE PER PUNTI DELL'ALGORITMO
+
+    - Ognuna delle righe del file salvate all'interno della lista vengono estratti i numeri
+      contenuti al suo interno, per poi essere suddivisi in gruppi da 5 valori, corrispondenti
+      ai palazzi. Per ogni riga viene calcolata immediatamente la sua altezza massima e larghezza
+      massima, in modo che possa essere salvata all'interno di una lista, i cui valori verranno
+      utilizzati in seguito.
+
+    - Una volta calcolate tutte le dimensioni massime di ogni riga di palazzi, vengono calcolate
+      le dimensioni dell'immagine finale: la larghezza sarà pari a quella della fascia di palazzi
+      con larghezza precedentemente calcolata maggiore, mentre l'altezza sarà la somma tra: tutte
+      le altezze massime calcolate all'interno delle singole fasce + 1 spaziatura per ogni fascia
+      + 1 spaziatura (poiché le strade secondarie devono essere N_Fasce+1). Successivamente, viene
+      generata una matrice avente le dimensioni appena calcolate. All'interno di ogni cella della
+      matrice viene salvato il valore (0,0,0), corrispondente al colore nero in RGB
+
+    - Utilizzando due variabili che facciano da "cursori", verranno disegnati tutti i palazzi
+      all'interno delle varie strade, dove i due cursori andranno a posizionarsi sul vertice
+      in alto a sinistra di ogni palazzo. Questo metodo è stato paragonabile al funzionamento
+      di una stampante 3D, dove due assi muovono la punta da cui esce il liquido.
+
+    - Prima di disegnare ogni strada, viene calcolata la spaziatura interna dei palazzi, in modo
+      che essi risultino distribuiti omogeneamente fino a raggiungere la larghezza dell'immagine.
+      Allo stesso modo, prima di disegnare ogni palazzo esso viene centrato rispetto al palazzo
+      con altezza maggiore all'interno della fascia stessa. Possiamo immaginare, quindi, come se
+      ogni fascia di palazzi sia divisa orizzontalmente da un "asse X" sui cui tutti i palazzi
+      vengono centrati: metà palazzo sarà disegnato al di sopra della fascia e metà al di sotto.
+
+
+-------------------
+
+Prima di tutto vengono letti gli input dal file che contiene i dati dei palazzi, mantenenendo l'importanza del \n, che fa da separatore per le fascie
+di palazzi. Vengono poi estratti i valori delle larghezze e delle altezze, vengono usati per calcolare le dimensioni della mappa,
+e vengono poi usati per calcolare la distanza dei palazzi tra loro. La distanza y sarà sempre 'spaziatura' dal palazzo più alto, mentre la distanza x
+sarà ricavata togliendo le due spaziature laterali, poiché gli edifici più ai bordi sono sempre distanti "spaziatura" dalla fine dell'immagine.
+Siccome i palazzi devono essere anche allineati verticalmente, l'algoritmo considera come centro verticale della fascia la dimensione del palazzo più grande
+della fascia diviso 2, e vengono poi disegnati i palazzi basandosi sulle coordinate ricavate tramite calcoli dal centro. Per la x invece si parte dall'angolo in
+alto a sinistra del palazzo e poi si prende la spaziatura calcolata prima per renderli "equidistanti".
+
+
+-----------------
+
+import images
+
+def ex(file_dati, file_png, spaziatura):
+    dizionario = {}
+    with open(file_dati, encoding='utf8') as f:
+        testo = f.read()
+    testo = testo.split('\n')
+    lista = []
+    lista2 = []
+    for elemento in testo:
+        elemento = elemento.split()
+        if elemento != []:
+            lista.append(elemento)
+    k = 0
+    for elemento in lista:
+        lista2.append([])
+        for stringa in elemento:
+            stringa = stringa.split(',')
+            lista2[k].append(stringa)
+        k += 1
+    i = 0
+    max_larg = -1
+    lunghezza = -1
+    for elemento in lista2:
+        dizionario[i] = []
+        tot_larg = 0
+        max_alt = -1 
+        for x in elemento:
+            tot_larg += int(x[0])
+            if int(x[1]) > max_alt:
+                max_alt = int(x[1])
+        dizionario[i].append(tot_larg)
+        dizionario[i].append(max_alt)
+        dizionario[i].append(len(elemento))
+        lunghezza_fascia = tot_larg + ((len(elemento) + 1) * spaziatura)
+        dizionario[i].append(lunghezza_fascia)
+        dizionario[i].append(tot_larg)
+        if lunghezza_fascia > lunghezza:
+            lunghezza = lunghezza_fascia           
+        if tot_larg > max_larg:
+            max_larg = tot_larg
+# =============================================================================
+#         dizionario[i].append(int(max(elemento, key=lambda x: x[0])[0]))
+#         dizionario[i].append(int(max(elemento, key=lambda x: x[1])[1]))
+# =============================================================================
+        i += 1
+    print( dizionario, lista2, lista)
+    valori = list(dizionario.values())
+    cont = 0
+    for elemento in valori:
+        cont += elemento[1]
+    altezza = (len(dizionario) + 1) * spaziatura + cont
+    print(lunghezza, altezza)
+    
+# =============================================================================
+# def crea_immagine():
+#     crea_fascia()
+#     for elemento in lista2:
+# 
+#     crea_fascia()
+#     
+# def crea_fascia
+#     img = []
+#     for elemento in lista:
+#         pass
+#     for _ in range(spaziatura):
+#         row = []
+#         for _ in range(lunghezza):
+#             row.append((0,0,0))
+#         img.append(row)
+#     images.save(img, file_png)
+#     
+#     for x in range(spaziatura,altezza-spaziatura+1):
+#         row = []
+#         row.append((0,0,0)*spaziatura)
+#         j = 0
+#         lista[x] 
+#         
+# def crea_rettangolo():
+#     if len(elemento) == 1:
+#         medio = larghezza / 2
+#         mezzo_rettangolo = elemento[0][0]
+#         for x in range()
+# =============================================================================
+        
+    img = []
+    for a in range(spaziatura):
+        row = []
+        for l in range(lunghezza):
+            row.append((0,0,0))
+        img.append(row)
+        
+    i = 0
+    # per ogni fascia
+    while i < len(lista2):
+        # per ogni riga dopo il bordo di sopra:
+        giardini = (larghezza - (dizionario[i][4] + (dizionario[2] + 1) * spaziatura)) // ((dizionario[2] - 2) * 2 + 2)
+        for a in range(dizionario[i][0]):
+            for l in range(lunghezza):
+
+
+
+
+------------------------
+
+import images
+
+def ex(file_dati, file_png, spaziatura):
+    dizionario = {}
+    with open(file_dati, encoding='utf8') as f:
+        testo = f.read()
+    testo = testo.split('\n')
+    lista = []
+    lista2 = []
+    i = 0
+    for elemento in testo:
+        testo[i] = elemento.replace('\t', '').replace(' ','')
+        elemento = elemento.split()
+        if elemento != []:
+            lista.append(elemento)
+        i += 1
+    print(lista)
+    k = 0
+    for elemento in lista:
+        lista2.append([])
+        for stringa in elemento:
+            stringa = stringa.split(',')
+            print(stringa)
+            lista2[k].append(stringa)
+        k += 1
+   # print(lista2)
+    i = 0
+    max_larg = -1
+    lunghezza = -1
+    for elemento in lista2:
+        dizionario[i] = []
+        tot_larg = 0
+        max_alt = -1 
+        for x in elemento:
+            tot_larg += int(x[0])
+           # print(elemento,x)
+            if int(x[1]) > max_alt:
+                max_alt = int(x[1])
+        dizionario[i].append(tot_larg)
+        dizionario[i].append(max_alt)
+        dizionario[i].append(len(elemento))
+        lunghezza_fascia = tot_larg + ((len(elemento) + 1) * spaziatura)
+        dizionario[i].append(lunghezza_fascia)
+        if lunghezza_fascia > lunghezza:
+            lunghezza = lunghezza_fascia           
+        if tot_larg > max_larg:
+            max_larg = tot_larg
+        i += 1
+    valori = list(dizionario.values())
+    cont = 0
+    for elemento in valori:
+        cont += elemento[1]
+    altezza = (len(dizionario) + 1) * spaziatura + cont
+ 
+    img = []
+    for _ in range(altezza):
+        row = []
+        for _ in range(lunghezza):
+            row.append((0,0,0))
+        img.append(row) 
+    i = 0
+    # fascia
+    riga_attuale = spaziatura
+    for elemento in lista2:
+        colonna_attuale = spaziatura
+        giardino = 0 
+        if len(elemento) != 1:
+            giardino = (lunghezza - (dizionario[i][0] + (dizionario[i][2] + 1) * spaziatura)) // ((dizionario[i][2] - 2) * 2 + 2)
+        else:
+            colonna_attuale = (lunghezza // 2) - (dizionario[i][0] // 2)
+        dizionario[i].append(giardino)
+        dizionario[i].append([])
+        # palazzo
+        j = 0
+        for palazzo in elemento:
+            r,g,b = int(palazzo[2]), int(palazzo[3]), int(palazzo[4])
+            x, y = colonna_attuale, riga_attuale + ((dizionario[i][1]-int(palazzo[1]))//2)
+            #print(x,y)
+            dizionario[i][5].append((x,y))
+            colonna_attuale += (int(lista2[i][j][0]) + 2 * giardino + spaziatura) 
+            for pixel_y in range(y,y+int(palazzo[1])):
+                for pixel_x in range(x,x+int(palazzo[0])):
+                    img[pixel_y][pixel_x] = (r,g,b)
+            j += 1
+        riga_attuale += (dizionario[i][1] + spaziatura)
+        i += 1        
+    images.save(img, file_png)
+    return (lunghezza, altezza)
+                
+            
+----------
+
+FUNZIONAH
+
+Complessità ciclomatica massima	31 (+72.2%)
+Test superati	10 (-100%)
+Tempo di esecuzione	3097.82 msec
+Voto (provvisorio)	30 ()
+
+def ex(file_dati, file_png, spaziatura):
+    # inserisci qui il tuo codice
+
+    dizionario = {}
+    with open(file_dati, encoding='utf8') as f:
+        testo = f.read()
+    testo = testo.split('\n')
+    lista = []
+    lista2 = []
+    i = 0
+    for elemento in testo:
+        elemento = elemento.replace('\t', ',').replace(' ',',')
+        elemento = elemento.split(',')
+        if elemento != []:
+            lista.append(elemento)
+        i += 1
+    k = 0
+    conta = 0
+    for elemento in lista:  
+        if elemento == '':
+            continue
+        lista2.append([])
+        for stringa in elemento:
+            if stringa == '':
+                continue
+            if conta == 0:
+                lista2[-1].append([])
+            if stringa != '':
+                lista2[-1][-1].append(int(stringa.replace(',','')))
+                conta += 1
+            if conta == 5:
+                conta = 0
+        k += 1
+    i = 0
+    for elemento in lista2:
+        if elemento == [[]]:
+            lista2.pop(i)
+            i += 1
+            continue
+        for x in elemento:
+            if x == []:
+                lista2[i].pop(lista2[i].index(x))
+        i += 1
+    i = 0
+    max_larg = -1
+    lunghezza = -1
+    for elemento in lista2:
+        if elemento == []:
+            continue
+        dizionario[i] = []
+        tot_larg = 0
+        max_alt = -1 
+        for x in elemento:
+            if x == []:
+               continue 
+            tot_larg += int(x[0])
+            if int(x[1]) > max_alt:
+                max_alt = int(x[1])
+        dizionario[i].append(tot_larg)
+        dizionario[i].append(max_alt)
+        dizionario[i].append(len(elemento))
+        lunghezza_fascia = tot_larg + ((len(elemento) + 1) * spaziatura)
+        dizionario[i].append(lunghezza_fascia)
+        if lunghezza_fascia > lunghezza:
+            lunghezza = lunghezza_fascia           
+        if tot_larg > max_larg:
+            max_larg = tot_larg
+        i += 1
+    valori = list(dizionario.values())
+    cont = 0
+    for elemento in valori:
+        cont += elemento[1]
+    altezza = (len(dizionario) + 1) * spaziatura + cont
+ 
+    img = []
+    for _ in range(altezza):
+        row = []
+        for _ in range(lunghezza):
+            row.append((0,0,0))
+        img.append(row) 
+    i = 0
+    # fascia
+    riga_attuale = spaziatura
+    for elemento in lista2:
+        if elemento == []:
+            i += 1
+            continue
+        colonna_attuale = spaziatura
+        giardino = 0 
+        if len(elemento) != 1:
+            giardino = (lunghezza - (dizionario[i][0] + (dizionario[i][2] + 1) * spaziatura)) / ((dizionario[i][2] - 2) * 2 + 2)
+        else:
+            colonna_attuale = (lunghezza // 2) - (dizionario[i][0] // 2)
+        dizionario[i].append(giardino)
+        dizionario[i].append([])
+        # palazzo
+        j = 0
+        for palazzo in elemento:
+            if palazzo == []:
+                j += 1
+                continue
+            r,g,b = int(palazzo[2]), int(palazzo[3]), int(palazzo[4])
+            x, y = colonna_attuale, riga_attuale + ((dizionario[i][1]-int(palazzo[1]))//2)
+            dizionario[i][5].append((x,y))
+            colonna_attuale += (int(lista2[i][j][0]) + int((2 * giardino)) + spaziatura) 
+            for pixel_y in range(y,y+int(palazzo[1])):
+                for pixel_x in range(x,x+int(palazzo[0])):
+                    img[pixel_y][pixel_x] = (r,g,b)
+            j += 1
+        riga_attuale += (dizionario[i][1] + spaziatura)
+        i += 1 
+    images.save(img, file_png)
+    return (lunghezza, altezza)
+
+----------------------
+
+
+Complessità ciclomatica massima	31
+Test superati	10
+Tempo di esecuzione	3147.73 msec
+Voto (provvisorio)	30
+
+import images
+
+def ex(file_dati, file_png, spaziatura):
+    # inserisci qui il tuo codice
+
+    dizionario = {}
+    with open(file_dati, encoding='utf8') as f:
+        testo = f.read()
+    testo = testo.split('\n')
+    lista = []
+    lista2 = []
+    i = 0
+    for elemento in testo:
+        elemento = elemento.replace('\t', ',').replace(' ',',')
+        elemento = elemento.split(',')
+        if elemento != []:
+            lista.append(elemento)
+        i += 1
+    k = 0
+    conta = 0
+    for elemento in lista:  
+        if elemento == '':
+            continue
+        lista2.append([])
+        for stringa in elemento:
+            if stringa == '':
+                continue
+            if conta == 0:
+                lista2[-1].append([])
+            if stringa != '':
+                lista2[-1][-1].append(int(stringa.replace(',','')))
+                conta += 1
+            if conta == 5:
+                conta = 0
+        k += 1
+    i = 0
+    for elemento in lista2:
+        if elemento == [[]]:
+            lista2.pop(i)
+            i += 1
+            continue
+        for x in elemento:
+            if x == []:
+                lista2[i].pop(lista2[i].index(x))
+        i += 1
+    i = 0
+    max_larg = -1
+    lunghezza = -1
+    for elemento in lista2:
+        if elemento == []:
+            continue
+        dizionario[i] = []
+        tot_larg = 0
+        max_alt = -1 
+        for x in elemento:
+            if x == []:
+               continue 
+            tot_larg += x[0]
+            if x[1] > max_alt:
+                max_alt = x[1]
+        len_elemento = len(elemento)
+        dizionario[i].append(tot_larg)
+        dizionario[i].append(max_alt)
+        dizionario[i].append(len_elemento)
+        lunghezza_fascia = tot_larg + ((len_elemento + 1) * spaziatura)
+        dizionario[i].append(lunghezza_fascia)
+        if lunghezza_fascia > lunghezza:
+            lunghezza = lunghezza_fascia           
+        if tot_larg > max_larg:
+            max_larg = tot_larg
+        i += 1
+    valori = list(dizionario.values())
+    cont = 0
+    for elemento in valori:
+        cont += elemento[1]
+    altezza = (len(dizionario) + 1) * spaziatura + cont
+ 
+    img = []
+    for _ in range(altezza):
+        row = []
+        for _ in range(lunghezza):
+            row.append((0,0,0))
+        img.append(row) 
+    i = 0
+    # fascia
+    riga_attuale = spaziatura
+    for elemento in lista2:
+        if elemento == []:
+            i += 1
+            continue
+        colonna_attuale = spaziatura
+        giardino = 0 
+        if len(elemento) != 1:
+            giardino = (lunghezza - (dizionario[i][0] + (dizionario[i][2] + 1) * spaziatura)) / ((dizionario[i][2] - 2) * 2 + 2)
+        else:
+            colonna_attuale = (lunghezza // 2) - (dizionario[i][0] // 2)
+        dizionario[i].append(giardino)
+        dizionario[i].append([])
+        # palazzo
+        j = 0
+        for palazzo in elemento:
+            if palazzo == []:
+                j += 1
+                continue
+            r,g,b = palazzo[2], palazzo[3], palazzo[4]
+            x, y = colonna_attuale, riga_attuale + ((dizionario[i][1]-palazzo[1])//2)
+            dizionario[i][5].append((x,y))
+            colonna_attuale += (lista2[i][j][0] + int((2 * giardino)) + spaziatura) 
+            for pixel_y in range(y,y+palazzo[1]):
+                for pixel_x in range(x,x+palazzo[0]):
+                    img[pixel_y][pixel_x] = (r,g,b)
+            j += 1
+        riga_attuale += (dizionario[i][1] + spaziatura)
+        i += 1 
+    images.save(img, file_png)
+    return (lunghezza, altezza)
+
+-----------------
+
+
+Complessità ciclomatica massima	22
+Test superati	10
+Tempo di esecuzione	3142.98 msec
+Voto (provvisorio)	30
+
+import images
+
+def ex(file_dati, file_png, spaziatura):
+    # inserisci qui il tuo codice
+
+    dizionario = {}
+    with open(file_dati, encoding='utf8') as f:
+        testo = f.read()
+    testo = testo.split('\n')
+    
+    lista2 = dividi_testo(testo)
+    
+    i = 0
+    for elemento in lista2:
+        if elemento == [[]]:
+            lista2.pop(i)
+            i += 1
+            continue
+        for x in elemento:
+            if x == []:
+                lista2[i].pop(lista2[i].index(x))
+        i += 1
+    i = 0
+    max_larg = -1
+    lunghezza = -1
+    for elemento in lista2:
+        if elemento == []:
+            continue
+        dizionario[i] = []
+        tot_larg = 0
+        max_alt = -1 
+        for x in elemento:
+            if x == []:
+               continue 
+            tot_larg += x[0]
+            if x[1] > max_alt:
+                max_alt = x[1]
+        len_elemento = len(elemento)
+        dizionario[i].append(tot_larg)
+        dizionario[i].append(max_alt)
+        dizionario[i].append(len_elemento)
+        lunghezza_fascia = tot_larg + ((len_elemento + 1) * spaziatura)
+        dizionario[i].append(lunghezza_fascia)
+        if lunghezza_fascia > lunghezza:
+            lunghezza = lunghezza_fascia           
+        if tot_larg > max_larg:
+            max_larg = tot_larg
+        i += 1
+    valori = list(dizionario.values())
+    cont = 0
+    for elemento in valori:
+        cont += elemento[1]
+    altezza = (len(dizionario) + 1) * spaziatura + cont
+ 
+    img = []
+    for _ in range(altezza):
+        row = []
+        for _ in range(lunghezza):
+            row.append((0,0,0))
+        img.append(row) 
+    i = 0
+    # fascia
+    riga_attuale = spaziatura
+    for elemento in lista2:
+        if elemento == []:
+            i += 1
+            continue
+        colonna_attuale = spaziatura
+        giardino = 0 
+        if len(elemento) != 1:
+            giardino = (lunghezza - (dizionario[i][0] + (dizionario[i][2] + 1) * spaziatura)) / ((dizionario[i][2] - 2) * 2 + 2)
+        else:
+            colonna_attuale = (lunghezza // 2) - (dizionario[i][0] // 2)
+        dizionario[i].append(giardino)
+        dizionario[i].append([])
+        # palazzo
+        j = 0
+        for palazzo in elemento:
+            if palazzo == []:
+                j += 1
+                continue
+            r,g,b = palazzo[2], palazzo[3], palazzo[4]
+            x, y = colonna_attuale, riga_attuale + ((dizionario[i][1]-palazzo[1])//2)
+            dizionario[i][5].append((x,y))
+            colonna_attuale += (lista2[i][j][0] + int((2 * giardino)) + spaziatura) 
+            for pixel_y in range(y,y+palazzo[1]):
+                for pixel_x in range(x,x+palazzo[0]):
+                    img[pixel_y][pixel_x] = (r,g,b)
+            j += 1
+        riga_attuale += (dizionario[i][1] + spaziatura)
+        i += 1 
+    images.save(img, file_png)
+    return (lunghezza, altezza)
+
+
+def dividi_testo(testo):
+    lista2 = []
+    for elemento in testo:
+        elemento = elemento.replace('\t', ',').replace(' ',',')
+        elemento = elemento.split(',')
+        conta = 0 
+        if elemento == '':
+            continue
+        lista2.append([])
+        for stringa in elemento:
+            if stringa == '':
+                continue
+            if conta == 0:
+                lista2[-1].append([])
+            lista2[-1][-1].append(int(stringa.replace(',','')))
+            conta += 1
+            if conta == 5:
+                conta = 0
+    return lista2    
+
+------------------
+
+
+Complessità ciclomatica massima	18
+Test superati	10
+Tempo di esecuzione	3144.59 msec
+Voto (provvisorio)	30
+
+import images
+
+def ex(file_dati, file_png, spaziatura): #1
+    # inserisci qui il tuo codice
+
+    dizionario = {}
+    with open(file_dati, encoding='utf8') as f:
+        testo = f.read()
+    testo = testo.split('\n')
+    
+    lista2 = dividi_testo(testo)
+        
+    i = 0
+    max_larg = -1
+    lunghezza = -1
+    for elemento in lista2:
+        if elemento == []:
+            continue
+        dizionario[i] = []
+        tot_larg = 0
+        max_alt = -1 
+    
+        for x in elemento:
+            if x == []:
+               continue 
+            tot_larg += x[0]
+            if x[1] > max_alt:
+                max_alt = x[1]
+        len_elemento = len(elemento)
+        dizionario[i].append(tot_larg)
+        dizionario[i].append(max_alt)
+        dizionario[i].append(len_elemento)
+        lunghezza_fascia = tot_larg + ((len_elemento + 1) * spaziatura)
+        dizionario[i].append(lunghezza_fascia)
+        if lunghezza_fascia > lunghezza:
+            lunghezza = lunghezza_fascia           
+        if tot_larg > max_larg:
+            max_larg = tot_larg
+        i += 1
+    valori = list(dizionario.values())
+    cont = 0
+    
+    for elemento in valori:
+        cont += elemento[1]
+    altezza = (len(dizionario) + 1) * spaziatura + cont
+ 
+    img = []
+    for _ in range(altezza):
+        row = []
+        for _ in range(lunghezza):
+            row.append((0,0,0))
+        img.append(row) 
+    i = 0
+    
+    # fascia
+    riga_attuale = spaziatura
+    for elemento in lista2:
+        if elemento == []:
+            i += 1
+            continue
+        colonna_attuale = spaziatura
+        giardino = 0 
+        if len(elemento) != 1:
+            giardino = (lunghezza - (dizionario[i][0] + (dizionario[i][2] + 1) * spaziatura)) / ((dizionario[i][2] - 2) * 2 + 2)
+        else:
+            colonna_attuale = (lunghezza // 2) - (dizionario[i][0] // 2)
+        dizionario[i].append(giardino)
+        dizionario[i].append([])
+        # palazzo
+        j = 0
+        
+        for palazzo in elemento:
+            if palazzo == []:
+                j += 1
+                continue
+            r,g,b = palazzo[2], palazzo[3], palazzo[4]
+            x, y = colonna_attuale, riga_attuale + ((dizionario[i][1]-palazzo[1])//2)
+            dizionario[i][5].append((x,y))
+            colonna_attuale += (lista2[i][j][0] + int((2 * giardino)) + spaziatura) 
+            for pixel_y in range(y,y+palazzo[1]):
+                for pixel_x in range(x,x+palazzo[0]):
+                    img[pixel_y][pixel_x] = (r,g,b)
+            j += 1
+        riga_attuale += (dizionario[i][1] + spaziatura)
+        i += 1 
+        
+    images.save(img, file_png)
+    return (lunghezza, altezza)
+
+
+#2 Inizio a dividere il testo
+def dividi_testo(testo): 
+    lista2 = []
+    for elemento in testo:
+        elemento = elemento.replace('\t', ',').replace(' ',',')
+        elemento = elemento.split(',')
+        if elemento == '':
+            continue
+        lista2.append([])
+        lista2 = componi_lista(lista2, elemento)
+    return lista2  
+
+#3 Continuo a dividere la lista
+def componi_lista(lista2, elemento):
+    conta = 0
+    for stringa in elemento:
+        if stringa == '':
+            continue
+        if conta == 0:
+            lista2[-1].append([])
+        lista2[-1][-1].append(int(stringa.replace(',','')))
+        conta += 1
+        if conta == 5:
+            conta = 0
+    return 
+
+
+-----------------------
+
+
+Complessità ciclomatica massima	10
+Test superati	10
+Tempo di esecuzione	3137.89 msec
+Voto (provvisorio)	30
+
+import images
+
+def ex(file_dati, file_png, spaziatura): #1
+    # inserisci qui il tuo codice
+
+    dizionario = {}
+    with open(file_dati, encoding='utf8') as f:
+        testo = f.read()
+    testo = testo.split('\n')
+    
+    lista2 = dividi_testo(testo)
+        
+    i = 0
+    max_larg = -1
+    lunghezza = -1
+    cont = 0
+    for elemento in lista2:
+        if elemento == []:
+            continue
+        dizionario[i] = []
+        tot_larg = 0
+        max_alt = -1 
+        
+        dizionario, lunghezza, cont, i = componi_dizionario(elemento, dizionario, max_larg, lunghezza, cont, i, spaziatura, tot_larg, max_alt)
+        
+    altezza = (len(dizionario) + 1) * spaziatura + cont
+ 
+    img = crea_immagine(altezza, lunghezza)
+    
+    i = 0
+    
+    # fascia
+    riga_attuale = spaziatura
+    for elemento in lista2:
+        if elemento == []:
+            i += 1
+            continue
+        colonna_attuale = spaziatura
+        giardino = 0 
+        if len(elemento) != 1:
+            giardino = (lunghezza - (dizionario[i][0] + (dizionario[i][2] + 1) * spaziatura)) / ((dizionario[i][2] - 2) * 2 + 2)
+        else:
+            colonna_attuale = (lunghezza // 2) - (dizionario[i][0] // 2)
+        dizionario[i].append(giardino)
+        dizionario[i].append([])
+        # palazzo
+        j = 0
+        
+        for palazzo in elemento:
+            if palazzo == []:
+                j += 1
+                continue
+            r,g,b = palazzo[2], palazzo[3], palazzo[4]
+            x, y = colonna_attuale, riga_attuale + ((dizionario[i][1]-palazzo[1])//2)
+            dizionario[i][5].append((x,y))
+            colonna_attuale += (lista2[i][j][0] + int((2 * giardino)) + spaziatura) 
+            for pixel_y in range(y,y+palazzo[1]):
+                for pixel_x in range(x,x+palazzo[0]):
+                    img[pixel_y][pixel_x] = (r,g,b)
+            j += 1
+        riga_attuale += (dizionario[i][1] + spaziatura)
+        i += 1 
+        
+    images.save(img, file_png)
+    return (lunghezza, altezza)
+
+
+#2 Inizio a dividere il testo
+def dividi_testo(testo): 
+    lista2 = []
+    for elemento in testo:
+        elemento = elemento.replace('\t', ',').replace(' ',',')
+        elemento = elemento.split(',')
+        if elemento == '':
+            continue
+        lista2.append([])
+        lista2 = componi_lista(lista2, elemento)
+    return lista2  
+
+#3 Continuo a dividere la lista
+def componi_lista(lista2, elemento):
+    conta = 0
+    for stringa in elemento:
+        if stringa == '':
+            continue
+        if conta == 0:
+            lista2[-1].append([])
+        lista2[-1][-1].append(int(stringa.replace(',','')))
+        conta += 1
+        if conta == 5:
+            conta = 0
+    return lista2
+
+
+#4 Inizio a costruire il dizionario
+def componi_dizionario(elemento, dizionario, max_larg, lunghezza, cont, i, spaziatura, tot_larg, max_alt):
+    for x in elemento:
+        if x == []:
+            continue 
+        tot_larg += x[0]
+        if x[1] > max_alt:
+            max_alt = x[1]
+    len_elemento = len(elemento)
+    dizionario[i].append(tot_larg)
+    dizionario[i].append(max_alt)
+    cont += max_alt
+    dizionario[i].append(len_elemento)
+    lunghezza_fascia = tot_larg + ((len_elemento + 1) * spaziatura)
+    dizionario[i].append(lunghezza_fascia)
+    if lunghezza_fascia > lunghezza:
+        lunghezza = lunghezza_fascia           
+    if tot_larg > max_larg:
+        max_larg = tot_larg
+    i += 1
+    return dizionario, lunghezza, cont, i
+
+
+#5 Creo l'immagine
+def crea_immagine(altezza, lunghezza):
+    img = []
+    for _ in range(altezza):
+        row = []
+        for _ in range(lunghezza):
+            row.append((0,0,0))
+        img.append(row) 
+    return img
+
+------------------------
+
+
+Complessità ciclomatica massima	6
+Test superati	10
+Tempo di esecuzione	3081.23 msec
+Voto (provvisorio)	30
+
+
+def ex(file_dati, file_png, spaziatura): #1
+    dizionario = {}
+    with open(file_dati, encoding='utf8') as f:
+        testo = f.read()
+    testo = testo.split('\n')
+    
+    lista2 = dividi_testo(testo)
+        
+    i = 0
+    max_larg = -1
+    lunghezza = -1
+    cont = 0
+    for elemento in lista2:
+        if elemento == []:
+            continue
+        dizionario[i] = []
+        tot_larg = 0
+        max_alt = -1 
+        
+        dizionario, lunghezza, cont, i = componi_dizionario(elemento, dizionario, max_larg, lunghezza, cont, i, spaziatura, tot_larg, max_alt)
+        
+    altezza = (len(dizionario) + 1) * spaziatura + cont
+ 
+    img = crea_immagine(altezza, lunghezza)
+    
+    costruzione_immagine1(lista2, spaziatura, dizionario, lunghezza, img, file_png)
+    
+    return (lunghezza, altezza)
+
+
+
+#2 Inizio a dividere il testo
+def dividi_testo(testo): 
+    lista2 = []
+    for elemento in testo:
+        elemento = elemento.replace('\t', ',').replace(' ',',')
+        elemento = elemento.split(',')
+        if elemento == '':
+            continue
+        lista2.append([])
+        lista2 = componi_lista(lista2, elemento)
+    return lista2  
+
+#3 Continuo a dividere la lista
+def componi_lista(lista2, elemento):
+    conta = 0
+    for stringa in elemento:
+        if stringa == '':
+            continue
+        if conta == 0:
+            lista2[-1].append([])
+        lista2[-1][-1].append(int(stringa.replace(',','')))
+        conta += 1
+        if conta == 5:
+            conta = 0
+    return lista2
+
+
+#4 Inizio a costruire il dizionario
+def componi_dizionario(elemento, dizionario, max_larg, lunghezza, cont, i, spaziatura, tot_larg, max_alt):
+    for x in elemento:
+        if x == []:
+            continue 
+        tot_larg += x[0]
+        if x[1] > max_alt:
+            max_alt = x[1]
+    len_elemento = len(elemento)
+    dizionario[i].append(tot_larg)
+    dizionario[i].append(max_alt)
+    cont += max_alt
+    dizionario[i].append(len_elemento)
+    lunghezza_fascia = tot_larg + ((len_elemento + 1) * spaziatura)
+    dizionario[i].append(lunghezza_fascia)
+    if lunghezza_fascia > lunghezza:
+        lunghezza = lunghezza_fascia           
+    if tot_larg > max_larg:
+        max_larg = tot_larg
+    i += 1
+    return dizionario, lunghezza, cont, i
+
+
+#5 Creo l'immagine
+def crea_immagine(altezza, lunghezza):
+    img = []
+    for _ in range(altezza):
+        row = []
+        for _ in range(lunghezza):
+            row.append((0,0,0))
+        img.append(row) 
+    return img
+
+#6 e 7 Costruzione Immagine 
+def costruzione_immagine1(lista2, spaziatura, dizionario, lunghezza, img, file_png):
+    i = 0
+    # fascia
+    riga_attuale = spaziatura
+    for elemento in lista2:
+        if elemento == []:
+            i += 1
+            continue
+        colonna_attuale = spaziatura
+        giardino = 0 
+        if len(elemento) != 1:
+            giardino = (lunghezza - (dizionario[i][0] + (dizionario[i][2] + 1) * spaziatura)) / ((dizionario[i][2] - 2) * 2 + 2)
+        else:
+            colonna_attuale = (lunghezza // 2) - (dizionario[i][0] // 2)
+        dizionario[i].append(giardino)
+        dizionario[i].append([])
+        
+        # palazzo
+        img = costruzione_immagine2(elemento, colonna_attuale, riga_attuale, dizionario, i, lista2, giardino, spaziatura, img)
+        
+        riga_attuale += (dizionario[i][1] + spaziatura)
+        i += 1         
+    images.save(img, file_png)
+    
+def costruzione_immagine2(elemento, colonna_attuale, riga_attuale, dizionario, i, lista2, giardino, spaziatura, img):
+    j = 0
+    for palazzo in elemento:
+        r,g,b = palazzo[2], palazzo[3], palazzo[4]
+        x, y = colonna_attuale, riga_attuale + ((dizionario[i][1]-palazzo[1])//2)
+        dizionario[i][5].append((x,y))
+        colonna_attuale += (lista2[i][j][0] + int((2 * giardino)) + spaziatura) 
+        for pixel_y in range(y,y+palazzo[1]):
+            for pixel_x in range(x,x+palazzo[0]):
+                img[pixel_y][pixel_x] = (r,g,b)
+        j += 1
+    return img
+
+---------------------
+
+
+Complessità ciclomatica massima	5
+Test superati	10
+Tempo di esecuzione	3115.14 msec
+Voto (provvisorio)	32
+
+def ex(file_dati, file_png, spaziatura): #1
+    dizionario = {}
+    with open(file_dati, encoding='utf8') as f:
+        testo = f.read()
+    testo = testo.split('\n')
+    
+    lista2 = dividi_testo(testo)
+        
+    i = 0
+    max_larg = -1
+    lunghezza = -1
+    cont = 0
+    for elemento in lista2:
+        if elemento == []:
+            continue
+        dizionario[i] = []
+        tot_larg = 0
+        max_alt = -1 
+        
+        dizionario, lunghezza, cont, i, lunghezza_fascia, tot_larg, max_larg = componi_dizionario(elemento, dizionario, max_larg, lunghezza, cont, i, spaziatura, tot_larg, max_alt)
+        
+        if lunghezza_fascia > lunghezza:
+            lunghezza = lunghezza_fascia           
+        if tot_larg > max_larg:
+            max_larg = tot_larg
+        i += 1
+    altezza = (len(dizionario) + 1) * spaziatura + cont
+ 
+    img = crea_immagine(altezza, lunghezza)
+    
+    costruzione_immagine1(lista2, spaziatura, dizionario, lunghezza, img, file_png)
+    
+    return (lunghezza, altezza)
+
+
+
+#2 Inizio a dividere il testo
+def dividi_testo(testo): 
+    lista2 = []
+    for elemento in testo:
+        elemento = elemento.replace('\t', ',').replace(' ',',')
+        elemento = elemento.split(',')
+        if elemento == '':
+            continue
+        lista2.append([])
+        lista2 = componi_lista(lista2, elemento)
+    return lista2  
+
+#3 Continuo a dividere la lista
+def componi_lista(lista2, elemento):
+    conta = 0
+    for stringa in elemento:
+        if stringa == '':
+            continue
+        if conta == 0:
+            lista2[-1].append([])
+        lista2[-1][-1].append(int(stringa.replace(',','')))
+        conta += 1
+        if conta == 5:
+            conta = 0
+    return lista2
+
+
+#4 Inizio a costruire il dizionario
+def componi_dizionario(elemento, dizionario, max_larg, lunghezza, cont, i, spaziatura, tot_larg, max_alt):
+    for x in elemento:
+        if x == []:
+            continue 
+        tot_larg += x[0]
+        if x[1] > max_alt:
+            max_alt = x[1]
+    len_elemento = len(elemento)
+    dizionario[i].append(tot_larg)
+    dizionario[i].append(max_alt)
+    cont += max_alt
+    dizionario[i].append(len_elemento)
+    lunghezza_fascia = tot_larg + ((len_elemento + 1) * spaziatura)
+    dizionario[i].append(lunghezza_fascia)
+    return dizionario, lunghezza, cont, i, lunghezza_fascia, tot_larg, max_larg
+
+
+#5 Creo l'immagine
+def crea_immagine(altezza, lunghezza):
+    img = []
+    for _ in range(altezza):
+        row = []
+        for _ in range(lunghezza):
+            row.append((0,0,0))
+        img.append(row) 
+    return img
+
+#6 e 7 Costruzione Immagine 
+def costruzione_immagine1(lista2, spaziatura, dizionario, lunghezza, img, file_png):
+    i = 0
+    # fascia
+    riga_attuale = spaziatura
+    for elemento in lista2:
+        if elemento == []:
+            i += 1
+            continue
+        colonna_attuale = spaziatura
+        giardino = 0 
+        if len(elemento) != 1:
+            giardino = (lunghezza - (dizionario[i][0] + (dizionario[i][2] + 1) * spaziatura)) / ((dizionario[i][2] - 2) * 2 + 2)
+        else:
+            colonna_attuale = (lunghezza // 2) - (dizionario[i][0] // 2)
+        dizionario[i].append(giardino)
+        dizionario[i].append([])
+        
+        # palazzo
+        img = costruzione_immagine2(elemento, colonna_attuale, riga_attuale, dizionario, i, lista2, giardino, spaziatura, img)
+        
+        riga_attuale += (dizionario[i][1] + spaziatura)
+        i += 1         
+    images.save(img, file_png)
+    
+def costruzione_immagine2(elemento, colonna_attuale, riga_attuale, dizionario, i, lista2, giardino, spaziatura, img):
+    j = 0
+    for palazzo in elemento:
+        r,g,b = palazzo[2], palazzo[3], palazzo[4]
+        x, y = colonna_attuale, riga_attuale + ((dizionario[i][1]-palazzo[1])//2)
+        dizionario[i][5].append((x,y))
+        colonna_attuale += (lista2[i][j][0] + int((2 * giardino)) + spaziatura) 
+        for pixel_y in range(y,y+palazzo[1]):
+            for pixel_x in range(x,x+palazzo[0]):
+                img[pixel_y][pixel_x] = (r,g,b)
+        j += 1
+    return img
+
+-------------------
+#QUASI FINALE
+
+
+Complessità ciclomatica massima	5
+Test superati	10
+Tempo di esecuzione	3091.3 msec
+Voto (provvisorio)	32
+
+def ex(file_dati, file_png, spaziatura): #1
+    dizionario = {}
+    with open(file_dati, encoding='utf8') as f:
+        testo = f.read()
+    testo = testo.split('\n')
+    
+    lista2 = dividi_testo(testo)
+        
+    i = 0
+    max_larg = -1
+    lunghezza = -1
+    cont = 0
+    for elemento in lista2:
+        if elemento == []:
+            continue
+        dizionario[i] = []
+        tot_larg = 0
+        max_alt = -1 
+        
+        dizionario, lunghezza, cont = componi_dizionario(elemento, dizionario, max_larg, lunghezza, cont, i, spaziatura, tot_larg, max_alt)
+        
+        i += 1
+    altezza = (len(dizionario) + 1) * spaziatura + cont
+ 
+    img = crea_immagine(altezza, lunghezza)
+    
+    costruzione_immagine1(lista2, spaziatura, dizionario, lunghezza, img, file_png)
+    
+    return (lunghezza, altezza)
+
+
+
+#2 Inizio a dividere il testo
+def dividi_testo(testo): 
+    lista2 = []
+    for elemento in testo:
+        elemento = elemento.replace('\t', ',').replace(' ',',')
+        elemento = elemento.split(',')
+        lista2.append([])
+        lista2 = componi_lista(lista2, elemento)
+    return lista2  
+
+#3 Continuo a dividere la lista
+def componi_lista(lista2, elemento):
+    conta = 0
+    for stringa in elemento:
+        if stringa == '':
+            continue
+        if conta == 0:
+            lista2[-1].append([])
+        lista2[-1][-1].append(int(stringa.replace(',','')))
+        conta += 1
+        if conta == 5:
+            conta = 0
+    return lista2
+
+
+#4 Inizio a costruire il dizionario
+def componi_dizionario(elemento, dizionario, max_larg, lunghezza, cont, i, spaziatura, tot_larg, max_alt):
+    for x in elemento: 
+        tot_larg += x[0]
+        if x[1] > max_alt:
+            max_alt = x[1]
+    len_elemento = len(elemento)
+    dizionario[i].append(tot_larg)
+    dizionario[i].append(max_alt)
+    cont += max_alt
+    dizionario[i].append(len_elemento)
+    lunghezza_fascia = tot_larg + ((len_elemento + 1) * spaziatura)
+    dizionario[i].append(lunghezza_fascia)
+    if lunghezza_fascia > lunghezza:
+        lunghezza = lunghezza_fascia           
+    if tot_larg > max_larg:
+        max_larg = tot_larg
+    return dizionario, lunghezza, cont
+
+
+#5 Creo l'immagine
+def crea_immagine(altezza, lunghezza):
+    img = []
+    for _ in range(altezza):
+        row = []
+        for _ in range(lunghezza):
+            row.append((0,0,0))
+        img.append(row) 
+    return img
+
+#6 e 7 Costruzione Immagine 
+def costruzione_immagine1(lista2, spaziatura, dizionario, lunghezza, img, file_png):
+    i = 0
+    # fascia
+    riga_attuale = spaziatura
+    for elemento in lista2:
+        if elemento == []:
+            i += 1
+            continue
+        colonna_attuale = spaziatura
+        giardino = 0 
+        if len(elemento) != 1:
+            giardino = (lunghezza - (dizionario[i][0] + (dizionario[i][2] + 1) * spaziatura)) / ((dizionario[i][2] - 2) * 2 + 2)
+        else:
+            colonna_attuale = (lunghezza // 2) - (dizionario[i][0] // 2)
+        
+        # palazzo
+        img = costruzione_immagine2(elemento, colonna_attuale, riga_attuale, dizionario, i, lista2, giardino, spaziatura, img)
+        
+        riga_attuale += (dizionario[i][1] + spaziatura)
+        i += 1         
+    images.save(img, file_png)
+    
+def costruzione_immagine2(elemento, colonna_attuale, riga_attuale, dizionario, i, lista2, giardino, spaziatura, img):
+    j = 0
+    for palazzo in elemento:
+        r,g,b = palazzo[2], palazzo[3], palazzo[4]
+        x, y = colonna_attuale, riga_attuale + ((dizionario[i][1]-palazzo[1])//2)
+        colonna_attuale += (lista2[i][j][0] + int((2 * giardino)) + spaziatura) 
+        for pixel_y in range(y,y+palazzo[1]):
+            for pixel_x in range(x,x+palazzo[0]):
+                img[pixel_y][pixel_x] = (r,g,b)
+        j += 1
+    return img
+
+
+-----------------
+
+# FINALE
+
+
+Complessità ciclomatica massima	5
+Test superati	10
+Tempo di esecuzione	3092.51 msec    3117.03 msec     3122.73 msec      3153.1 msec
+Voto (provvisorio)	32
+
+def ex(file_dati, file_png, spaziatura): #1
+    dizionario = {}
+    with open(file_dati, encoding='utf8') as f:
+        testo = f.read()
+    testo = testo.split('\n')
+    
+    lista2 = dividi_testo(testo)
+        
+    i = 0
+    max_larg = -1
+    lunghezza = -1
+    cont = 0
+    for elemento in lista2:
+        if elemento == []:
+            continue
+        dizionario[i] = []
+        
+        dizionario, lunghezza, cont = componi_dizionario(elemento, dizionario, max_larg, lunghezza, cont, i, spaziatura)
+        
+        i += 1
+    altezza = (len(dizionario) + 1) * spaziatura + cont
+ 
+    img = crea_immagine(altezza, lunghezza)
+    
+    costruzione_immagine1(lista2, spaziatura, dizionario, lunghezza, img, file_png)
+    
+    return (lunghezza, altezza)
+
+
+
+#2 Inizio a dividere il testo
+def dividi_testo(testo): 
+    lista2 = []
+    for elemento in testo:
+        elemento = elemento.replace('\t', ',').replace(' ',',')
+        elemento = elemento.split(',')
+        lista2.append([])
+        lista2 = componi_lista(lista2, elemento)
+    return lista2  
+
+#3 Continuo a dividere la lista
+def componi_lista(lista2, elemento):
+    conta = 0
+    for stringa in elemento:
+        if stringa == '':
+            continue
+        if conta == 0:
+            lista2[-1].append([])
+        lista2[-1][-1].append(int(stringa.replace(',','')))
+        conta += 1
+        if conta == 5:
+            conta = 0
+    return lista2
+
+
+#4 Inizio a costruire il dizionario
+def componi_dizionario(elemento, dizionario, max_larg, lunghezza, cont, i, spaziatura):
+    tot_larg = 0
+    max_alt = -1 
+    for x in elemento: 
+        tot_larg += x[0]
+        if x[1] > max_alt:
+            max_alt = x[1]
+    len_elemento = len(elemento)
+    dizionario[i].append(tot_larg)
+    dizionario[i].append(max_alt)
+    cont += max_alt
+    dizionario[i].append(len_elemento)
+    lunghezza_fascia = tot_larg + ((len_elemento + 1) * spaziatura)
+    dizionario[i].append(lunghezza_fascia)
+    if lunghezza_fascia > lunghezza:
+        lunghezza = lunghezza_fascia           
+    if tot_larg > max_larg:
+        max_larg = tot_larg
+    return dizionario, lunghezza, cont
+
+
+#5 Creo l'immagine
+def crea_immagine(altezza, lunghezza):
+    img = []
+    for _ in range(altezza):
+        row = []
+        for _ in range(lunghezza):
+            row.append((0,0,0))
+        img.append(row) 
+    return img
+
+#6 e 7 Costruzione Immagine 
+def costruzione_immagine1(lista2, spaziatura, dizionario, lunghezza, img, file_png):
+    i = 0
+    # fascia
+    riga_attuale = spaziatura
+    for elemento in lista2:
+        if elemento == []:
+            i += 1
+            continue
+        colonna_attuale = spaziatura
+        giardino = 0 
+        if len(elemento) != 1:
+            giardino = (lunghezza - (dizionario[i][0] + (dizionario[i][2] + 1) * spaziatura)) / ((dizionario[i][2] - 2) * 2 + 2)
+        else:
+            colonna_attuale = (lunghezza // 2) - (dizionario[i][0] // 2)
+        
+        # palazzo
+        img = costruzione_immagine2(elemento, colonna_attuale, riga_attuale, dizionario, i, lista2, giardino, spaziatura, img)
+        
+        riga_attuale += (dizionario[i][1] + spaziatura)
+        i += 1         
+    images.save(img, file_png)
+    
+def costruzione_immagine2(elemento, colonna_attuale, riga_attuale, dizionario, i, lista2, giardino, spaziatura, img):
+    j = 0
+    for palazzo in elemento:
+        r,g,b = palazzo[2], palazzo[3], palazzo[4]
+        x, y = colonna_attuale, riga_attuale + ((dizionario[i][1]-palazzo[1])//2)
+        colonna_attuale += (lista2[i][j][0] + int((2 * giardino)) + spaziatura) 
+        for pixel_y in range(y,y+palazzo[1]):
+            for pixel_x in range(x,x+palazzo[0]):
+                img[pixel_y][pixel_x] = (r,g,b)
+        j += 1
+    return img
+
+
+-----------------------
+
+3153.1 msec  3076.05 msec
